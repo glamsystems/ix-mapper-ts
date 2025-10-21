@@ -1,0 +1,30 @@
+{
+  "name": "@glamsystems/ix-mapper",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for instruction mapping",
+  "main": "./index.cjs",
+  "module": "./index.esm.js",
+  "types": "./index.d.ts",
+  "homepage": "https://www.glam.systems",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:glamsystems/ix-mapper.git"
+  },
+  "keywords": [
+    "glam",
+    "solana"
+  ],
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.98.0"
+  },
+  "engines": {
+    "node": ">=20.18.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
+}
