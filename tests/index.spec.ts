@@ -3,21 +3,19 @@ import { mapToGlamIx } from "../src/index";
 
 describe("ix-mapper", () => {
   const GLAM_PROGRAM_ID = new PublicKey(
-    "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz"
+    "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
   );
-  const SYSTEM_PROGRAM_ID = new PublicKey(
-    "11111111111111111111111111111111"
-  );
+  const SYSTEM_PROGRAM_ID = new PublicKey("11111111111111111111111111111111");
   const TOKEN_PROGRAM_ID = new PublicKey(
-    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+    "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
   );
 
   // Test fixtures
   const glamState = new PublicKey(
-    "F9kXvMXF38YbLWjvZ8sdx8B6qJ4gqjCZy1PXnkUDqKFp"
+    "F9kXvMXF38YbLWjvZ8sdx8B6qJ4gqjCZy1PXnkUDqKFp",
   );
   const glamSigner = new PublicKey(
-    "8M5XgZWZWxGLDvJgXrv4b8ZFQT5BT8qjN5hPvVm4Cyqg"
+    "8M5XgZWZWxGLDvJgXrv4b8ZFQT5BT8qjN5hPvVm4Cyqg",
   );
 
   describe("mapToGlamIx", () => {
@@ -34,14 +32,14 @@ describe("ix-mapper", () => {
           keys: [
             {
               pubkey: new PublicKey(
-                "6ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ"
+                "6ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
               ), // from
               isSigner: true,
               isWritable: true,
             },
             {
               pubkey: new PublicKey(
-                "7YXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ"
+                "7YXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
               ), // to
               isSigner: false,
               isWritable: true,
@@ -57,7 +55,7 @@ describe("ix-mapper", () => {
 
         // Check discriminator changed from [2, 0, 0, 0] to [167, 164, 195, 155, 219, 152, 191, 230]
         expect(result!.data.subarray(0, 8)).toEqual(
-          Buffer.from([167, 164, 195, 155, 219, 152, 191, 230])
+          Buffer.from([167, 164, 195, 155, 219, 152, 191, 230]),
         );
 
         // Check payload (lamports) is preserved
@@ -73,7 +71,9 @@ describe("ix-mapper", () => {
         expect(result!.keys[0].pubkey).toEqual(glamState);
         expect(result!.keys[2].pubkey).toEqual(glamSigner);
         expect(result!.keys[3].pubkey).toEqual(SYSTEM_PROGRAM_ID);
-        expect(result!.keys[4].pubkey).toEqual(sourceInstruction.keys[1].pubkey);
+        expect(result!.keys[4].pubkey).toEqual(
+          sourceInstruction.keys[1].pubkey,
+        );
       });
 
       it("should derive vault PDA correctly", () => {
@@ -91,7 +91,7 @@ describe("ix-mapper", () => {
         // Manually derive expected vault PDA
         const [expectedVaultPda] = PublicKey.findProgramAddressSync(
           [Buffer.from("vault"), glamState.toBuffer()],
-          GLAM_PROGRAM_ID
+          GLAM_PROGRAM_ID,
         );
 
         expect(result).not.toBeNull();
@@ -133,7 +133,7 @@ describe("ix-mapper", () => {
     describe("Token Program - Transfer Checked", () => {
       it("should map a token transfer_checked instruction to GLAM instruction", () => {
         const EXT_SPL_PROGRAM_ID = new PublicKey(
-          "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta"
+          "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
         );
 
         // Token transfer_checked discriminator: [12]
@@ -148,28 +148,28 @@ describe("ix-mapper", () => {
           keys: [
             {
               pubkey: new PublicKey(
-                "6ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ"
+                "6ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
               ), // source
               isSigner: false,
               isWritable: true,
             },
             {
               pubkey: new PublicKey(
-                "7YXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ"
+                "7YXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
               ), // mint
               isSigner: false,
               isWritable: false,
             },
             {
               pubkey: new PublicKey(
-                "8ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ"
+                "8ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
               ), // destination
               isSigner: false,
               isWritable: true,
             },
             {
               pubkey: new PublicKey(
-                "9ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ"
+                "9ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
               ), // authority
               isSigner: true,
               isWritable: false,
@@ -185,7 +185,7 @@ describe("ix-mapper", () => {
 
         // Check discriminator changed from [12] to [169, 178, 117, 156, 169, 191, 199, 116]
         expect(result!.data.subarray(0, 8)).toEqual(
-          Buffer.from([169, 178, 117, 156, 169, 191, 199, 116])
+          Buffer.from([169, 178, 117, 156, 169, 191, 199, 116]),
         );
 
         // Check payload (amount + decimals) is preserved
@@ -195,7 +195,7 @@ describe("ix-mapper", () => {
 
       it("should include integration_authority for token operations", () => {
         const EXT_SPL_PROGRAM_ID = new PublicKey(
-          "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta"
+          "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
         );
 
         const sourceInstruction = new TransactionInstruction({
@@ -214,11 +214,10 @@ describe("ix-mapper", () => {
         expect(result).not.toBeNull();
 
         // Manually derive expected integration authority
-        const [expectedIntegrationAuthority] =
-          PublicKey.findProgramAddressSync(
-            [Buffer.from("integration-authority")],
-            EXT_SPL_PROGRAM_ID
-          );
+        const [expectedIntegrationAuthority] = PublicKey.findProgramAddressSync(
+          [Buffer.from("integration-authority")],
+          EXT_SPL_PROGRAM_ID,
+        );
 
         // integration_authority should be at index 3 (after glam_state, glam_vault, glam_signer)
         expect(result!.keys[3].pubkey).toEqual(expectedIntegrationAuthority);
@@ -228,7 +227,7 @@ describe("ix-mapper", () => {
     describe("Edge cases", () => {
       it("should return null for unsupported program", () => {
         const unsupportedProgramId = new PublicKey(
-          "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin"
+          "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
         );
 
         const sourceInstruction = new TransactionInstruction({
@@ -277,10 +276,10 @@ describe("ix-mapper", () => {
         // - Original key[1] (to) is kept and placed at position after static accounts
 
         const fromAccount = new PublicKey(
-          "6ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ"
+          "6ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
         );
         const toAccount = new PublicKey(
-          "7YXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ"
+          "7YXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
         );
 
         const sourceInstruction = new TransactionInstruction({
@@ -298,13 +297,13 @@ describe("ix-mapper", () => {
 
         // fromAccount should not appear in result.keys
         const hasFromAccount = result!.keys.some((key) =>
-          key.pubkey.equals(fromAccount)
+          key.pubkey.equals(fromAccount),
         );
         expect(hasFromAccount).toBe(false);
 
         // toAccount should appear in result.keys
         const hasToAccount = result!.keys.some((key) =>
-          key.pubkey.equals(toAccount)
+          key.pubkey.equals(toAccount),
         );
         expect(hasToAccount).toBe(true);
       });
@@ -330,11 +329,10 @@ describe("ix-mapper", () => {
         // for system transfers, but if it did, we'd verify it here)
 
         // Manually derive expected integration authority if it were used
-        const [expectedIntegrationAuthority] =
-          PublicKey.findProgramAddressSync(
-            [Buffer.from("integration-authority")],
-            GLAM_PROGRAM_ID
-          );
+        const [expectedIntegrationAuthority] = PublicKey.findProgramAddressSync(
+          [Buffer.from("integration-authority")],
+          GLAM_PROGRAM_ID,
+        );
 
         // This is just verifying the derivation logic works
         expect(expectedIntegrationAuthority).toBeDefined();
@@ -385,7 +383,7 @@ describe("ix-mapper", () => {
         // Should have new discriminator
         expect(result!.data.length).toBe(8);
         expect(result!.data).toEqual(
-          Buffer.from([167, 164, 195, 155, 219, 152, 191, 230])
+          Buffer.from([167, 164, 195, 155, 219, 152, 191, 230]),
         );
       });
     });

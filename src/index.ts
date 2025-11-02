@@ -50,7 +50,7 @@ function mapToGlamIx(
   }
 
   const proxyProgramId = new PublicKey(config.proxy_program_id);
-  const accountMetas = [] as AccountMeta[];
+  const accountMetasByIndex = new Map<Number, AccountMeta>();
 
   // We need to build the array of keys for the new ix
   // `dynamic_accounts`
@@ -64,25 +64,25 @@ function mapToGlamIx(
 
   ixConfig.dynamic_accounts.forEach(({ name, index, writable, signer }) => {
     if (name === "glam_state") {
-      accountMetas.push({
+      accountMetasByIndex.set(index, {
         pubkey: glamState,
         isSigner: signer,
         isWritable: writable,
       });
     } else if (name === "glam_vault") {
-      accountMetas.push({
+      accountMetasByIndex.set(index, {
         pubkey: getVaultPda(glamState),
         isSigner: signer,
         isWritable: writable,
       });
     } else if (name === "glam_signer") {
-      accountMetas.push({
+      accountMetasByIndex.set(index, {
         pubkey: glamSigner,
         isSigner: signer,
         isWritable: writable,
       });
     } else if (name === "integration_authority") {
-      accountMetas.push({
+      accountMetasByIndex.set(index, {
         pubkey: getIntegrationAuthority(proxyProgramId),
         isSigner: signer,
         isWritable: writable,
@@ -92,30 +92,48 @@ function mapToGlamIx(
     }
   });
 
-  ixConfig.static_accounts.forEach(({ account, writable, signer }) => {
-    accountMetas.push({
+  ixConfig.static_accounts.forEach(({ index, account, writable, signer }) => {
+    accountMetasByIndex.set(index, {
       pubkey: new PublicKey(account),
       isSigner: signer,
       isWritable: writable,
     });
   });
 
-  for (let i = 0; i < ix.keys.length; i++) {
-    if (i < ixConfig.index_map.length && ixConfig.index_map[i] === -1) {
-      continue;
-    }
+  console.assert(
+    ix.keys.length >= ixConfig.index_map.length,
+    "ix.keys length must be greater than or equal to ixConfig.index_map length",
+  );
 
-    const { pubkey, isSigner, isWritable } = ix.keys[i];
-    accountMetas.push({
-      pubkey,
-      isSigner,
-      isWritable,
-    });
+  const remainingAccountMetas = [] as AccountMeta[];
+  for (let i = 0; i < ix.keys.length; i++) {
+    if (i < ixConfig.index_map.length) {
+      if (ixConfig.index_map[i] === -1) {
+        continue;
+      }
+      const { pubkey, isSigner, isWritable } = ix.keys[i];
+      accountMetasByIndex.set(ixConfig.index_map[i], {
+        pubkey,
+        isSigner,
+        isWritable,
+      });
+    } else {
+      // if `i` is beyond the ixConfig.index_map length, it's a remaining account
+      remainingAccountMetas.push(ix.keys[i]);
+    }
   }
 
   // Replace src_discriminator with dst_discriminator in ix.data to get new ix data
   const payload = ix.data.subarray(ixConfig.src_discriminator.length);
   const targetIxData = Buffer.from([...ixConfig.dst_discriminator, ...payload]);
+
+  // The final account metas for the new ix are:
+  // accountMetasByIndex.values() sorted by index
+  // remainingAccountMetas
+  const accountMetas = [
+    ...[...accountMetasByIndex.entries()].sort().map(([_, meta]) => meta),
+    ...remainingAccountMetas,
+  ];
 
   return new TransactionInstruction({
     programId: proxyProgramId,
