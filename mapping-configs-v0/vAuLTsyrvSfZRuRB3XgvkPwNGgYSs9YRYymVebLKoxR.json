@@ -3,27 +3,9 @@
   "instructions": [
     {
       "src_ix_name": "initialize_vault_depositor",
-      "src_discriminator": [
-        112,
-        174,
-        162,
-        232,
-        89,
-        92,
-        205,
-        168
-      ],
+      "src_discriminator": [112, 174, 162, 232, 89, 92, 205, 168],
       "dst_ix_name": "drift_vaults_initialize_vault_depositor",
-      "dst_discriminator": [
-        109,
-        183,
-        50,
-        62,
-        60,
-        195,
-        192,
-        51
-      ],
+      "dst_discriminator": [109, 183, 50, 62, 60, 195, 192, 51],
       "dynamic_accounts": [
         {
           "name": "glam_state",
@@ -51,38 +33,13 @@
         }
       ],
       "static_accounts": [],
-      "index_map": [
-        4,
-        5,
-        -1,
-        -1,
-        6,
-        7
-      ]
+      "index_map": [4, 5, -1, -1, 6, 7]
     },
     {
       "src_ix_name": "deposit",
-      "src_discriminator": [
-        242,
-        35,
-        198,
-        137,
-        82,
-        225,
-        242,
-        182
-      ],
+      "src_discriminator": [242, 35, 198, 137, 82, 225, 242, 182],
       "dst_ix_name": "drift_vaults_deposit",
-      "dst_discriminator": [
-        95,
-        223,
-        42,
-        76,
-        37,
-        21,
-        176,
-        73
-      ],
+      "dst_discriminator": [95, 223, 42, 76, 37, 21, 176, 73],
       "dynamic_accounts": [
         {
           "name": "glam_state",
@@ -110,43 +67,13 @@
         }
       ],
       "static_accounts": [],
-      "index_map": [
-        4,
-        5,
-        -1,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13
-      ]
+      "index_map": [4, 5, -1, 6, 7, 8, 9, 10, 11, 12, 13]
     },
     {
       "src_ix_name": "request_withdraw",
-      "src_discriminator": [
-        137,
-        95,
-        187,
-        96,
-        250,
-        138,
-        31,
-        182
-      ],
+      "src_discriminator": [137, 95, 187, 96, 250, 138, 31, 182],
       "dst_ix_name": "drift_vaults_request_withdraw",
-      "dst_discriminator": [
-        19,
-        53,
-        222,
-        51,
-        44,
-        215,
-        35,
-        82
-      ],
+      "dst_discriminator": [19, 53, 222, 51, 44, 215, 35, 82],
       "dynamic_accounts": [
         {
           "name": "glam_state",
@@ -174,37 +101,13 @@
         }
       ],
       "static_accounts": [],
-      "index_map": [
-        4,
-        5,
-        -1,
-        6,
-        7
-      ]
+      "index_map": [4, 5, -1, 6, 7]
     },
     {
       "src_ix_name": "cancel_request_withdraw",
-      "src_discriminator": [
-        26,
-        109,
-        1,
-        81,
-        102,
-        15,
-        6,
-        106
-      ],
+      "src_discriminator": [26, 109, 1, 81, 102, 15, 6, 106],
       "dst_ix_name": "drift_vaults_cancel_request_withdraw",
-      "dst_discriminator": [
-        241,
-        196,
-        156,
-        180,
-        21,
-        155,
-        228,
-        125
-      ],
+      "dst_discriminator": [241, 196, 156, 180, 21, 155, 228, 125],
       "dynamic_accounts": [
         {
           "name": "glam_state",
@@ -232,37 +135,13 @@
         }
       ],
       "static_accounts": [],
-      "index_map": [
-        4,
-        5,
-        -1,
-        6,
-        7
-      ]
+      "index_map": [4, 5, -1, 6, 7]
     },
     {
       "src_ix_name": "withdraw",
-      "src_discriminator": [
-        183,
-        18,
-        70,
-        156,
-        148,
-        109,
-        161,
-        34
-      ],
+      "src_discriminator": [183, 18, 70, 156, 148, 109, 161, 34],
       "dst_ix_name": "drift_vaults_withdraw",
-      "dst_discriminator": [
-        58,
-        127,
-        150,
-        177,
-        66,
-        45,
-        5,
-        30
-      ],
+      "dst_discriminator": [58, 127, 150, 177, 66, 45, 5, 30],
       "dynamic_accounts": [
         {
           "name": "glam_state",
@@ -290,20 +169,7 @@
         }
       ],
       "static_accounts": [],
-      "index_map": [
-        4,
-        5,
-        -1,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14
-      ]
+      "index_map": [4, 5, -1, 6, 7, 8, 9, 10, 11, 12, 13, 14]
     }
   ]
 }

@@ -3,27 +3,9 @@
   "instructions": [
     {
       "src_ix_name": "new_vote",
-      "src_discriminator": [
-        163,
-        108,
-        157,
-        189,
-        140,
-        80,
-        13,
-        143
-      ],
+      "src_discriminator": [163, 108, 157, 189, 140, 80, 13, 143],
       "dst_ix_name": "jupiter_gov_new_vote",
-      "dst_discriminator": [
-        235,
-        179,
-        170,
-        64,
-        64,
-        57,
-        17,
-        69
-      ],
+      "dst_discriminator": [235, 179, 170, 64, 64, 57, 17, 69],
       "dynamic_accounts": [
         {
           "name": "glam_state",
@@ -51,12 +33,7 @@
         }
       ],
       "static_accounts": [],
-      "index_map": [
-        4,
-        5,
-        6,
-        7
-      ]
+      "index_map": [4, 5, 6, 7]
     }
   ]
 }
