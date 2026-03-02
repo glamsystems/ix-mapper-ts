@@ -9,11 +9,24 @@ import * as TokenProgramConfig from "../mapping-configs-v1/TokenkegQfeZyiNwAJbNb
 import * as Token2022ProgramConfig from "../mapping-configs-v1/TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb.json";
 import * as DriftProtocolProgramConfig from "../mapping-configs-v1/dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH.json";
 import * as DriftVaultProgramConfig from "../mapping-configs-v1/vAuLTsyrvSfZRuRB3XgvkPwNGgYSs9YRYymVebLKoxR.json";
+import * as KaminoLendProgramConfig from "../mapping-configs-v1/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
+import * as KvauGMspProgramConfig from "../mapping-configs-v1/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
+import * as FarmsProgramConfig from "../mapping-configs-v1/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
+
+import * as StagingSystemProgramConfig from "../mapping-configs-v1-staging/11111111111111111111111111111111.json";
+import * as StagingTokenProgramConfig from "../mapping-configs-v1-staging/TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA.json";
+import * as StagingToken2022ProgramConfig from "../mapping-configs-v1-staging/TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb.json";
+import * as StagingDriftProtocolProgramConfig from "../mapping-configs-v1-staging/dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH.json";
+import * as StagingDriftVaultProgramConfig from "../mapping-configs-v1-staging/vAuLTsyrvSfZRuRB3XgvkPwNGgYSs9YRYymVebLKoxR.json";
+import * as StagingKaminoLendProgramConfig from "../mapping-configs-v1-staging/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
+import * as StagingKvauGMspProgramConfig from "../mapping-configs-v1-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
+import * as StagingFarmsProgramConfig from "../mapping-configs-v1-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
+
 import { RemappingConfigs, RemappingConfig } from "./types";
 import { getIntegrationAuthority, getVaultPda } from "./pda";
 
 /**
- * All remapping configurations indexed by program ID
+ * Production remapping configurations indexed by program ID
  */
 const REMAPPING_CONFIGS: RemappingConfigs = {
   [SystemProgramConfig.program_id]: SystemProgramConfig as RemappingConfig,
@@ -24,6 +37,32 @@ const REMAPPING_CONFIGS: RemappingConfigs = {
     DriftProtocolProgramConfig as RemappingConfig,
   [DriftVaultProgramConfig.program_id]:
     DriftVaultProgramConfig as RemappingConfig,
+  [KaminoLendProgramConfig.program_id]:
+    KaminoLendProgramConfig as RemappingConfig,
+  [KvauGMspProgramConfig.program_id]: KvauGMspProgramConfig as RemappingConfig,
+  [FarmsProgramConfig.program_id]: FarmsProgramConfig as RemappingConfig,
+};
+
+/**
+ * Staging remapping configurations indexed by program ID
+ */
+const STAGING_REMAPPING_CONFIGS: RemappingConfigs = {
+  [StagingSystemProgramConfig.program_id]:
+    StagingSystemProgramConfig as RemappingConfig,
+  [StagingTokenProgramConfig.program_id]:
+    StagingTokenProgramConfig as RemappingConfig,
+  [StagingToken2022ProgramConfig.program_id]:
+    StagingToken2022ProgramConfig as RemappingConfig,
+  [StagingDriftProtocolProgramConfig.program_id]:
+    StagingDriftProtocolProgramConfig as RemappingConfig,
+  [StagingDriftVaultProgramConfig.program_id]:
+    StagingDriftVaultProgramConfig as RemappingConfig,
+  [StagingKaminoLendProgramConfig.program_id]:
+    StagingKaminoLendProgramConfig as RemappingConfig,
+  [StagingKvauGMspProgramConfig.program_id]:
+    StagingKvauGMspProgramConfig as RemappingConfig,
+  [StagingFarmsProgramConfig.program_id]:
+    StagingFarmsProgramConfig as RemappingConfig,
 };
 
 /**
@@ -33,9 +72,12 @@ function mapToGlamIx(
   ix: TransactionInstruction,
   glamState: PublicKey,
   glamSigner: PublicKey,
+  staging = false,
 ): TransactionInstruction | null {
-  const config = REMAPPING_CONFIGS[ix.programId.toBase58()];
+  const configs = staging ? STAGING_REMAPPING_CONFIGS : REMAPPING_CONFIGS;
+  const config = configs[ix.programId.toBase58()];
   if (!config) {
+    console.warn(`Program ${ix.programId} is not supported`);
     return null;
   }
 
@@ -46,6 +88,9 @@ function mapToGlamIx(
       .equals(new Uint8Array(src_discriminator));
   });
   if (!ixConfig) {
+    // No remapping config found for the incoming instruction. This happens when
+    // 1. The instruction is not supported
+    // 2. The instruction doesn't need to be remapped (e.g., it's permissionless and doesn't need to be signed by GLAM vault PDA)
     return null;
   }
 
@@ -71,7 +116,7 @@ function mapToGlamIx(
       });
     } else if (name === "glam_vault") {
       accountMetasByIndex.set(index, {
-        pubkey: getVaultPda(glamState),
+        pubkey: getVaultPda(glamState, staging),
         isSigner: signer,
         isWritable: writable,
       });
@@ -118,14 +163,14 @@ function mapToGlamIx(
         isWritable,
       });
     } else {
-      // if `i` is beyond the ixConfig.index_map length, it's a remaining account
+      // if `i` is beyond the ixConfig.index_map length, it's a remaining account, add it as-is
       remainingAccountMetas.push(ix.keys[i]);
     }
   }
 
   // Replace src_discriminator with dst_discriminator in ix.data to get new ix data
-  const payload = ix.data.subarray(ixConfig.src_discriminator.length);
-  const targetIxData = Buffer.from([...ixConfig.dst_discriminator, ...payload]);
+  const payload = ix.data.subarray(ixConfig.src_discriminator.length); // remove the discriminator
+  const targetIxData = Buffer.from([...ixConfig.dst_discriminator, ...payload]); // add new discriminator before payload
 
   // The final account metas for the new ix are:
   // accountMetasByIndex.values() sorted by index

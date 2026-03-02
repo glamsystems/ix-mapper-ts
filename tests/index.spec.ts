@@ -1,13 +1,32 @@
 import { PublicKey, TransactionInstruction } from "@solana/web3.js";
 import { mapToGlamIx } from "../src/index";
+import {
+  GLAM_PROGRAM_ID,
+  GLAM_STAGING_PROGRAM_ID,
+  getVaultPda,
+  getIntegrationAuthority,
+} from "../src/pda";
 
 describe("ix-mapper", () => {
-  const GLAM_PROGRAM_ID = new PublicKey(
-    "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
-  );
   const SYSTEM_PROGRAM_ID = new PublicKey("11111111111111111111111111111111");
   const TOKEN_PROGRAM_ID = new PublicKey(
     "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+  );
+  const KAMINO_LEND_PROGRAM_ID = new PublicKey(
+    "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+  );
+
+  // Production proxy program IDs
+  const EXT_SPL_PROGRAM_ID = new PublicKey(
+    "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+  );
+
+  // Staging proxy program IDs
+  const STAGING_EXT_SPL_PROGRAM_ID = new PublicKey(
+    "gstgs9nJgX8PmRHWAAEP9H7xT3ZkaPWSGPYbj3mXdTa",
+  );
+  const STAGING_EXT_KAMINO_PROGRAM_ID = new PublicKey(
+    "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq",
   );
 
   // Test fixtures
@@ -18,7 +37,7 @@ describe("ix-mapper", () => {
     "8M5XgZWZWxGLDvJgXrv4b8ZFQT5BT8qjN5hPvVm4Cyqg",
   );
 
-  describe("mapToGlamIx", () => {
+  describe("mapToGlamIx (production)", () => {
     describe("System Program - Transfer", () => {
       it("should map a system transfer instruction to GLAM instruction", () => {
         // System transfer discriminator: [2, 0, 0, 0]
@@ -132,10 +151,6 @@ describe("ix-mapper", () => {
 
     describe("Token Program - Transfer Checked", () => {
       it("should map a token transfer_checked instruction to GLAM instruction", () => {
-        const EXT_SPL_PROGRAM_ID = new PublicKey(
-          "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
-        );
-
         // Token transfer_checked discriminator: [12]
         // Payload: 8 bytes for amount + 1 byte for decimals
         const amount = BigInt(1_000_000); // 1 token (6 decimals)
@@ -194,10 +209,6 @@ describe("ix-mapper", () => {
       });
 
       it("should include integration_authority for token operations", () => {
-        const EXT_SPL_PROGRAM_ID = new PublicKey(
-          "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
-        );
-
         const sourceInstruction = new TransactionInstruction({
           programId: TOKEN_PROGRAM_ID,
           keys: [
@@ -386,6 +397,491 @@ describe("ix-mapper", () => {
           Buffer.from([167, 164, 195, 155, 219, 152, 191, 230]),
         );
       });
+    });
+  });
+
+  describe("mapToGlamIx (staging)", () => {
+    describe("System Program - Transfer", () => {
+      it("should map a system transfer instruction to staging GLAM instruction", () => {
+        const lamports = BigInt(1_000_000_000);
+        const lamportsBuffer = Buffer.alloc(8);
+        lamportsBuffer.writeBigUInt64LE(lamports);
+
+        const sourceInstruction = new TransactionInstruction({
+          programId: SYSTEM_PROGRAM_ID,
+          keys: [
+            {
+              pubkey: new PublicKey(
+                "6ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
+              ),
+              isSigner: true,
+              isWritable: true,
+            },
+            {
+              pubkey: new PublicKey(
+                "7YXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
+              ),
+              isSigner: false,
+              isWritable: true,
+            },
+          ],
+          data: Buffer.from([2, 0, 0, 0, ...lamportsBuffer]),
+        });
+
+        const result = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+
+        expect(result).not.toBeNull();
+        // Staging system transfer uses the staging GLAM program ID as proxy
+        expect(result!.programId).toEqual(GLAM_STAGING_PROGRAM_ID);
+
+        // Discriminator should be the same as production
+        expect(result!.data.subarray(0, 8)).toEqual(
+          Buffer.from([167, 164, 195, 155, 219, 152, 191, 230]),
+        );
+
+        // Payload preserved
+        expect(result!.data.subarray(8)).toEqual(lamportsBuffer);
+
+        // Account structure same shape
+        expect(result!.keys.length).toBe(5);
+        expect(result!.keys[0].pubkey).toEqual(glamState);
+        expect(result!.keys[2].pubkey).toEqual(glamSigner);
+        expect(result!.keys[3].pubkey).toEqual(SYSTEM_PROGRAM_ID);
+        expect(result!.keys[4].pubkey).toEqual(
+          sourceInstruction.keys[1].pubkey,
+        );
+      });
+
+      it("should derive vault PDA using staging program ID", () => {
+        const sourceInstruction = new TransactionInstruction({
+          programId: SYSTEM_PROGRAM_ID,
+          keys: [
+            { pubkey: PublicKey.default, isSigner: true, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+          ],
+          data: Buffer.from([2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        });
+
+        const result = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+
+        // Derive expected vault PDA using staging program ID
+        const [expectedStagingVaultPda] = PublicKey.findProgramAddressSync(
+          [Buffer.from("vault"), glamState.toBuffer()],
+          GLAM_STAGING_PROGRAM_ID,
+        );
+
+        // Derive production vault PDA for comparison
+        const [productionVaultPda] = PublicKey.findProgramAddressSync(
+          [Buffer.from("vault"), glamState.toBuffer()],
+          GLAM_PROGRAM_ID,
+        );
+
+        expect(result).not.toBeNull();
+        expect(result!.keys[1].pubkey).toEqual(expectedStagingVaultPda);
+        // Staging vault PDA should differ from production
+        expect(result!.keys[1].pubkey).not.toEqual(productionVaultPda);
+      });
+    });
+
+    describe("Token Program - Transfer Checked", () => {
+      it("should map to staging ext_spl proxy program", () => {
+        const amount = BigInt(1_000_000);
+        const amountBuffer = Buffer.alloc(8);
+        amountBuffer.writeBigUInt64LE(amount);
+        const decimals = 6;
+
+        const sourceInstruction = new TransactionInstruction({
+          programId: TOKEN_PROGRAM_ID,
+          keys: [
+            {
+              pubkey: new PublicKey(
+                "6ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
+              ),
+              isSigner: false,
+              isWritable: true,
+            },
+            {
+              pubkey: new PublicKey(
+                "7YXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
+              ),
+              isSigner: false,
+              isWritable: false,
+            },
+            {
+              pubkey: new PublicKey(
+                "8ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
+              ),
+              isSigner: false,
+              isWritable: true,
+            },
+            {
+              pubkey: new PublicKey(
+                "9ZXwM7dQqJZ7xVLDLvJEqFvL8AqLGbG4KqQgqJ8qJ8qJ",
+              ),
+              isSigner: true,
+              isWritable: false,
+            },
+          ],
+          data: Buffer.from([12, ...amountBuffer, decimals]),
+        });
+
+        const result = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+
+        expect(result).not.toBeNull();
+        expect(result!.programId).toEqual(STAGING_EXT_SPL_PROGRAM_ID);
+
+        // Discriminator is the same
+        expect(result!.data.subarray(0, 8)).toEqual(
+          Buffer.from([169, 178, 117, 156, 169, 191, 199, 116]),
+        );
+
+        // Payload preserved
+        expect(result!.data.subarray(8, 16)).toEqual(amountBuffer);
+        expect(result!.data[16]).toBe(decimals);
+      });
+
+      it("should derive integration_authority from staging proxy program", () => {
+        const sourceInstruction = new TransactionInstruction({
+          programId: TOKEN_PROGRAM_ID,
+          keys: [
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: false },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: true, isWritable: false },
+          ],
+          data: Buffer.from([12, 0, 0, 0, 0, 0, 0, 0, 0, 6]),
+        });
+
+        const result = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+
+        expect(result).not.toBeNull();
+
+        // Integration authority derived from staging ext_spl program
+        const [expectedStagingAuthority] = PublicKey.findProgramAddressSync(
+          [Buffer.from("integration-authority")],
+          STAGING_EXT_SPL_PROGRAM_ID,
+        );
+
+        // Integration authority from production ext_spl for comparison
+        const [productionAuthority] = PublicKey.findProgramAddressSync(
+          [Buffer.from("integration-authority")],
+          EXT_SPL_PROGRAM_ID,
+        );
+
+        expect(result!.keys[3].pubkey).toEqual(expectedStagingAuthority);
+        expect(result!.keys[3].pubkey).not.toEqual(productionAuthority);
+      });
+
+      it("should include staging GLAM program ID in static accounts", () => {
+        const sourceInstruction = new TransactionInstruction({
+          programId: TOKEN_PROGRAM_ID,
+          keys: [
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: false },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: true, isWritable: false },
+          ],
+          data: Buffer.from([12, 0, 0, 0, 0, 0, 0, 0, 0, 6]),
+        });
+
+        const result = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+
+        expect(result).not.toBeNull();
+
+        // Staging config has gstgptm... as static account at index 5
+        // (the GLAM protocol program ID used in static_accounts)
+        const hasProductionGlamId = result!.keys.some((key) =>
+          key.pubkey.equals(GLAM_PROGRAM_ID),
+        );
+        const hasStagingGlamId = result!.keys.some((key) =>
+          key.pubkey.equals(GLAM_STAGING_PROGRAM_ID),
+        );
+        expect(hasProductionGlamId).toBe(false);
+        expect(hasStagingGlamId).toBe(true);
+      });
+    });
+
+    describe("Staging vs Production - consistency", () => {
+      it("should produce different program IDs for same input", () => {
+        const sourceInstruction = new TransactionInstruction({
+          programId: SYSTEM_PROGRAM_ID,
+          keys: [
+            { pubkey: PublicKey.default, isSigner: true, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+          ],
+          data: Buffer.from([2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        });
+
+        const prodResult = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+        );
+        const stagingResult = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+
+        expect(prodResult).not.toBeNull();
+        expect(stagingResult).not.toBeNull();
+        expect(prodResult!.programId).not.toEqual(stagingResult!.programId);
+        expect(prodResult!.programId).toEqual(GLAM_PROGRAM_ID);
+        expect(stagingResult!.programId).toEqual(GLAM_STAGING_PROGRAM_ID);
+      });
+
+      it("should produce same discriminators for same instruction", () => {
+        const sourceInstruction = new TransactionInstruction({
+          programId: SYSTEM_PROGRAM_ID,
+          keys: [
+            { pubkey: PublicKey.default, isSigner: true, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+          ],
+          data: Buffer.from([2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        });
+
+        const prodResult = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+        );
+        const stagingResult = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+
+        expect(prodResult).not.toBeNull();
+        expect(stagingResult).not.toBeNull();
+        // Same discriminator bytes
+        expect(prodResult!.data.subarray(0, 8)).toEqual(
+          stagingResult!.data.subarray(0, 8),
+        );
+      });
+
+      it("should produce different vault PDAs", () => {
+        const sourceInstruction = new TransactionInstruction({
+          programId: SYSTEM_PROGRAM_ID,
+          keys: [
+            { pubkey: PublicKey.default, isSigner: true, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+          ],
+          data: Buffer.from([2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        });
+
+        const prodResult = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+        );
+        const stagingResult = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+
+        expect(prodResult).not.toBeNull();
+        expect(stagingResult).not.toBeNull();
+        // Vault PDA at index 1 should differ
+        expect(prodResult!.keys[1].pubkey).not.toEqual(
+          stagingResult!.keys[1].pubkey,
+        );
+      });
+
+      it("staging=false should be the default", () => {
+        const sourceInstruction = new TransactionInstruction({
+          programId: SYSTEM_PROGRAM_ID,
+          keys: [
+            { pubkey: PublicKey.default, isSigner: true, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+          ],
+          data: Buffer.from([2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+        });
+
+        const defaultResult = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+        );
+        const explicitProdResult = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          false,
+        );
+
+        expect(defaultResult).not.toBeNull();
+        expect(explicitProdResult).not.toBeNull();
+        expect(defaultResult!.programId).toEqual(explicitProdResult!.programId);
+        expect(defaultResult!.data).toEqual(explicitProdResult!.data);
+        expect(defaultResult!.keys.length).toEqual(
+          explicitProdResult!.keys.length,
+        );
+        for (let i = 0; i < defaultResult!.keys.length; i++) {
+          expect(defaultResult!.keys[i].pubkey).toEqual(
+            explicitProdResult!.keys[i].pubkey,
+          );
+        }
+      });
+    });
+
+    describe("Staging-only instructions", () => {
+      it("should support request_elevation_group only in staging", () => {
+        // request_elevation_group discriminator: [36, 119, 251, 129, 34, 240, 7, 147]
+        const elevationGroup = 1;
+
+        const sourceInstruction = new TransactionInstruction({
+          programId: KAMINO_LEND_PROGRAM_ID,
+          keys: [
+            { pubkey: PublicKey.default, isSigner: true, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+          ],
+          data: Buffer.from([
+            36,
+            119,
+            251,
+            129,
+            34,
+            240,
+            7,
+            147,
+            elevationGroup,
+          ]),
+        });
+
+        // Should NOT be supported in production
+        const prodResult = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          false,
+        );
+        expect(prodResult).toBeNull();
+
+        // Should be supported in staging
+        const stagingResult = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+        expect(stagingResult).not.toBeNull();
+        expect(stagingResult!.programId).toEqual(STAGING_EXT_KAMINO_PROGRAM_ID);
+
+        // dst_discriminator: [162, 119, 197, 54, 246, 84, 55, 153]
+        expect(stagingResult!.data.subarray(0, 8)).toEqual(
+          Buffer.from([162, 119, 197, 54, 246, 84, 55, 153]),
+        );
+
+        // Payload (elevation_group byte) preserved
+        expect(stagingResult!.data[8]).toBe(elevationGroup);
+      });
+    });
+
+    describe("Edge cases (staging)", () => {
+      it("should return null for unsupported program in staging mode", () => {
+        const unsupportedProgramId = new PublicKey(
+          "9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
+        );
+
+        const sourceInstruction = new TransactionInstruction({
+          programId: unsupportedProgramId,
+          keys: [],
+          data: Buffer.from([1, 2, 3, 4]),
+        });
+
+        const result = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+        expect(result).toBeNull();
+      });
+
+      it("should return null for unsupported discriminator in staging mode", () => {
+        const sourceInstruction = new TransactionInstruction({
+          programId: SYSTEM_PROGRAM_ID,
+          keys: [
+            { pubkey: PublicKey.default, isSigner: true, isWritable: true },
+            { pubkey: PublicKey.default, isSigner: false, isWritable: true },
+          ],
+          data: Buffer.from([99, 99, 99, 99, 0, 0, 0, 0, 0, 0, 0, 0]),
+        });
+
+        const result = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          true,
+        );
+        expect(result).toBeNull();
+      });
+    });
+  });
+
+  describe("PDA utilities", () => {
+    it("getVaultPda should produce different PDAs for staging vs production", () => {
+      const prodPda = getVaultPda(glamState, false);
+      const stagingPda = getVaultPda(glamState, true);
+
+      expect(prodPda).not.toEqual(stagingPda);
+
+      // Verify against manual derivation
+      const [expectedProd] = PublicKey.findProgramAddressSync(
+        [Buffer.from("vault"), glamState.toBuffer()],
+        GLAM_PROGRAM_ID,
+      );
+      const [expectedStaging] = PublicKey.findProgramAddressSync(
+        [Buffer.from("vault"), glamState.toBuffer()],
+        GLAM_STAGING_PROGRAM_ID,
+      );
+
+      expect(prodPda).toEqual(expectedProd);
+      expect(stagingPda).toEqual(expectedStaging);
+    });
+
+    it("getVaultPda should default to production", () => {
+      const defaultPda = getVaultPda(glamState);
+      const explicitProdPda = getVaultPda(glamState, false);
+
+      expect(defaultPda).toEqual(explicitProdPda);
+    });
+
+    it("getIntegrationAuthority should derive from the given program", () => {
+      const authority = getIntegrationAuthority(GLAM_PROGRAM_ID);
+      const stagingAuthority = getIntegrationAuthority(GLAM_STAGING_PROGRAM_ID);
+
+      expect(authority).not.toEqual(stagingAuthority);
     });
   });
 });
