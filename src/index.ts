@@ -77,7 +77,6 @@ function mapToGlamIx(
   const configs = staging ? STAGING_REMAPPING_CONFIGS : REMAPPING_CONFIGS;
   const config = configs[ix.programId.toBase58()];
   if (!config) {
-    console.warn(`Program ${ix.programId} is not supported`);
     return null;
   }
 
@@ -176,7 +175,9 @@ function mapToGlamIx(
   // accountMetasByIndex.values() sorted by index
   // remainingAccountMetas
   const accountMetas = [
-    ...[...accountMetasByIndex.entries()].sort().map(([_, meta]) => meta),
+    ...[...accountMetasByIndex.entries()]
+      .sort(([a], [b]) => (a as number) - (b as number))
+      .map(([_, meta]) => meta),
     ...remainingAccountMetas,
   ];
 
@@ -187,4 +188,30 @@ function mapToGlamIx(
   });
 }
 
-export { mapToGlamIx };
+/**
+ * Replace vault PDA with glamSigner wherever the vault appears as a signer.
+ * The vault PDA can't sign at the transaction level — only the on-chain program
+ * can sign for it via CPI. This fixes accounts like fee_payer (InitObligation)
+ * and ATA creation payer that the protocol SDK sets to the vault.
+ */
+function fixSignerAccounts(
+  ix: TransactionInstruction,
+  glamState: PublicKey,
+  glamSigner: PublicKey,
+  staging = false,
+): TransactionInstruction {
+  const vaultPda = getVaultPda(glamState, staging);
+  const fixedKeys = ix.keys.map((meta) => {
+    if (meta.pubkey.equals(vaultPda) && meta.isSigner) {
+      return { ...meta, pubkey: glamSigner };
+    }
+    return meta;
+  });
+  return new TransactionInstruction({
+    programId: ix.programId,
+    keys: fixedKeys,
+    data: ix.data,
+  });
+}
+
+export { mapToGlamIx, fixSignerAccounts };
