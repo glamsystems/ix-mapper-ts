@@ -1,10 +1,10 @@
 {
   "name": "@glamsystems/ix-mapper",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "TypeScript SDK for instruction mapping",
   "main": "./index.cjs",
   "module": "./index.esm.js",
-  "types": "./index.d.ts",
+  "types": "./index.cjs.d.ts",
   "homepage": "https://www.glam.systems",
   "repository": {
     "type": "git",
