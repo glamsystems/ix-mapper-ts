@@ -149,6 +149,7 @@ function mapToGlamIx(
     "ix.keys length must be greater than or equal to ixConfig.index_map length",
   );
 
+  const srcProgramId = ix.programId;
   const remainingAccountMetas = [] as AccountMeta[];
   for (let i = 0; i < ix.keys.length; i++) {
     if (i < ixConfig.index_map.length) {
@@ -156,8 +157,15 @@ function mapToGlamIx(
         continue;
       }
       const { pubkey, isSigner, isWritable } = ix.keys[i];
+      // When a protocol SDK passes its own program ID as a placeholder for
+      // optional accounts (e.g. Kamino uses KLend program ID for None),
+      // replace it with the proxy program ID so that Anchor's optional
+      // account detection recognizes it as None.
+      const mappedPubkey = pubkey.equals(srcProgramId)
+        ? proxyProgramId
+        : pubkey;
       accountMetasByIndex.set(ixConfig.index_map[i], {
-        pubkey,
+        pubkey: mappedPubkey,
         isSigner,
         isWritable,
       });

@@ -849,6 +849,683 @@ describe("ix-mapper", () => {
     });
   });
 
+  describe("Optional account placeholder replacement", () => {
+    const EXT_KAMINO_PROGRAM_ID = new PublicKey(
+      "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+    );
+
+    // deposit_reserve_liquidity_and_obligation_collateral_v2
+    const KAMINO_DEPOSIT_V2_DISCRIMINATOR = [
+      216, 224, 191, 27, 204, 151, 102, 175,
+    ];
+    const KAMINO_DEPOSIT_V2_DST_DISCRIMINATOR = [
+      33, 146, 50, 121, 127, 94, 92, 192,
+    ];
+
+    // borrow_obligation_liquidity_v2
+    const KAMINO_BORROW_V2_DISCRIMINATOR = [
+      161, 128, 143, 245, 171, 199, 194, 6,
+    ];
+    const KAMINO_BORROW_V2_DST_DISCRIMINATOR = [
+      149, 226, 84, 157, 124, 178, 35, 122,
+    ];
+
+    /**
+     * Build a fake Kamino deposit_v2 instruction with 17 accounts.
+     * Account layout:
+     *   [0]  owner (signer, dropped by index_map)
+     *   [1]  obligation
+     *   [2]  lending_market
+     *   [3]  lending_market_authority
+     *   [4]  reserve
+     *   [5]  reserve_liquidity_mint
+     *   [6]  reserve_liquidity_supply
+     *   [7]  reserve_collateral_mint
+     *   [8]  reserve_destination_deposit_collateral
+     *   [9]  user_source_liquidity
+     *   [10] placeholder_user_destination_collateral  (optional)
+     *   [11] collateral_token_program
+     *   [12] liquidity_token_program
+     *   [13] instruction_sysvar_account
+     *   [14] obligation_farm_user_state               (optional)
+     *   [15] reserve_farm_state                       (optional)
+     *   [16] farms_program
+     */
+    function buildKaminoDepositV2Ix(
+      overrides: Partial<{
+        placeholderUserDestCollateral: PublicKey;
+        obligationFarmUserState: PublicKey;
+        reserveFarmState: PublicKey;
+      }> = {},
+    ): TransactionInstruction {
+      const randomKey = () => PublicKey.unique();
+      const amount = BigInt(1_000_000);
+      const amountBuffer = Buffer.alloc(8);
+      amountBuffer.writeBigUInt64LE(amount);
+
+      return new TransactionInstruction({
+        programId: KAMINO_LEND_PROGRAM_ID,
+        keys: [
+          { pubkey: randomKey(), isSigner: true, isWritable: true }, // [0] owner
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [1] obligation
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [2] lending_market
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [3] lending_market_authority
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [4] reserve
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [5] reserve_liquidity_mint
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [6] reserve_liquidity_supply
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [7] reserve_collateral_mint
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [8] reserve_dest_deposit_coll
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [9] user_source_liquidity
+          {
+            pubkey:
+              overrides.placeholderUserDestCollateral ?? KAMINO_LEND_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          }, // [10] placeholder (optional)
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [11] collateral_token_program
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [12] liquidity_token_program
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [13] instruction_sysvar
+          {
+            pubkey:
+              overrides.obligationFarmUserState ?? KAMINO_LEND_PROGRAM_ID,
+            isSigner: false,
+            isWritable: true,
+          }, // [14] obligation_farm_user_state (optional)
+          {
+            pubkey: overrides.reserveFarmState ?? KAMINO_LEND_PROGRAM_ID,
+            isSigner: false,
+            isWritable: true,
+          }, // [15] reserve_farm_state (optional)
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [16] farms_program
+        ],
+        data: Buffer.from([...KAMINO_DEPOSIT_V2_DISCRIMINATOR, ...amountBuffer]),
+      });
+    }
+
+    /**
+     * Build a fake Kamino borrow_v2 instruction with 15 accounts.
+     * Verified against real tx o4hM94NMu5tyTnf6RJsiMSttFte9fPCMfiRLJdcL58ZMiwDJs5XuC2WHrkSBx9HWhMWYYdp685pGdWj5LZ2vo32
+     * Account layout:
+     *   [0]  owner (signer, dropped)
+     *   [1]  obligation
+     *   [2]  lending_market
+     *   [3]  lending_market_authority
+     *   [4]  borrow_reserve
+     *   [5]  reserve_liquidity_mint
+     *   [6]  reserve_source_liquidity
+     *   [7]  borrow_reserve_liquidity_fee_receiver
+     *   [8]  user_destination_liquidity
+     *   [9]  referrer_token_state                     (optional, KLend ID = None)
+     *   [10] liquidity_token_program
+     *   [11] instruction_sysvar_account
+     *   [12] obligation_farm_user_state               (optional)
+     *   [13] reserve_farm_state                       (optional)
+     *   [14] farms_program
+     */
+    function buildKaminoBorrowV2Ix(
+      overrides: Partial<{
+        referrerTokenState: PublicKey;
+        obligationFarmUserState: PublicKey;
+        reserveFarmState: PublicKey;
+      }> = {},
+    ): TransactionInstruction {
+      const randomKey = () => PublicKey.unique();
+      const amount = BigInt(500_000);
+      const amountBuffer = Buffer.alloc(8);
+      amountBuffer.writeBigUInt64LE(amount);
+
+      return new TransactionInstruction({
+        programId: KAMINO_LEND_PROGRAM_ID,
+        keys: [
+          { pubkey: randomKey(), isSigner: true, isWritable: true }, // [0] owner
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [1] obligation
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [2] lending_market
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [3] lending_market_authority
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [4] borrow_reserve
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [5] reserve_liquidity_mint
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [6] reserve_source_liquidity
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [7] fee_receiver
+          { pubkey: randomKey(), isSigner: false, isWritable: true }, // [8] user_destination_liquidity
+          {
+            pubkey: overrides.referrerTokenState ?? KAMINO_LEND_PROGRAM_ID,
+            isSigner: false,
+            isWritable: true,
+          }, // [9] referrer_token_state (optional)
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [10] liquidity_token_program
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [11] instruction_sysvar
+          {
+            pubkey:
+              overrides.obligationFarmUserState ?? KAMINO_LEND_PROGRAM_ID,
+            isSigner: false,
+            isWritable: true,
+          }, // [12] obligation_farm_user_state (optional)
+          {
+            pubkey: overrides.reserveFarmState ?? KAMINO_LEND_PROGRAM_ID,
+            isSigner: false,
+            isWritable: true,
+          }, // [13] reserve_farm_state (optional)
+          { pubkey: randomKey(), isSigner: false, isWritable: false }, // [14] farms_program
+        ],
+        data: Buffer.from([...KAMINO_BORROW_V2_DISCRIMINATOR, ...amountBuffer]),
+      });
+    }
+
+    it("should replace Kamino program ID placeholders with proxy program ID in deposit_v2", () => {
+      const ix = buildKaminoDepositV2Ix(); // all optional accounts = Kamino program ID
+      const result = mapToGlamIx(ix, glamState, glamSigner);
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(EXT_KAMINO_PROGRAM_ID);
+
+      // The three optional accounts should now be the proxy program ID, not Kamino's
+      // In the mapped instruction, they are at dst indices 16, 20, 21
+      // After sorting by index: positions depend on total account count
+      const proxyMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
+      );
+      // 3 optional placeholders should be replaced with proxy program ID
+      expect(proxyMatches.length).toBe(3);
+
+      // No account should still reference the Kamino program ID
+      const kaminoMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
+      );
+      // Only the static cpi_program account at index 4 should have Kamino's ID
+      expect(kaminoMatches.length).toBe(1);
+    });
+
+    it("should replace Kamino program ID placeholders with proxy program ID in borrow_v2", () => {
+      const ix = buildKaminoBorrowV2Ix(); // all optional accounts = Kamino program ID
+      const result = mapToGlamIx(ix, glamState, glamSigner);
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(EXT_KAMINO_PROGRAM_ID);
+
+      // 3 optional placeholders replaced
+      const proxyMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
+      );
+      expect(proxyMatches.length).toBe(3);
+
+      // Only static cpi_program at index 4
+      const kaminoMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
+      );
+      expect(kaminoMatches.length).toBe(1);
+    });
+
+    it("should NOT replace real account addresses that happen to differ from program ID", () => {
+      const realFarmAccount = PublicKey.unique();
+      const realReserveFarm = PublicKey.unique();
+      const realPlaceholder = PublicKey.unique();
+
+      const ix = buildKaminoDepositV2Ix({
+        placeholderUserDestCollateral: realPlaceholder,
+        obligationFarmUserState: realFarmAccount,
+        reserveFarmState: realReserveFarm,
+      });
+      const result = mapToGlamIx(ix, glamState, glamSigner);
+
+      expect(result).not.toBeNull();
+
+      // Real accounts should be preserved as-is
+      const hasRealFarm = result!.keys.some((k) =>
+        k.pubkey.equals(realFarmAccount),
+      );
+      const hasRealReserveFarm = result!.keys.some((k) =>
+        k.pubkey.equals(realReserveFarm),
+      );
+      const hasRealPlaceholder = result!.keys.some((k) =>
+        k.pubkey.equals(realPlaceholder),
+      );
+
+      expect(hasRealFarm).toBe(true);
+      expect(hasRealReserveFarm).toBe(true);
+      expect(hasRealPlaceholder).toBe(true);
+
+      // No proxy program ID should appear as a replacement
+      const proxyMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
+      );
+      expect(proxyMatches.length).toBe(0);
+    });
+
+    it("should handle mixed real and placeholder optional accounts", () => {
+      const realFarmAccount = PublicKey.unique();
+
+      const ix = buildKaminoDepositV2Ix({
+        obligationFarmUserState: realFarmAccount,
+        // placeholderUserDestCollateral and reserveFarmState default to Kamino program ID
+      });
+      const result = mapToGlamIx(ix, glamState, glamSigner);
+
+      expect(result).not.toBeNull();
+
+      // Real farm account preserved
+      const hasRealFarm = result!.keys.some((k) =>
+        k.pubkey.equals(realFarmAccount),
+      );
+      expect(hasRealFarm).toBe(true);
+
+      // 2 placeholders replaced (placeholder_user_dest_collateral + reserve_farm_state)
+      const proxyMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
+      );
+      expect(proxyMatches.length).toBe(2);
+    });
+
+    it("should correctly remap real deposit_v2 tx (5FnkKP9h...)", () => {
+      // Real accounts from mainnet tx 5FnkKP9hgjzXofQuEu42gKuhiYzNtHcNr1kbodcBaUt8ZA4pcNZo3bn3E54Xk1nfiUHUdMECBucwRpyhb1kGTXuZ
+      // This is a USDS deposit with active farm but placeholder_user_destination_collateral = None
+      const realAccounts = {
+        owner: new PublicKey(
+          "73zMkwEWuTW6Rkn9XhB7hEFoZXEaN6JvxP9WDEWZraqU",
+        ),
+        obligation: new PublicKey(
+          "5WFP3Ah8jE5d3ogxWupfGMjaDE1cpgZ4YEbeusjnjkVZ",
+        ),
+        lendingMarket: new PublicKey(
+          "7u3HeHxYDLhnCoErrtycNokbQYbWGzLs6JSDqGAv5PfF",
+        ),
+        lendingMarketAuthority: new PublicKey(
+          "9DrvZvyWh1HuAoZxvYWMvkf2XCzryCpGgHqrMjyDWpmo",
+        ),
+        reserve: new PublicKey(
+          "BHUi32TrEsfN2U821G4FprKrR4hTeK4LCWtA3BFetuqA",
+        ),
+        reserveLiquidityMint: new PublicKey(
+          "USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA",
+        ),
+        reserveLiquiditySupply: new PublicKey(
+          "4aE6ow1YNDm9MRNdk8HRzFFzvs9FXBgEttWSMrH6hupD",
+        ),
+        reserveCollateralMint: new PublicKey(
+          "6nnt6N4Ay9tBeMWnVWKS24hDtE6R3fshi5TteUcSKJcQ",
+        ),
+        reserveDestDepositCollateral: new PublicKey(
+          "3FVdzLJ8tqBmuNuSLADJFKFaJQt6F9x6zAAHCoLUFCJA",
+        ),
+        userSourceLiquidity: new PublicKey(
+          "EthLZhFXRZtGfpNwj1EUMMXsfp4c2kXEYQj3hLzNZGvx",
+        ),
+        // placeholder_user_destination_collateral = KLend program ID (None)
+        collateralTokenProgram: new PublicKey(
+          "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        ),
+        liquidityTokenProgram: new PublicKey(
+          "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        ),
+        instructionSysvar: new PublicKey(
+          "Sysvar1nstructions1111111111111111111111111",
+        ),
+        obligationFarmUserState: new PublicKey(
+          "4wJYwDTmfQFzU2FMAmdxRRWAdjYyvVn6u7GjwPfBRtat",
+        ),
+        reserveFarmState: new PublicKey(
+          "67L8BZe5PjuJz5CXqcsp1NXfNHoAZ1qPYUrxT7Cj2iUr",
+        ),
+        farmsProgram: new PublicKey(
+          "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+        ),
+      };
+
+      const ix = new TransactionInstruction({
+        programId: KAMINO_LEND_PROGRAM_ID,
+        keys: [
+          {
+            pubkey: realAccounts.owner,
+            isSigner: true,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.obligation,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.lendingMarket,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.lendingMarketAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.reserve,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.reserveLiquidityMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.reserveLiquiditySupply,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.reserveCollateralMint,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.reserveDestDepositCollateral,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.userSourceLiquidity,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: KAMINO_LEND_PROGRAM_ID, // placeholder_user_destination_collateral = None
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.collateralTokenProgram,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.liquidityTokenProgram,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.instructionSysvar,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.obligationFarmUserState,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.reserveFarmState,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.farmsProgram,
+            isSigner: false,
+            isWritable: false,
+          },
+        ],
+        data: Buffer.from([...KAMINO_DEPOSIT_V2_DISCRIMINATOR, 0, 0, 0, 0, 0, 0, 0, 0]),
+      });
+
+      const result = mapToGlamIx(ix, glamState, glamSigner);
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(EXT_KAMINO_PROGRAM_ID);
+
+      // Only placeholder_user_destination_collateral [10] was KLend ID → replaced
+      const proxyMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
+      );
+      expect(proxyMatches.length).toBe(1);
+
+      // Real farm accounts preserved
+      expect(
+        result!.keys.some((k) =>
+          k.pubkey.equals(realAccounts.obligationFarmUserState),
+        ),
+      ).toBe(true);
+      expect(
+        result!.keys.some((k) =>
+          k.pubkey.equals(realAccounts.reserveFarmState),
+        ),
+      ).toBe(true);
+
+      // Static cpi_program is the only remaining KLend reference
+      const kaminoMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
+      );
+      expect(kaminoMatches.length).toBe(1);
+
+      // Discriminator replaced correctly
+      expect(Array.from(result!.data.subarray(0, 8))).toEqual(
+        KAMINO_DEPOSIT_V2_DST_DISCRIMINATOR,
+      );
+    });
+
+    it("should replace placeholders in staging mode too", () => {
+      const ix = buildKaminoDepositV2Ix();
+      const result = mapToGlamIx(ix, glamState, glamSigner, true);
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_KAMINO_PROGRAM_ID);
+
+      // Placeholders should be replaced with staging proxy program ID
+      const stagingProxyMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(STAGING_EXT_KAMINO_PROGRAM_ID),
+      );
+      expect(stagingProxyMatches.length).toBe(3);
+
+      // Kamino program ID only for static cpi_program
+      const kaminoMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
+      );
+      expect(kaminoMatches.length).toBe(1);
+    });
+
+    it("should preserve discriminator and payload with placeholder replacement", () => {
+      const ix = buildKaminoDepositV2Ix();
+      const result = mapToGlamIx(ix, glamState, glamSigner);
+
+      expect(result).not.toBeNull();
+
+      // Discriminator should be replaced
+      expect(Array.from(result!.data.subarray(0, 8))).toEqual(
+        KAMINO_DEPOSIT_V2_DST_DISCRIMINATOR,
+      );
+
+      // Payload (amount) should be preserved
+      const originalPayload = ix.data.subarray(
+        KAMINO_DEPOSIT_V2_DISCRIMINATOR.length,
+      );
+      const mappedPayload = result!.data.subarray(
+        KAMINO_DEPOSIT_V2_DST_DISCRIMINATOR.length,
+      );
+      expect(mappedPayload).toEqual(originalPayload);
+    });
+
+    it("should correctly remap real borrow_v2 tx (o4hM94NM...)", () => {
+      // Real accounts from mainnet tx o4hM94NMu5tyTnf6RJsiMSttFte9fPCMfiRLJdcL58ZMiwDJs5XuC2WHrkSBx9HWhMWYYdp685pGdWj5LZ2vo32
+      // This is a PYUSD borrow with active farm but no referrer
+      const realAccounts = {
+        owner: new PublicKey(
+          "4XqRB1mxzH7JtJgZWHnYqW1tZShfAeN5sHZVdVuMGMMa",
+        ),
+        obligation: new PublicKey(
+          "2SWWDEehjck96jwHKg2R3ZbBPnSKpeMzbboUKCK5GkxP",
+        ),
+        lendingMarket: new PublicKey(
+          "7u3HeHxYDLhnCoErrtycNokbQYbWGzLs6JSDqGAv5PfF",
+        ),
+        lendingMarketAuthority: new PublicKey(
+          "9DrvZvyWh1HuAoZxvYWMvkf2XCzryCpGgHqrMjyDWpmo",
+        ),
+        borrowReserve: new PublicKey(
+          "2gc9Dm1eB6UgVYFBUN9bWks6Kes9PbWSaPaa9DqyvEiN",
+        ),
+        reserveLiquidityMint: new PublicKey(
+          "2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo",
+        ),
+        reserveSourceLiquidity: new PublicKey(
+          "Gm2itCNPBpBSSrgCA194pmErjwHAFVpvBBFvpdTF5LuJ",
+        ),
+        feeReceiver: new PublicKey(
+          "BcLJRx7GbyX2Jj8RFpYDnEE47Tm36wSskLnm7ALarEC1",
+        ),
+        userDestLiquidity: new PublicKey(
+          "5KbbrHhwZU1gup7hDDjcZ71bVkzGB18P4xfop5zMHHTn",
+        ),
+        // referrer_token_state = KLend program ID (placeholder for None)
+        liquidityTokenProgram: new PublicKey(
+          "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+        ),
+        instructionSysvar: new PublicKey(
+          "Sysvar1nstructions1111111111111111111111111",
+        ),
+        obligationFarmUserState: new PublicKey(
+          "76CJkiVFdvWBXWYGC4DRmejaJ85NRmu6u92fMJVPoZtm",
+        ),
+        reserveFarmState: new PublicKey(
+          "GmJ2vXsDt8R5DNimAZc7Rtphr4oqecBVAx1psaTcVtrX",
+        ),
+        farmsProgram: new PublicKey(
+          "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+        ),
+      };
+
+      const amount = BigInt(726_000_000); // 726 PYUSD
+      const amountBuffer = Buffer.alloc(8);
+      amountBuffer.writeBigUInt64LE(amount);
+
+      const ix = new TransactionInstruction({
+        programId: KAMINO_LEND_PROGRAM_ID,
+        keys: [
+          {
+            pubkey: realAccounts.owner,
+            isSigner: true,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.obligation,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.lendingMarket,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.lendingMarketAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.borrowReserve,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.reserveLiquidityMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.reserveSourceLiquidity,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.feeReceiver,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.userDestLiquidity,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: KAMINO_LEND_PROGRAM_ID, // referrer_token_state placeholder
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.liquidityTokenProgram,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.instructionSysvar,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: realAccounts.obligationFarmUserState,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.reserveFarmState,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: realAccounts.farmsProgram,
+            isSigner: false,
+            isWritable: false,
+          },
+        ],
+        data: Buffer.from([...KAMINO_BORROW_V2_DISCRIMINATOR, ...amountBuffer]),
+      });
+
+      const result = mapToGlamIx(ix, glamState, glamSigner);
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(EXT_KAMINO_PROGRAM_ID);
+
+      // referrer_token_state was KLend program ID → replaced with ext_kamino proxy
+      // obligation_farm_user_state & reserve_farm_state are real → preserved
+      const proxyMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
+      );
+      expect(proxyMatches.length).toBe(1); // only referrer_token_state replaced
+
+      // Real farm accounts should be preserved
+      expect(
+        result!.keys.some((k) =>
+          k.pubkey.equals(realAccounts.obligationFarmUserState),
+        ),
+      ).toBe(true);
+      expect(
+        result!.keys.some((k) =>
+          k.pubkey.equals(realAccounts.reserveFarmState),
+        ),
+      ).toBe(true);
+
+      // Static cpi_program (KLend) should be the only remaining KLend reference
+      const kaminoMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
+      );
+      expect(kaminoMatches.length).toBe(1); // only static cpi_program at index 4
+
+      // Payload preserved
+      expect(result!.data.subarray(8)).toEqual(amountBuffer);
+    });
+
+    it("should not replace program ID in remaining accounts beyond index_map", () => {
+      const ix = buildKaminoDepositV2Ix();
+      // Add extra remaining accounts, one of which is the Kamino program ID
+      ix.keys.push({
+        pubkey: KAMINO_LEND_PROGRAM_ID,
+        isSigner: false,
+        isWritable: false,
+      });
+
+      const result = mapToGlamIx(ix, glamState, glamSigner);
+
+      expect(result).not.toBeNull();
+
+      // The extra remaining account should NOT be replaced (it's beyond index_map)
+      // 1 static cpi_program + 1 remaining = 2 Kamino program ID references
+      const kaminoMatches = result!.keys.filter((k) =>
+        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
+      );
+      expect(kaminoMatches.length).toBe(2);
+    });
+  });
+
   describe("PDA utilities", () => {
     it("getVaultPda should produce different PDAs for staging vs production", () => {
       const prodPda = getVaultPda(glamState, false);
