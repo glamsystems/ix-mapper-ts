@@ -1,19 +1,18 @@
 {
   "name": "@glamsystems/ix-mapper",
-  "version": "0.2.3",
-  "description": "Map Solana program instructions to GLAM integration instructions",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for instruction mapping",
   "main": "./index.cjs",
   "module": "./index.esm.js",
-  "types": "./index.cjs.d.ts",
+  "types": "./index.d.ts",
   "homepage": "https://www.glam.systems",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/glamsystems/ix-mapper-ts.git"
+    "url": "git@github.com:glamsystems/ix-mapper.git"
   },
   "keywords": [
     "glam",
-    "solana",
-    "defi"
+    "solana"
   ],
   "license": "Apache-2.0",
   "publishConfig": {
@@ -23,7 +22,7 @@
     "@solana/web3.js": "^1.98.0"
   },
   "engines": {
-    "node": ">=20.20.0"
+    "node": ">=20.18.0"
   },
   "devDependencies": {
     "typescript": "^5.5.3"
