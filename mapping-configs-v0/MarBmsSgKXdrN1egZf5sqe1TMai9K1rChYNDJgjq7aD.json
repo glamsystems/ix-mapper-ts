@@ -3,27 +3,9 @@
   "instructions": [
     {
       "src_ix_name": "deposit",
-      "src_discriminator": [
-        242,
-        35,
-        198,
-        137,
-        82,
-        225,
-        242,
-        182
-      ],
+      "src_discriminator": [242, 35, 198, 137, 82, 225, 242, 182],
       "dst_ix_name": "marinade_deposit",
-      "dst_discriminator": [
-        62,
-        236,
-        248,
-        28,
-        222,
-        232,
-        182,
-        73
-      ],
+      "dst_discriminator": [62, 236, 248, 28, 222, 232, 182, 73],
       "dynamic_accounts": [
         {
           "name": "glam_state",
@@ -51,43 +33,13 @@
         }
       ],
       "static_accounts": [],
-      "index_map": [
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        -1,
-        10,
-        11,
-        12,
-        13
-      ]
+      "index_map": [4, 5, 6, 7, 8, 9, -1, 10, 11, 12, 13]
     },
     {
       "src_ix_name": "deposit_stake_account",
-      "src_discriminator": [
-        110,
-        130,
-        115,
-        41,
-        164,
-        102,
-        2,
-        59
-      ],
+      "src_discriminator": [110, 130, 115, 41, 164, 102, 2, 59],
       "dst_ix_name": "marinade_deposit_stake_account",
-      "dst_discriminator": [
-        141,
-        230,
-        58,
-        103,
-        56,
-        205,
-        159,
-        138
-      ],
+      "dst_discriminator": [141, 230, 58, 103, 56, 205, 159, 138],
       "dynamic_accounts": [
         {
           "name": "glam_state",
@@ -115,47 +67,13 @@
         }
       ],
       "static_accounts": [],
-      "index_map": [
-        4,
-        5,
-        6,
-        7,
-        -1,
-        8,
-        -1,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16
-      ]
+      "index_map": [4, 5, 6, 7, -1, 8, -1, 9, 10, 11, 12, 13, 14, 15, 16]
     },
     {
       "src_ix_name": "withdraw_stake_account",
-      "src_discriminator": [
-        211,
-        85,
-        184,
-        65,
-        183,
-        177,
-        233,
-        217
-      ],
+      "src_discriminator": [211, 85, 184, 65, 183, 177, 233, 217],
       "dst_ix_name": "marinade_withdraw_stake_account",
-      "dst_discriminator": [
-        88,
-        200,
-        107,
-        134,
-        244,
-        89,
-        194,
-        111
-      ],
+      "dst_discriminator": [88, 200, 107, 134, 244, 89, 194, 111],
       "dynamic_accounts": [
         {
           "name": "glam_state",
@@ -183,24 +101,7 @@
         }
       ],
       "static_accounts": [],
-      "index_map": [
-        4,
-        5,
-        6,
-        -1,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        -1,
-        14,
-        15,
-        16,
-        17
-      ]
+      "index_map": [4, 5, 6, -1, 7, 8, 9, 10, 11, 12, 13, -1, 14, 15, 16, 17]
     }
   ]
 }
