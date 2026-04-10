@@ -1,5 +1,5 @@
 import {
-  AccountMeta,
+  type AccountMeta,
   PublicKey,
   TransactionInstruction,
 } from "@solana/web3.js";
@@ -22,7 +22,7 @@ import * as StagingKaminoLendProgramConfig from "../mapping-configs-v1-staging/K
 import * as StagingKvauGMspProgramConfig from "../mapping-configs-v1-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
 import * as StagingFarmsProgramConfig from "../mapping-configs-v1-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
 
-import { RemappingConfigs, RemappingConfig } from "./types";
+import { type RemappingConfigs, type RemappingConfig } from "./types";
 import { getIntegrationAuthority, getVaultPda } from "./pda";
 
 /**
