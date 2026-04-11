@@ -22,13 +22,118 @@ import * as StagingKaminoLendProgramConfig from "../mapping-configs-v1-staging/K
 import * as StagingKvauGMspProgramConfig from "../mapping-configs-v1-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
 import * as StagingFarmsProgramConfig from "../mapping-configs-v1-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
 
-import { type RemappingConfigs, type RemappingConfig } from "./types";
+import {
+  type Instruction as RemappingInstruction,
+  type RemappingConfigs,
+  type RemappingConfig,
+} from "./types";
 import { getIntegrationAuthority, getVaultPda } from "./pda";
+
+const DYNAMIC_ACCOUNT_NAMES = new Set([
+  "glam_state",
+  "glam_vault",
+  "glam_signer",
+  "integration_authority",
+]);
+
+function assertDenseUniqueIndices(label: string, indices: number[]): void {
+  const seen = new Set<number>();
+  const sorted = [...indices].sort((a, b) => a - b);
+
+  sorted.forEach((index) => {
+    if (!Number.isInteger(index) || index < 0) {
+      throw new Error(`${label} contains an invalid account index: ${index}`);
+    }
+    if (seen.has(index)) {
+      throw new Error(`${label} contains a duplicate account index: ${index}`);
+    }
+    seen.add(index);
+  });
+
+  sorted.forEach((index, expectedIndex) => {
+    if (index !== expectedIndex) {
+      throw new Error(
+        `${label} must form a dense range starting at 0, but found ${index} at position ${expectedIndex}`,
+      );
+    }
+  });
+}
+
+function validateInstructionConfig(
+  config: RemappingConfig,
+  ixConfig: RemappingInstruction,
+): void {
+  ixConfig.dynamic_accounts.forEach(({ name, index }) => {
+    if (!DYNAMIC_ACCOUNT_NAMES.has(name)) {
+      throw new Error(
+        `Unknown dynamic account "${name}" in ${config.program_id}:${ixConfig.src_ix_name}`,
+      );
+    }
+    if (!Number.isInteger(index) || index < 0) {
+      throw new Error(
+        `Invalid dynamic account index ${index} in ${config.program_id}:${ixConfig.src_ix_name}`,
+      );
+    }
+  });
+
+  ixConfig.static_accounts.forEach(({ account, index }) => {
+    if (!Number.isInteger(index) || index < 0) {
+      throw new Error(
+        `Invalid static account index ${index} in ${config.program_id}:${ixConfig.src_ix_name}`,
+      );
+    }
+    new PublicKey(account);
+  });
+
+  ixConfig.index_map.forEach((index) => {
+    if (!Number.isInteger(index) || index < -1) {
+      throw new Error(
+        `Invalid index_map entry ${index} in ${config.program_id}:${ixConfig.src_ix_name}`,
+      );
+    }
+  });
+
+  ixConfig.program_id_placeholder_indices?.forEach((index) => {
+    if (!Number.isInteger(index) || index < 0) {
+      throw new Error(
+        `Invalid program_id_placeholder_indices entry ${index} in ${config.program_id}:${ixConfig.src_ix_name}`,
+      );
+    }
+    if (index >= ixConfig.index_map.length) {
+      throw new Error(
+        `program_id_placeholder_indices entry ${index} is out of bounds in ${config.program_id}:${ixConfig.src_ix_name}`,
+      );
+    }
+    if (ixConfig.index_map[index] === -1) {
+      throw new Error(
+        `program_id_placeholder_indices entry ${index} maps to -1 in ${config.program_id}:${ixConfig.src_ix_name}`,
+      );
+    }
+  });
+
+  assertDenseUniqueIndices(`${config.program_id}:${ixConfig.src_ix_name}`, [
+    ...ixConfig.dynamic_accounts.map(({ index }) => index),
+    ...ixConfig.static_accounts.map(({ index }) => index),
+    ...ixConfig.index_map.filter((index) => index !== -1),
+  ]);
+}
+
+function validateRemappingConfigs(configs: RemappingConfigs): RemappingConfigs {
+  Object.values(configs).forEach((config) => {
+    new PublicKey(config.program_id);
+    new PublicKey(config.proxy_program_id);
+    config.instructions.forEach((ixConfig) =>
+      validateInstructionConfig(config, ixConfig),
+    );
+  });
+
+  return configs;
+}
 
 /**
  * Production remapping configurations indexed by program ID
  */
-const REMAPPING_CONFIGS: RemappingConfigs = {
+const REMAPPING_CONFIGS: RemappingConfigs = validateRemappingConfigs({
   [SystemProgramConfig.program_id]: SystemProgramConfig as RemappingConfig,
   [TokenProgramConfig.program_id]: TokenProgramConfig as RemappingConfig,
   [Token2022ProgramConfig.program_id]:
@@ -41,12 +146,12 @@ const REMAPPING_CONFIGS: RemappingConfigs = {
     KaminoLendProgramConfig as RemappingConfig,
   [KvauGMspProgramConfig.program_id]: KvauGMspProgramConfig as RemappingConfig,
   [FarmsProgramConfig.program_id]: FarmsProgramConfig as RemappingConfig,
-};
+});
 
 /**
  * Staging remapping configurations indexed by program ID
  */
-const STAGING_REMAPPING_CONFIGS: RemappingConfigs = {
+const STAGING_REMAPPING_CONFIGS: RemappingConfigs = validateRemappingConfigs({
   [StagingSystemProgramConfig.program_id]:
     StagingSystemProgramConfig as RemappingConfig,
   [StagingTokenProgramConfig.program_id]:
@@ -63,7 +168,7 @@ const STAGING_REMAPPING_CONFIGS: RemappingConfigs = {
     StagingKvauGMspProgramConfig as RemappingConfig,
   [StagingFarmsProgramConfig.program_id]:
     StagingFarmsProgramConfig as RemappingConfig,
-};
+});
 
 /**
  * Applies remapping config and transforms ix into a GLAM ix
@@ -94,7 +199,7 @@ function mapToGlamIx(
   }
 
   const proxyProgramId = new PublicKey(config.proxy_program_id);
-  const accountMetasByIndex = new Map<Number, AccountMeta>();
+  const accountMetasByIndex = new Map<number, AccountMeta>();
 
   // We need to build the array of keys for the new ix
   // `dynamic_accounts`
@@ -144,12 +249,16 @@ function mapToGlamIx(
     });
   });
 
-  console.assert(
-    ix.keys.length >= ixConfig.index_map.length,
-    "ix.keys length must be greater than or equal to ixConfig.index_map length",
-  );
+  if (ix.keys.length < ixConfig.index_map.length) {
+    throw new RangeError(
+      `Instruction ${config.program_id}:${ixConfig.src_ix_name} requires at least ${ixConfig.index_map.length} accounts, received ${ix.keys.length}`,
+    );
+  }
 
   const srcProgramId = ix.programId;
+  const placeholderIndices = new Set(
+    ixConfig.program_id_placeholder_indices ?? [],
+  );
   const remainingAccountMetas = [] as AccountMeta[];
   for (let i = 0; i < ix.keys.length; i++) {
     if (i < ixConfig.index_map.length) {
@@ -161,9 +270,10 @@ function mapToGlamIx(
       // optional accounts (e.g. Kamino uses KLend program ID for None),
       // replace it with the proxy program ID so that Anchor's optional
       // account detection recognizes it as None.
-      const mappedPubkey = pubkey.equals(srcProgramId)
-        ? proxyProgramId
-        : pubkey;
+      const mappedPubkey =
+        placeholderIndices.has(i) && pubkey.equals(srcProgramId)
+          ? proxyProgramId
+          : pubkey;
       accountMetasByIndex.set(ixConfig.index_map[i], {
         pubkey: mappedPubkey,
         isSigner,

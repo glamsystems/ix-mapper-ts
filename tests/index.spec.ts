@@ -1,5 +1,5 @@
 import { PublicKey, TransactionInstruction } from "@solana/web3.js";
-import { mapToGlamIx } from "../src/index";
+import { fixSignerAccounts, mapToGlamIx } from "../src/index";
 import {
   GLAM_PROGRAM_ID,
   GLAM_STAGING_PROGRAM_ID,
@@ -20,6 +20,9 @@ describe("ix-mapper", () => {
   const EXT_SPL_PROGRAM_ID = new PublicKey(
     "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
   );
+  const EXT_KAMINO_PROGRAM_ID = new PublicKey(
+    "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+  );
 
   // Staging proxy program IDs
   const STAGING_EXT_SPL_PROGRAM_ID = new PublicKey(
@@ -36,6 +39,31 @@ describe("ix-mapper", () => {
   const glamSigner = new PublicKey(
     "8M5XgZWZWxGLDvJgXrv4b8ZFQT5BT8qjN5hPvVm4Cyqg",
   );
+
+  function expectAccountMeta(
+    meta: {
+      pubkey: PublicKey;
+      isSigner: boolean;
+      isWritable: boolean;
+    },
+    pubkey: PublicKey,
+    isSigner: boolean,
+    isWritable: boolean,
+  ): void {
+    expect(meta.pubkey).toEqual(pubkey);
+    expect(meta.isSigner).toBe(isSigner);
+    expect(meta.isWritable).toBe(isWritable);
+  }
+
+  function expectProgramIdCount(
+    ix: TransactionInstruction,
+    programId: PublicKey,
+    count: number,
+  ): void {
+    expect(ix.keys.filter((key) => key.pubkey.equals(programId))).toHaveLength(
+      count,
+    );
+  }
 
   describe("mapToGlamIx (production)", () => {
     describe("System Program - Transfer", () => {
@@ -266,18 +294,18 @@ describe("ix-mapper", () => {
         expect(result).toBeNull();
       });
 
-      it("should handle instructions with no keys", () => {
+      it("should reject malformed instructions with fewer keys than the mapping requires", () => {
         const sourceInstruction = new TransactionInstruction({
           programId: SYSTEM_PROGRAM_ID,
           keys: [],
           data: Buffer.from([2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
         });
 
-        const result = mapToGlamIx(sourceInstruction, glamState, glamSigner);
-
-        expect(result).not.toBeNull();
-        // Should still have dynamic and static accounts
-        expect(result!.keys.length).toBeGreaterThan(0);
+        expect(() =>
+          mapToGlamIx(sourceInstruction, glamState, glamSigner),
+        ).toThrow(
+          "Instruction 11111111111111111111111111111111:transfer requires at least 2 accounts, received 0",
+        );
       });
 
       it("should handle index_map with -1 values correctly", () => {
@@ -753,8 +781,8 @@ describe("ix-mapper", () => {
       });
     });
 
-    describe("Staging-only instructions", () => {
-      it("should support request_elevation_group only in staging", () => {
+    describe("Kamino Lending - request_elevation_group", () => {
+      it("should map request_elevation_group in production and staging", () => {
         // request_elevation_group discriminator: [36, 119, 251, 129, 34, 240, 7, 147]
         const elevationGroup = 1;
 
@@ -778,14 +806,58 @@ describe("ix-mapper", () => {
           ]),
         });
 
-        // Should NOT be supported in production
+        // Should be supported in production
         const prodResult = mapToGlamIx(
           sourceInstruction,
           glamState,
           glamSigner,
           false,
         );
-        expect(prodResult).toBeNull();
+        expect(prodResult).not.toBeNull();
+        expect(prodResult!.programId).toEqual(EXT_KAMINO_PROGRAM_ID);
+
+        // dst_discriminator: [162, 119, 197, 54, 246, 84, 55, 153]
+        expect(prodResult!.data.subarray(0, 8)).toEqual(
+          Buffer.from([162, 119, 197, 54, 246, 84, 55, 153]),
+        );
+
+        // Payload (elevation_group byte) preserved
+        expect(prodResult!.data[8]).toBe(elevationGroup);
+        expect(prodResult!.keys).toHaveLength(9);
+        expectAccountMeta(prodResult!.keys[0], glamState, false, true);
+        expectAccountMeta(
+          prodResult!.keys[1],
+          getVaultPda(glamState),
+          false,
+          true,
+        );
+        expectAccountMeta(prodResult!.keys[2], glamSigner, true, true);
+        expectAccountMeta(
+          prodResult!.keys[3],
+          getIntegrationAuthority(EXT_KAMINO_PROGRAM_ID),
+          false,
+          false,
+        );
+        expectAccountMeta(
+          prodResult!.keys[4],
+          KAMINO_LEND_PROGRAM_ID,
+          false,
+          false,
+        );
+        expectAccountMeta(prodResult!.keys[5], GLAM_PROGRAM_ID, false, false);
+        expectAccountMeta(prodResult!.keys[6], SYSTEM_PROGRAM_ID, false, false);
+        expectAccountMeta(
+          prodResult!.keys[7],
+          sourceInstruction.keys[1].pubkey,
+          false,
+          true,
+        );
+        expectAccountMeta(
+          prodResult!.keys[8],
+          sourceInstruction.keys[2].pubkey,
+          false,
+          true,
+        );
 
         // Should be supported in staging
         const stagingResult = mapToGlamIx(
@@ -797,13 +869,56 @@ describe("ix-mapper", () => {
         expect(stagingResult).not.toBeNull();
         expect(stagingResult!.programId).toEqual(STAGING_EXT_KAMINO_PROGRAM_ID);
 
-        // dst_discriminator: [162, 119, 197, 54, 246, 84, 55, 153]
         expect(stagingResult!.data.subarray(0, 8)).toEqual(
           Buffer.from([162, 119, 197, 54, 246, 84, 55, 153]),
         );
 
-        // Payload (elevation_group byte) preserved
         expect(stagingResult!.data[8]).toBe(elevationGroup);
+        expect(stagingResult!.keys).toHaveLength(9);
+        expectAccountMeta(stagingResult!.keys[0], glamState, false, true);
+        expectAccountMeta(
+          stagingResult!.keys[1],
+          getVaultPda(glamState, true),
+          false,
+          true,
+        );
+        expectAccountMeta(stagingResult!.keys[2], glamSigner, true, true);
+        expectAccountMeta(
+          stagingResult!.keys[3],
+          getIntegrationAuthority(STAGING_EXT_KAMINO_PROGRAM_ID),
+          false,
+          false,
+        );
+        expectAccountMeta(
+          stagingResult!.keys[4],
+          KAMINO_LEND_PROGRAM_ID,
+          false,
+          false,
+        );
+        expectAccountMeta(
+          stagingResult!.keys[5],
+          GLAM_STAGING_PROGRAM_ID,
+          false,
+          false,
+        );
+        expectAccountMeta(
+          stagingResult!.keys[6],
+          SYSTEM_PROGRAM_ID,
+          false,
+          false,
+        );
+        expectAccountMeta(
+          stagingResult!.keys[7],
+          sourceInstruction.keys[1].pubkey,
+          false,
+          true,
+        );
+        expectAccountMeta(
+          stagingResult!.keys[8],
+          sourceInstruction.keys[2].pubkey,
+          false,
+          true,
+        );
       });
     });
 
@@ -850,10 +965,6 @@ describe("ix-mapper", () => {
   });
 
   describe("Optional account placeholder replacement", () => {
-    const EXT_KAMINO_PROGRAM_ID = new PublicKey(
-      "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
-    );
-
     // deposit_reserve_liquidity_and_obligation_collateral_v2
     const KAMINO_DEPOSIT_V2_DISCRIMINATOR = [
       216, 224, 191, 27, 204, 151, 102, 175,
@@ -926,8 +1037,7 @@ describe("ix-mapper", () => {
           { pubkey: randomKey(), isSigner: false, isWritable: false }, // [12] liquidity_token_program
           { pubkey: randomKey(), isSigner: false, isWritable: false }, // [13] instruction_sysvar
           {
-            pubkey:
-              overrides.obligationFarmUserState ?? KAMINO_LEND_PROGRAM_ID,
+            pubkey: overrides.obligationFarmUserState ?? KAMINO_LEND_PROGRAM_ID,
             isSigner: false,
             isWritable: true,
           }, // [14] obligation_farm_user_state (optional)
@@ -938,7 +1048,10 @@ describe("ix-mapper", () => {
           }, // [15] reserve_farm_state (optional)
           { pubkey: randomKey(), isSigner: false, isWritable: false }, // [16] farms_program
         ],
-        data: Buffer.from([...KAMINO_DEPOSIT_V2_DISCRIMINATOR, ...amountBuffer]),
+        data: Buffer.from([
+          ...KAMINO_DEPOSIT_V2_DISCRIMINATOR,
+          ...amountBuffer,
+        ]),
       });
     }
 
@@ -994,8 +1107,7 @@ describe("ix-mapper", () => {
           { pubkey: randomKey(), isSigner: false, isWritable: false }, // [10] liquidity_token_program
           { pubkey: randomKey(), isSigner: false, isWritable: false }, // [11] instruction_sysvar
           {
-            pubkey:
-              overrides.obligationFarmUserState ?? KAMINO_LEND_PROGRAM_ID,
+            pubkey: overrides.obligationFarmUserState ?? KAMINO_LEND_PROGRAM_ID,
             isSigner: false,
             isWritable: true,
           }, // [12] obligation_farm_user_state (optional)
@@ -1016,22 +1128,13 @@ describe("ix-mapper", () => {
 
       expect(result).not.toBeNull();
       expect(result!.programId).toEqual(EXT_KAMINO_PROGRAM_ID);
-
-      // The three optional accounts should now be the proxy program ID, not Kamino's
-      // In the mapped instruction, they are at dst indices 16, 20, 21
-      // After sorting by index: positions depend on total account count
-      const proxyMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
-      );
-      // 3 optional placeholders should be replaced with proxy program ID
-      expect(proxyMatches.length).toBe(3);
-
-      // No account should still reference the Kamino program ID
-      const kaminoMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
-      );
-      // Only the static cpi_program account at index 4 should have Kamino's ID
-      expect(kaminoMatches.length).toBe(1);
+      expect(result!.keys).toHaveLength(23);
+      expectAccountMeta(result!.keys[16], EXT_KAMINO_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[20], EXT_KAMINO_PROGRAM_ID, false, true);
+      expectAccountMeta(result!.keys[21], EXT_KAMINO_PROGRAM_ID, false, true);
+      expectAccountMeta(result!.keys[4], KAMINO_LEND_PROGRAM_ID, false, false);
+      expectProgramIdCount(result!, EXT_KAMINO_PROGRAM_ID, 3);
+      expectProgramIdCount(result!, KAMINO_LEND_PROGRAM_ID, 1);
     });
 
     it("should replace Kamino program ID placeholders with proxy program ID in borrow_v2", () => {
@@ -1040,18 +1143,13 @@ describe("ix-mapper", () => {
 
       expect(result).not.toBeNull();
       expect(result!.programId).toEqual(EXT_KAMINO_PROGRAM_ID);
-
-      // 3 optional placeholders replaced
-      const proxyMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
-      );
-      expect(proxyMatches.length).toBe(3);
-
-      // Only static cpi_program at index 4
-      const kaminoMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
-      );
-      expect(kaminoMatches.length).toBe(1);
+      expect(result!.keys).toHaveLength(21);
+      expectAccountMeta(result!.keys[15], EXT_KAMINO_PROGRAM_ID, false, true);
+      expectAccountMeta(result!.keys[18], EXT_KAMINO_PROGRAM_ID, false, true);
+      expectAccountMeta(result!.keys[19], EXT_KAMINO_PROGRAM_ID, false, true);
+      expectAccountMeta(result!.keys[4], KAMINO_LEND_PROGRAM_ID, false, false);
+      expectProgramIdCount(result!, EXT_KAMINO_PROGRAM_ID, 3);
+      expectProgramIdCount(result!, KAMINO_LEND_PROGRAM_ID, 1);
     });
 
     it("should NOT replace real account addresses that happen to differ from program ID", () => {
@@ -1082,12 +1180,10 @@ describe("ix-mapper", () => {
       expect(hasRealFarm).toBe(true);
       expect(hasRealReserveFarm).toBe(true);
       expect(hasRealPlaceholder).toBe(true);
-
-      // No proxy program ID should appear as a replacement
-      const proxyMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
-      );
-      expect(proxyMatches.length).toBe(0);
+      expectAccountMeta(result!.keys[16], realPlaceholder, false, false);
+      expectAccountMeta(result!.keys[20], realFarmAccount, false, true);
+      expectAccountMeta(result!.keys[21], realReserveFarm, false, true);
+      expectProgramIdCount(result!, EXT_KAMINO_PROGRAM_ID, 0);
     });
 
     it("should handle mixed real and placeholder optional accounts", () => {
@@ -1106,21 +1202,42 @@ describe("ix-mapper", () => {
         k.pubkey.equals(realFarmAccount),
       );
       expect(hasRealFarm).toBe(true);
+      expectAccountMeta(result!.keys[16], EXT_KAMINO_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[20], realFarmAccount, false, true);
+      expectAccountMeta(result!.keys[21], EXT_KAMINO_PROGRAM_ID, false, true);
+      expectProgramIdCount(result!, EXT_KAMINO_PROGRAM_ID, 2);
+    });
 
-      // 2 placeholders replaced (placeholder_user_dest_collateral + reserve_farm_state)
-      const proxyMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
-      );
-      expect(proxyMatches.length).toBe(2);
+    it("should not rewrite program IDs outside configured placeholder indices", () => {
+      const realPlaceholder = PublicKey.unique();
+      const realFarmAccount = PublicKey.unique();
+      const realReserveFarm = PublicKey.unique();
+
+      const ix = buildKaminoDepositV2Ix({
+        placeholderUserDestCollateral: realPlaceholder,
+        obligationFarmUserState: realFarmAccount,
+        reserveFarmState: realReserveFarm,
+      });
+      ix.keys[1] = {
+        pubkey: KAMINO_LEND_PROGRAM_ID,
+        isSigner: false,
+        isWritable: true,
+      };
+
+      const result = mapToGlamIx(ix, glamState, glamSigner);
+
+      expect(result).not.toBeNull();
+      expectAccountMeta(result!.keys[7], KAMINO_LEND_PROGRAM_ID, false, true);
+      expectAccountMeta(result!.keys[16], realPlaceholder, false, false);
+      expectProgramIdCount(result!, EXT_KAMINO_PROGRAM_ID, 0);
+      expectProgramIdCount(result!, KAMINO_LEND_PROGRAM_ID, 2);
     });
 
     it("should correctly remap real deposit_v2 tx (5FnkKP9h...)", () => {
       // Real accounts from mainnet tx 5FnkKP9hgjzXofQuEu42gKuhiYzNtHcNr1kbodcBaUt8ZA4pcNZo3bn3E54Xk1nfiUHUdMECBucwRpyhb1kGTXuZ
       // This is a USDS deposit with active farm but placeholder_user_destination_collateral = None
       const realAccounts = {
-        owner: new PublicKey(
-          "73zMkwEWuTW6Rkn9XhB7hEFoZXEaN6JvxP9WDEWZraqU",
-        ),
+        owner: new PublicKey("73zMkwEWuTW6Rkn9XhB7hEFoZXEaN6JvxP9WDEWZraqU"),
         obligation: new PublicKey(
           "5WFP3Ah8jE5d3ogxWupfGMjaDE1cpgZ4YEbeusjnjkVZ",
         ),
@@ -1130,9 +1247,7 @@ describe("ix-mapper", () => {
         lendingMarketAuthority: new PublicKey(
           "9DrvZvyWh1HuAoZxvYWMvkf2XCzryCpGgHqrMjyDWpmo",
         ),
-        reserve: new PublicKey(
-          "BHUi32TrEsfN2U821G4FprKrR4hTeK4LCWtA3BFetuqA",
-        ),
+        reserve: new PublicKey("BHUi32TrEsfN2U821G4FprKrR4hTeK4LCWtA3BFetuqA"),
         reserveLiquidityMint: new PublicKey(
           "USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA",
         ),
@@ -1258,41 +1373,42 @@ describe("ix-mapper", () => {
             isWritable: false,
           },
         ],
-        data: Buffer.from([...KAMINO_DEPOSIT_V2_DISCRIMINATOR, 0, 0, 0, 0, 0, 0, 0, 0]),
+        data: Buffer.from([
+          ...KAMINO_DEPOSIT_V2_DISCRIMINATOR,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+        ]),
       });
 
       const result = mapToGlamIx(ix, glamState, glamSigner);
       expect(result).not.toBeNull();
       expect(result!.programId).toEqual(EXT_KAMINO_PROGRAM_ID);
 
-      // Only placeholder_user_destination_collateral [10] was KLend ID → replaced
-      const proxyMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
-      );
-      expect(proxyMatches.length).toBe(1);
-
-      // Real farm accounts preserved
-      expect(
-        result!.keys.some((k) =>
-          k.pubkey.equals(realAccounts.obligationFarmUserState),
-        ),
-      ).toBe(true);
-      expect(
-        result!.keys.some((k) =>
-          k.pubkey.equals(realAccounts.reserveFarmState),
-        ),
-      ).toBe(true);
-
-      // Static cpi_program is the only remaining KLend reference
-      const kaminoMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
-      );
-      expect(kaminoMatches.length).toBe(1);
-
       // Discriminator replaced correctly
       expect(Array.from(result!.data.subarray(0, 8))).toEqual(
         KAMINO_DEPOSIT_V2_DST_DISCRIMINATOR,
       );
+      expectAccountMeta(result!.keys[16], EXT_KAMINO_PROGRAM_ID, false, false);
+      expectAccountMeta(
+        result!.keys[20],
+        realAccounts.obligationFarmUserState,
+        false,
+        true,
+      );
+      expectAccountMeta(
+        result!.keys[21],
+        realAccounts.reserveFarmState,
+        false,
+        true,
+      );
+      expectProgramIdCount(result!, EXT_KAMINO_PROGRAM_ID, 1);
+      expectProgramIdCount(result!, KAMINO_LEND_PROGRAM_ID, 1);
     });
 
     it("should replace placeholders in staging mode too", () => {
@@ -1301,18 +1417,26 @@ describe("ix-mapper", () => {
 
       expect(result).not.toBeNull();
       expect(result!.programId).toEqual(STAGING_EXT_KAMINO_PROGRAM_ID);
-
-      // Placeholders should be replaced with staging proxy program ID
-      const stagingProxyMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(STAGING_EXT_KAMINO_PROGRAM_ID),
+      expectAccountMeta(
+        result!.keys[16],
+        STAGING_EXT_KAMINO_PROGRAM_ID,
+        false,
+        false,
       );
-      expect(stagingProxyMatches.length).toBe(3);
-
-      // Kamino program ID only for static cpi_program
-      const kaminoMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
+      expectAccountMeta(
+        result!.keys[20],
+        STAGING_EXT_KAMINO_PROGRAM_ID,
+        false,
+        true,
       );
-      expect(kaminoMatches.length).toBe(1);
+      expectAccountMeta(
+        result!.keys[21],
+        STAGING_EXT_KAMINO_PROGRAM_ID,
+        false,
+        true,
+      );
+      expectProgramIdCount(result!, STAGING_EXT_KAMINO_PROGRAM_ID, 3);
+      expectProgramIdCount(result!, KAMINO_LEND_PROGRAM_ID, 1);
     });
 
     it("should preserve discriminator and payload with placeholder replacement", () => {
@@ -1340,9 +1464,7 @@ describe("ix-mapper", () => {
       // Real accounts from mainnet tx o4hM94NMu5tyTnf6RJsiMSttFte9fPCMfiRLJdcL58ZMiwDJs5XuC2WHrkSBx9HWhMWYYdp685pGdWj5LZ2vo32
       // This is a PYUSD borrow with active farm but no referrer
       const realAccounts = {
-        owner: new PublicKey(
-          "4XqRB1mxzH7JtJgZWHnYqW1tZShfAeN5sHZVdVuMGMMa",
-        ),
+        owner: new PublicKey("4XqRB1mxzH7JtJgZWHnYqW1tZShfAeN5sHZVdVuMGMMa"),
         obligation: new PublicKey(
           "2SWWDEehjck96jwHKg2R3ZbBPnSKpeMzbboUKCK5GkxP",
         ),
@@ -1475,33 +1597,26 @@ describe("ix-mapper", () => {
       expect(result).not.toBeNull();
       expect(result!.programId).toEqual(EXT_KAMINO_PROGRAM_ID);
 
-      // referrer_token_state was KLend program ID → replaced with ext_kamino proxy
-      // obligation_farm_user_state & reserve_farm_state are real → preserved
-      const proxyMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(EXT_KAMINO_PROGRAM_ID),
+      expect(Array.from(result!.data.subarray(0, 8))).toEqual(
+        KAMINO_BORROW_V2_DST_DISCRIMINATOR,
       );
-      expect(proxyMatches.length).toBe(1); // only referrer_token_state replaced
-
-      // Real farm accounts should be preserved
-      expect(
-        result!.keys.some((k) =>
-          k.pubkey.equals(realAccounts.obligationFarmUserState),
-        ),
-      ).toBe(true);
-      expect(
-        result!.keys.some((k) =>
-          k.pubkey.equals(realAccounts.reserveFarmState),
-        ),
-      ).toBe(true);
-
-      // Static cpi_program (KLend) should be the only remaining KLend reference
-      const kaminoMatches = result!.keys.filter((k) =>
-        k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
-      );
-      expect(kaminoMatches.length).toBe(1); // only static cpi_program at index 4
-
       // Payload preserved
       expect(result!.data.subarray(8)).toEqual(amountBuffer);
+      expectAccountMeta(result!.keys[15], EXT_KAMINO_PROGRAM_ID, false, true);
+      expectAccountMeta(
+        result!.keys[18],
+        realAccounts.obligationFarmUserState,
+        false,
+        true,
+      );
+      expectAccountMeta(
+        result!.keys[19],
+        realAccounts.reserveFarmState,
+        false,
+        true,
+      );
+      expectProgramIdCount(result!, EXT_KAMINO_PROGRAM_ID, 1);
+      expectProgramIdCount(result!, KAMINO_LEND_PROGRAM_ID, 1);
     });
 
     it("should not replace program ID in remaining accounts beyond index_map", () => {
@@ -1523,6 +1638,41 @@ describe("ix-mapper", () => {
         k.pubkey.equals(KAMINO_LEND_PROGRAM_ID),
       );
       expect(kaminoMatches.length).toBe(2);
+    });
+  });
+
+  describe("fixSignerAccounts", () => {
+    it("should replace signer vault PDAs with the glam signer only", () => {
+      const vaultPda = getVaultPda(glamState);
+      const unrelatedSigner = PublicKey.unique();
+      const ix = new TransactionInstruction({
+        programId: EXT_KAMINO_PROGRAM_ID,
+        keys: [
+          { pubkey: vaultPda, isSigner: true, isWritable: true },
+          { pubkey: vaultPda, isSigner: false, isWritable: true },
+          { pubkey: unrelatedSigner, isSigner: true, isWritable: false },
+        ],
+        data: Buffer.alloc(0),
+      });
+
+      const result = fixSignerAccounts(ix, glamState, glamSigner);
+
+      expectAccountMeta(result.keys[0], glamSigner, true, true);
+      expectAccountMeta(result.keys[1], vaultPda, false, true);
+      expectAccountMeta(result.keys[2], unrelatedSigner, true, false);
+    });
+
+    it("should use the staging vault PDA when staging=true", () => {
+      const stagingVaultPda = getVaultPda(glamState, true);
+      const ix = new TransactionInstruction({
+        programId: STAGING_EXT_KAMINO_PROGRAM_ID,
+        keys: [{ pubkey: stagingVaultPda, isSigner: true, isWritable: false }],
+        data: Buffer.alloc(0),
+      });
+
+      const result = fixSignerAccounts(ix, glamState, glamSigner, true);
+
+      expectAccountMeta(result.keys[0], glamSigner, true, false);
     });
   });
 
@@ -1557,7 +1707,17 @@ describe("ix-mapper", () => {
     it("getIntegrationAuthority should derive from the given program", () => {
       const authority = getIntegrationAuthority(GLAM_PROGRAM_ID);
       const stagingAuthority = getIntegrationAuthority(GLAM_STAGING_PROGRAM_ID);
+      const [expectedAuthority] = PublicKey.findProgramAddressSync(
+        [Buffer.from("integration-authority")],
+        GLAM_PROGRAM_ID,
+      );
+      const [expectedStagingAuthority] = PublicKey.findProgramAddressSync(
+        [Buffer.from("integration-authority")],
+        GLAM_STAGING_PROGRAM_ID,
+      );
 
+      expect(authority).toEqual(expectedAuthority);
+      expect(stagingAuthority).toEqual(expectedStagingAuthority);
       expect(authority).not.toEqual(stagingAuthority);
     });
   });

@@ -36,6 +36,11 @@ export interface Instruction {
   static_accounts: StaticAccount[];
   /** Index mapping for account reordering */
   index_map: number[];
+  /**
+   * Source account indices that may use the source program ID as an Anchor
+   * optional-account placeholder and should be rewritten to the proxy program.
+   */
+  program_id_placeholder_indices?: number[];
 }
 
 export interface RemappingConfig {
