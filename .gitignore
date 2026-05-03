@@ -1,0 +1,11 @@
+node_modules/
+.build/
+*.tgz
+
+index.cjs
+index.esm.js
+index.cjs.d.ts
+index.esm.d.ts
+src/**/*.d.ts
+npm-pack-dry-run.json
+.DS_Store

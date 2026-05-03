@@ -16,6 +16,21 @@
     "defi"
   ],
   "license": "Apache-2.0",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "clean": "node scripts/clean.mjs",
+    "prepack": "npm run build",
+    "pack:dry-run": "npm pack --dry-run --json"
+  },
+  "files": [
+    "README.md",
+    "LICENSE",
+    "index.cjs",
+    "index.esm.js",
+    "index.cjs.d.ts",
+    "index.esm.d.ts",
+    "src/**/*.d.ts"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -26,6 +41,8 @@
     "node": ">=20.20.0"
   },
   "devDependencies": {
-    "typescript": "^5.5.3"
+    "@types/node": "^20.17.30",
+    "esbuild": "^0.25.2",
+    "typescript": "^5.8.3"
   }
 }
