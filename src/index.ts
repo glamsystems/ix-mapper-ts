@@ -21,6 +21,9 @@ import * as StagingDriftVaultProgramConfig from "../mapping-configs-v1-staging/v
 import * as StagingKaminoLendProgramConfig from "../mapping-configs-v1-staging/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
 import * as StagingKvauGMspProgramConfig from "../mapping-configs-v1-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
 import * as StagingFarmsProgramConfig from "../mapping-configs-v1-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
+// Staging-only proxies (no mainnet v1 counterpart yet)
+import * as StagingPhoenixProgramConfig from "../mapping-configs-v1-staging/EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih.json";
+import * as StagingEmberProgramConfig from "../mapping-configs-v1-staging/EMBERpYNE6ehWmXymZZS2skiFmCa9V5dp14e1iduM5qy.json";
 
 import {
   type Instruction as RemappingInstruction,
@@ -168,6 +171,10 @@ const STAGING_REMAPPING_CONFIGS: RemappingConfigs = validateRemappingConfigs({
     StagingKvauGMspProgramConfig as RemappingConfig,
   [StagingFarmsProgramConfig.program_id]:
     StagingFarmsProgramConfig as RemappingConfig,
+  [StagingPhoenixProgramConfig.program_id]:
+    StagingPhoenixProgramConfig as RemappingConfig,
+  [StagingEmberProgramConfig.program_id]:
+    StagingEmberProgramConfig as RemappingConfig,
 });
 
 /**
