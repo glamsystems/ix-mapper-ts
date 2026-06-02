@@ -15,6 +15,9 @@ describe("ix-mapper", () => {
   const KAMINO_LEND_PROGRAM_ID = new PublicKey(
     "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
   );
+  const LOOPSCALE_PROGRAM_ID = new PublicKey(
+    "1oopBoJG58DgkUVKkEzKgyG9dvRmpgeEm1AVjoHkF78",
+  );
 
   // Production proxy program IDs
   const EXT_SPL_PROGRAM_ID = new PublicKey(
@@ -23,13 +26,15 @@ describe("ix-mapper", () => {
   const EXT_KAMINO_PROGRAM_ID = new PublicKey(
     "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
   );
-
   // Staging proxy program IDs
   const STAGING_EXT_SPL_PROGRAM_ID = new PublicKey(
     "gstgs9nJgX8PmRHWAAEP9H7xT3ZkaPWSGPYbj3mXdTa",
   );
   const STAGING_EXT_KAMINO_PROGRAM_ID = new PublicKey(
     "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq",
+  );
+  const STAGING_EXT_LOOPSCALE_PROGRAM_ID = new PublicKey(
+    "gstgL6y4uWjsfM3Qjs5euoTDmEcXoUjqx8rkYJhYngG",
   );
 
   // Test fixtures
@@ -1231,6 +1236,926 @@ describe("ix-mapper", () => {
       expectAccountMeta(result!.keys[16], realPlaceholder, false, false);
       expectProgramIdCount(result!, EXT_KAMINO_PROGRAM_ID, 0);
       expectProgramIdCount(result!, KAMINO_LEND_PROGRAM_ID, 2);
+    });
+
+    it("should map Loopscale create_loan", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        borrower: PublicKey.unique(),
+        loan: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+      };
+      const data = Buffer.from([
+        166, 131, 118, 219, 138, 218, 206, 140, 1, 2, 3,
+      ]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.borrower, isSigner: true, isWritable: true },
+          { pubkey: accounts.loan, isSigner: false, isWritable: true },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(11);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(
+        result!.keys[1],
+        getVaultPda(glamState, true),
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[2], glamSigner, true, true);
+      expectAccountMeta(
+        result!.keys[3],
+        getIntegrationAuthority(STAGING_EXT_LOOPSCALE_PROGRAM_ID),
+        false,
+        false,
+      );
+      expectAccountMeta(result!.keys[4], LOOPSCALE_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[5], GLAM_STAGING_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[6], SYSTEM_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.loan, false, true);
+      expectAccountMeta(
+        result!.keys[9],
+        accounts.protocolAdminState,
+        false,
+        false,
+      );
+      expectAccountMeta(
+        result!.keys[10],
+        accounts.eventAuthority,
+        false,
+        false,
+      );
+    });
+
+    it("should map Loopscale deposit_collateral and preserve remaining accounts", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        borrower: PublicKey.unique(),
+        loan: PublicKey.unique(),
+        borrowerCollateralTa: PublicKey.unique(),
+        loanCollateralTa: PublicKey.unique(),
+        depositMint: PublicKey.unique(),
+        assetIdentifier: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+        remainingMarket: PublicKey.unique(),
+      };
+      const data = Buffer.from([
+        156, 131, 142, 116, 146, 247, 162, 120, 1, 2, 3,
+      ]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.borrower, isSigner: true, isWritable: true },
+          { pubkey: accounts.loan, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.borrowerCollateralTa,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: accounts.loanCollateralTa,
+            isSigner: false,
+            isWritable: true,
+          },
+          { pubkey: accounts.depositMint, isSigner: false, isWritable: false },
+          {
+            pubkey: accounts.assetIdentifier,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: new PublicKey(
+              "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+            ),
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.remainingMarket,
+            isSigner: false,
+            isWritable: true,
+          },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(18);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(
+        result!.keys[1],
+        getVaultPda(glamState, true),
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[2], glamSigner, true, true);
+      expectAccountMeta(
+        result!.keys[3],
+        getIntegrationAuthority(STAGING_EXT_LOOPSCALE_PROGRAM_ID),
+        false,
+        false,
+      );
+      expectAccountMeta(result!.keys[4], LOOPSCALE_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[5], GLAM_STAGING_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[6], SYSTEM_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.loan, false, true);
+      expectAccountMeta(
+        result!.keys[9],
+        accounts.borrowerCollateralTa,
+        false,
+        true,
+      );
+      expectAccountMeta(
+        result!.keys[10],
+        accounts.loanCollateralTa,
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[11], accounts.depositMint, false, false);
+      expectAccountMeta(
+        result!.keys[12],
+        accounts.assetIdentifier,
+        false,
+        false,
+      );
+      expectAccountMeta(
+        result!.keys[17],
+        accounts.remainingMarket,
+        false,
+        true,
+      );
+    });
+
+    it("should map Loopscale withdraw_collateral and preserve remaining accounts", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        borrower: PublicKey.unique(),
+        loan: PublicKey.unique(),
+        borrowerCollateralTa: PublicKey.unique(),
+        loanCollateralTa: PublicKey.unique(),
+        collateralMint: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+        healthcheckMarket: PublicKey.unique(),
+      };
+      const data = Buffer.from([
+        115, 135, 168, 106, 139, 214, 138, 150, 4, 5, 6,
+      ]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.borrower, isSigner: true, isWritable: true },
+          { pubkey: accounts.loan, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.borrowerCollateralTa,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: accounts.loanCollateralTa,
+            isSigner: false,
+            isWritable: true,
+          },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: accounts.collateralMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: new PublicKey(
+              "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+            ),
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.healthcheckMarket,
+            isSigner: false,
+            isWritable: true,
+          },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(17);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.loan, false, true);
+      expectAccountMeta(
+        result!.keys[9],
+        accounts.borrowerCollateralTa,
+        false,
+        true,
+      );
+      expectAccountMeta(
+        result!.keys[10],
+        accounts.loanCollateralTa,
+        false,
+        true,
+      );
+      expectAccountMeta(
+        result!.keys[11],
+        accounts.collateralMint,
+        false,
+        false,
+      );
+      expectAccountMeta(
+        result!.keys[16],
+        accounts.healthcheckMarket,
+        false,
+        true,
+      );
+    });
+
+    it("should map Loopscale borrow_principal and preserve remaining accounts", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        borrower: PublicKey.unique(),
+        loan: PublicKey.unique(),
+        strategy: PublicKey.unique(),
+        marketInformation: PublicKey.unique(),
+        principalMint: PublicKey.unique(),
+        borrowerTa: PublicKey.unique(),
+        strategyTa: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+        externalYieldAccount: PublicKey.unique(),
+      };
+      const data = Buffer.from([106, 10, 38, 204, 139, 188, 124, 50, 4, 5, 6]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.borrower, isSigner: true, isWritable: false },
+          { pubkey: accounts.loan, isSigner: false, isWritable: true },
+          { pubkey: accounts.strategy, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.marketInformation,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: accounts.principalMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: accounts.borrowerTa, isSigner: false, isWritable: true },
+          { pubkey: accounts.strategyTa, isSigner: false, isWritable: true },
+          {
+            pubkey: new PublicKey(
+              "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+            ),
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.externalYieldAccount,
+            isSigner: false,
+            isWritable: true,
+          },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(19);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.loan, false, true);
+      expectAccountMeta(result!.keys[9], accounts.strategy, false, true);
+      expectAccountMeta(
+        result!.keys[10],
+        accounts.marketInformation,
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[11], accounts.principalMint, false, false);
+      expectAccountMeta(result!.keys[12], accounts.borrowerTa, false, true);
+      expectAccountMeta(result!.keys[13], accounts.strategyTa, false, true);
+      expectAccountMeta(
+        result!.keys[18],
+        accounts.externalYieldAccount,
+        false,
+        true,
+      );
+    });
+
+    it("should map Loopscale repay_principal and preserve remaining accounts", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        borrower: PublicKey.unique(),
+        loan: PublicKey.unique(),
+        strategy: PublicKey.unique(),
+        marketInformation: PublicKey.unique(),
+        principalMint: PublicKey.unique(),
+        borrowerTa: PublicKey.unique(),
+        strategyTa: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+        extraOracle: PublicKey.unique(),
+      };
+      const data = Buffer.from([229, 67, 83, 65, 77, 84, 80, 141, 7, 8, 9]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.borrower, isSigner: true, isWritable: false },
+          { pubkey: accounts.loan, isSigner: false, isWritable: true },
+          { pubkey: accounts.strategy, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.marketInformation,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: accounts.principalMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: accounts.borrowerTa, isSigner: false, isWritable: true },
+          { pubkey: accounts.strategyTa, isSigner: false, isWritable: true },
+          {
+            pubkey: new PublicKey(
+              "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+            ),
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.extraOracle,
+            isSigner: false,
+            isWritable: false,
+          },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(19);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.loan, false, true);
+      expectAccountMeta(result!.keys[9], accounts.strategy, false, true);
+      expectAccountMeta(
+        result!.keys[10],
+        accounts.marketInformation,
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[11], accounts.principalMint, false, false);
+      expectAccountMeta(result!.keys[12], accounts.borrowerTa, false, true);
+      expectAccountMeta(result!.keys[13], accounts.strategyTa, false, true);
+      expectAccountMeta(result!.keys[18], accounts.extraOracle, false, false);
+    });
+
+    it("should map Loopscale deposit_strategy and preserve remaining accounts", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        lender: PublicKey.unique(),
+        strategy: PublicKey.unique(),
+        principalMint: PublicKey.unique(),
+        marketInformation: PublicKey.unique(),
+        lenderTa: PublicKey.unique(),
+        strategyTa: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+        externalYieldVault: PublicKey.unique(),
+      };
+      const associatedTokenProgram = new PublicKey(
+        "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      );
+      const data = Buffer.from([246, 82, 57, 226, 131, 222, 253, 249, 1, 2, 3]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.lender, isSigner: true, isWritable: true },
+          { pubkey: accounts.strategy, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.principalMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.marketInformation,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: accounts.lenderTa, isSigner: false, isWritable: true },
+          { pubkey: accounts.strategyTa, isSigner: false, isWritable: true },
+          { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: associatedTokenProgram,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.externalYieldVault,
+            isSigner: false,
+            isWritable: true,
+          },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(18);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(
+        result!.keys[1],
+        getVaultPda(glamState, true),
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[2], glamSigner, true, true);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.strategy, false, true);
+      expectAccountMeta(result!.keys[9], accounts.principalMint, false, false);
+      expectAccountMeta(
+        result!.keys[10],
+        accounts.marketInformation,
+        false,
+        false,
+      );
+      expectAccountMeta(result!.keys[11], accounts.lenderTa, false, true);
+      expectAccountMeta(result!.keys[12], accounts.strategyTa, false, true);
+      expectAccountMeta(result!.keys[13], TOKEN_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[14], associatedTokenProgram, false, false);
+      expectAccountMeta(
+        result!.keys[17],
+        accounts.externalYieldVault,
+        false,
+        true,
+      );
+    });
+
+    it("should map Loopscale update_strategy and preserve remaining accounts", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        lender: PublicKey.unique(),
+        strategy: PublicKey.unique(),
+        principalMint: PublicKey.unique(),
+        strategyTa: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+        externalYieldSetup: PublicKey.unique(),
+      };
+      const associatedTokenProgram = new PublicKey(
+        "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      );
+      const data = Buffer.from([16, 76, 138, 179, 171, 112, 196, 21, 1, 2, 3]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.lender, isSigner: true, isWritable: false },
+          { pubkey: accounts.strategy, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.principalMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: accounts.strategyTa, isSigner: false, isWritable: true },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: associatedTokenProgram,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.externalYieldSetup,
+            isSigner: true,
+            isWritable: true,
+          },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(16);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(
+        result!.keys[1],
+        getVaultPda(glamState, true),
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[2], glamSigner, true, true);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.strategy, false, true);
+      expectAccountMeta(result!.keys[9], accounts.principalMint, false, false);
+      expectAccountMeta(result!.keys[10], accounts.strategyTa, false, true);
+      expectAccountMeta(result!.keys[11], associatedTokenProgram, false, false);
+      expectAccountMeta(result!.keys[12], TOKEN_PROGRAM_ID, false, false);
+      expectAccountMeta(
+        result!.keys[15],
+        accounts.externalYieldSetup,
+        true,
+        true,
+      );
+    });
+
+    it("should map Loopscale withdraw_strategy and preserve remaining accounts", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        lender: PublicKey.unique(),
+        strategy: PublicKey.unique(),
+        principalMint: PublicKey.unique(),
+        marketInformation: PublicKey.unique(),
+        lenderTa: PublicKey.unique(),
+        strategyTa: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+        externalYieldVault: PublicKey.unique(),
+      };
+      const associatedTokenProgram = new PublicKey(
+        "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      );
+      const data = Buffer.from([31, 45, 162, 5, 193, 217, 134, 188, 1, 2, 3]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.lender, isSigner: true, isWritable: true },
+          { pubkey: accounts.strategy, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.principalMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.marketInformation,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: accounts.lenderTa, isSigner: false, isWritable: true },
+          { pubkey: accounts.strategyTa, isSigner: false, isWritable: true },
+          {
+            pubkey: associatedTokenProgram,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.externalYieldVault,
+            isSigner: false,
+            isWritable: true,
+          },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(18);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(
+        result!.keys[1],
+        getVaultPda(glamState, true),
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[2], glamSigner, true, true);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.strategy, false, true);
+      expectAccountMeta(result!.keys[9], accounts.principalMint, false, false);
+      expectAccountMeta(
+        result!.keys[10],
+        accounts.marketInformation,
+        false,
+        false,
+      );
+      expectAccountMeta(result!.keys[11], accounts.lenderTa, false, true);
+      expectAccountMeta(result!.keys[12], accounts.strategyTa, false, true);
+      expectAccountMeta(result!.keys[13], associatedTokenProgram, false, false);
+      expectAccountMeta(result!.keys[14], TOKEN_PROGRAM_ID, false, false);
+      expectAccountMeta(
+        result!.keys[17],
+        accounts.externalYieldVault,
+        false,
+        true,
+      );
+    });
+
+    it("should map Loopscale close_strategy and preserve remaining accounts", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        lender: PublicKey.unique(),
+        strategy: PublicKey.unique(),
+        principalMint: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+        externalYieldVault: PublicKey.unique(),
+      };
+      const associatedTokenProgram = new PublicKey(
+        "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      );
+      const data = Buffer.from([56, 247, 170, 246, 89, 221, 134, 200, 1, 2, 3]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.lender, isSigner: true, isWritable: false },
+          { pubkey: accounts.strategy, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.principalMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: associatedTokenProgram,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.externalYieldVault,
+            isSigner: false,
+            isWritable: true,
+          },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(15);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(
+        result!.keys[1],
+        getVaultPda(glamState, true),
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[2], glamSigner, true, true);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.strategy, false, true);
+      expectAccountMeta(result!.keys[9], accounts.principalMint, false, false);
+      expectAccountMeta(result!.keys[10], TOKEN_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[11], associatedTokenProgram, false, false);
+      expectAccountMeta(
+        result!.keys[14],
+        accounts.externalYieldVault,
+        false,
+        true,
+      );
     });
 
     it("should correctly remap real deposit_v2 tx (5FnkKP9h...)", () => {
