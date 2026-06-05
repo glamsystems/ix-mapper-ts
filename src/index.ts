@@ -4,27 +4,27 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 
-import * as SystemProgramConfig from "../mapping-configs-v1/11111111111111111111111111111111.json";
-import * as TokenProgramConfig from "../mapping-configs-v1/TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA.json";
-import * as Token2022ProgramConfig from "../mapping-configs-v1/TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb.json";
-import * as DriftProtocolProgramConfig from "../mapping-configs-v1/dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH.json";
-import * as DriftVaultProgramConfig from "../mapping-configs-v1/vAuLTsyrvSfZRuRB3XgvkPwNGgYSs9YRYymVebLKoxR.json";
-import * as KaminoLendProgramConfig from "../mapping-configs-v1/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
-import * as KvauGMspProgramConfig from "../mapping-configs-v1/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
-import * as FarmsProgramConfig from "../mapping-configs-v1/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
+import SystemProgramConfig from "../mapping-configs-v1/11111111111111111111111111111111.json";
+import TokenProgramConfig from "../mapping-configs-v1/TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA.json";
+import Token2022ProgramConfig from "../mapping-configs-v1/TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb.json";
+import DriftProtocolProgramConfig from "../mapping-configs-v1/dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH.json";
+import DriftVaultProgramConfig from "../mapping-configs-v1/vAuLTsyrvSfZRuRB3XgvkPwNGgYSs9YRYymVebLKoxR.json";
+import KaminoLendProgramConfig from "../mapping-configs-v1/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
+import KvauGMspProgramConfig from "../mapping-configs-v1/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
+import FarmsProgramConfig from "../mapping-configs-v1/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
 
-import * as StagingSystemProgramConfig from "../mapping-configs-v1-staging/11111111111111111111111111111111.json";
-import * as StagingTokenProgramConfig from "../mapping-configs-v1-staging/TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA.json";
-import * as StagingToken2022ProgramConfig from "../mapping-configs-v1-staging/TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb.json";
-import * as StagingDriftProtocolProgramConfig from "../mapping-configs-v1-staging/dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH.json";
-import * as StagingDriftVaultProgramConfig from "../mapping-configs-v1-staging/vAuLTsyrvSfZRuRB3XgvkPwNGgYSs9YRYymVebLKoxR.json";
-import * as StagingKaminoLendProgramConfig from "../mapping-configs-v1-staging/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
-import * as StagingKvauGMspProgramConfig from "../mapping-configs-v1-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
-import * as StagingFarmsProgramConfig from "../mapping-configs-v1-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
-import * as StagingLoopscaleProgramConfig from "../mapping-configs-v1-staging/1oopBoJG58DgkUVKkEzKgyG9dvRmpgeEm1AVjoHkF78.json";
+import StagingSystemProgramConfig from "../mapping-configs-v1-staging/11111111111111111111111111111111.json";
+import StagingTokenProgramConfig from "../mapping-configs-v1-staging/TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA.json";
+import StagingToken2022ProgramConfig from "../mapping-configs-v1-staging/TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb.json";
+import StagingDriftProtocolProgramConfig from "../mapping-configs-v1-staging/dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH.json";
+import StagingDriftVaultProgramConfig from "../mapping-configs-v1-staging/vAuLTsyrvSfZRuRB3XgvkPwNGgYSs9YRYymVebLKoxR.json";
+import StagingKaminoLendProgramConfig from "../mapping-configs-v1-staging/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
+import StagingKvauGMspProgramConfig from "../mapping-configs-v1-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
+import StagingFarmsProgramConfig from "../mapping-configs-v1-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
+import StagingLoopscaleProgramConfig from "../mapping-configs-v1-staging/1oopBoJG58DgkUVKkEzKgyG9dvRmpgeEm1AVjoHkF78.json";
 // Staging-only proxies (no mainnet v1 counterpart yet)
-import * as StagingPhoenixProgramConfig from "../mapping-configs-v1-staging/EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih.json";
-import * as StagingEmberProgramConfig from "../mapping-configs-v1-staging/EMBERpYNE6ehWmXymZZS2skiFmCa9V5dp14e1iduM5qy.json";
+import StagingPhoenixProgramConfig from "../mapping-configs-v1-staging/EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih.json";
+import StagingEmberProgramConfig from "../mapping-configs-v1-staging/EMBERpYNE6ehWmXymZZS2skiFmCa9V5dp14e1iduM5qy.json";
 
 import {
   type Instruction as RemappingInstruction,
