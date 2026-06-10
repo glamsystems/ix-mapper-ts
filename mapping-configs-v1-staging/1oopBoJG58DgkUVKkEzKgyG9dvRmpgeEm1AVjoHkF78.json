@@ -231,6 +231,84 @@
       "index_map": [7, -1, -1, 8, 9, 10, 11, 12, 13, 14, 15, -1, 16, 17, -1]
     },
     {
+      "src_ix_name": "sell_ledger",
+      "src_discriminator": [55, 17, 153, 148, 120, 242, 80, 5],
+      "dst_ix_name": "sell_ledger",
+      "dst_discriminator": [55, 17, 153, 148, 120, 242, 80, 5],
+      "dynamic_accounts": [
+        { "name": "glam_state", "index": 0, "writable": true, "signer": false },
+        { "name": "glam_vault", "index": 1, "writable": true, "signer": false },
+        { "name": "glam_signer", "index": 2, "writable": true, "signer": true },
+        {
+          "name": "integration_authority",
+          "index": 3,
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "static_accounts": [
+        {
+          "account": "1oopBoJG58DgkUVKkEzKgyG9dvRmpgeEm1AVjoHkF78",
+          "index": 4,
+          "writable": false,
+          "signer": false
+        },
+        {
+          "account": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+          "index": 5,
+          "writable": false,
+          "signer": false
+        },
+        {
+          "account": "11111111111111111111111111111111",
+          "index": 6,
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "index_map": [
+        7, -1, -1, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, -1, 18, 19, 20, 21, -1
+      ]
+    },
+    {
+      "src_ix_name": "create_strategy",
+      "src_discriminator": [152, 160, 107, 148, 245, 190, 127, 224],
+      "dst_ix_name": "create_strategy",
+      "dst_discriminator": [152, 160, 107, 148, 245, 190, 127, 224],
+      "dynamic_accounts": [
+        { "name": "glam_state", "index": 0, "writable": true, "signer": false },
+        { "name": "glam_vault", "index": 1, "writable": true, "signer": false },
+        { "name": "glam_signer", "index": 2, "writable": true, "signer": true },
+        {
+          "name": "integration_authority",
+          "index": 3,
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "static_accounts": [
+        {
+          "account": "1oopBoJG58DgkUVKkEzKgyG9dvRmpgeEm1AVjoHkF78",
+          "index": 4,
+          "writable": false,
+          "signer": false
+        },
+        {
+          "account": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+          "index": 5,
+          "writable": false,
+          "signer": false
+        },
+        {
+          "account": "11111111111111111111111111111111",
+          "index": 6,
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "index_map": [7, -1, 8, 9, 10, 11, -1, 12, 13, -1]
+    },
+    {
       "src_ix_name": "deposit_strategy",
       "src_discriminator": [246, 82, 57, 226, 131, 222, 253, 249],
       "dst_ix_name": "deposit_strategy",

@@ -1759,6 +1759,235 @@ describe("ix-mapper", () => {
       expectAccountMeta(result!.keys[18], accounts.extraOracle, false, false);
     });
 
+    it("should map Loopscale sell_ledger and preserve remaining accounts", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        lenderAuth: PublicKey.unique(),
+        loan: PublicKey.unique(),
+        newStrategyTa: PublicKey.unique(),
+        lenderAuthTa: PublicKey.unique(),
+        oldStrategy: PublicKey.unique(),
+        newStrategy: PublicKey.unique(),
+        oldStrategyMarketInformation: PublicKey.unique(),
+        newStrategyMarketInformation: PublicKey.unique(),
+        principalMint: PublicKey.unique(),
+        userVault: PublicKey.unique(),
+        oldStrategyTa: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+        priceOracle: PublicKey.unique(),
+      };
+      const associatedTokenProgram = new PublicKey(
+        "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      );
+      const data = Buffer.from([55, 17, 153, 148, 120, 242, 80, 5, 1, 2, 3]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.lenderAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.loan, isSigner: false, isWritable: true },
+          { pubkey: accounts.newStrategyTa, isSigner: false, isWritable: true },
+          { pubkey: accounts.lenderAuthTa, isSigner: false, isWritable: true },
+          { pubkey: accounts.oldStrategy, isSigner: false, isWritable: true },
+          { pubkey: accounts.newStrategy, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.oldStrategyMarketInformation,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: accounts.newStrategyMarketInformation,
+            isSigner: false,
+            isWritable: true,
+          },
+          {
+            pubkey: accounts.principalMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: associatedTokenProgram,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          { pubkey: accounts.userVault, isSigner: false, isWritable: true },
+          { pubkey: accounts.oldStrategyTa, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: accounts.priceOracle, isSigner: false, isWritable: false },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(23);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(
+        result!.keys[1],
+        getVaultPda(glamState, true),
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[2], glamSigner, true, true);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.loan, false, true);
+      expectAccountMeta(result!.keys[9], accounts.newStrategyTa, false, true);
+      expectAccountMeta(result!.keys[10], accounts.lenderAuthTa, false, true);
+      expectAccountMeta(result!.keys[11], accounts.oldStrategy, false, true);
+      expectAccountMeta(result!.keys[12], accounts.newStrategy, false, true);
+      expectAccountMeta(
+        result!.keys[13],
+        accounts.oldStrategyMarketInformation,
+        false,
+        true,
+      );
+      expectAccountMeta(
+        result!.keys[14],
+        accounts.newStrategyMarketInformation,
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[15], accounts.principalMint, false, false);
+      expectAccountMeta(result!.keys[16], TOKEN_PROGRAM_ID, false, false);
+      expectAccountMeta(result!.keys[17], associatedTokenProgram, false, false);
+      expectAccountMeta(result!.keys[18], accounts.userVault, false, true);
+      expectAccountMeta(result!.keys[19], accounts.oldStrategyTa, false, true);
+      expectAccountMeta(
+        result!.keys[20],
+        accounts.protocolAdminState,
+        false,
+        false,
+      );
+      expectAccountMeta(
+        result!.keys[21],
+        accounts.eventAuthority,
+        false,
+        false,
+      );
+      expectAccountMeta(result!.keys[22], accounts.priceOracle, false, false);
+    });
+
+    it("should map Loopscale create_strategy", () => {
+      const accounts = {
+        bsAuth: PublicKey.unique(),
+        payer: PublicKey.unique(),
+        nonce: PublicKey.unique(),
+        strategy: PublicKey.unique(),
+        marketInformation: PublicKey.unique(),
+        principalMint: PublicKey.unique(),
+        protocolAdminState: PublicKey.unique(),
+        eventAuthority: PublicKey.unique(),
+      };
+      const data = Buffer.from([
+        152, 160, 107, 148, 245, 190, 127, 224, 1, 2, 3,
+      ]);
+      const sourceInstruction = new TransactionInstruction({
+        programId: LOOPSCALE_PROGRAM_ID,
+        keys: [
+          { pubkey: accounts.bsAuth, isSigner: true, isWritable: false },
+          { pubkey: accounts.payer, isSigner: true, isWritable: true },
+          { pubkey: accounts.nonce, isSigner: true, isWritable: false },
+          { pubkey: accounts.strategy, isSigner: false, isWritable: true },
+          {
+            pubkey: accounts.marketInformation,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.principalMint,
+            isSigner: false,
+            isWritable: false,
+          },
+          { pubkey: SYSTEM_PROGRAM_ID, isSigner: false, isWritable: false },
+          {
+            pubkey: accounts.protocolAdminState,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: accounts.eventAuthority,
+            isSigner: false,
+            isWritable: false,
+          },
+          {
+            pubkey: LOOPSCALE_PROGRAM_ID,
+            isSigner: false,
+            isWritable: false,
+          },
+        ],
+        data,
+      });
+
+      const result = mapToGlamIx(
+        sourceInstruction,
+        glamState,
+        glamSigner,
+        true,
+      );
+
+      expect(result).not.toBeNull();
+      expect(result!.programId).toEqual(STAGING_EXT_LOOPSCALE_PROGRAM_ID);
+      expect(result!.data).toEqual(data);
+      expect(result!.keys).toHaveLength(14);
+      expectAccountMeta(result!.keys[0], glamState, false, true);
+      expectAccountMeta(
+        result!.keys[1],
+        getVaultPda(glamState, true),
+        false,
+        true,
+      );
+      expectAccountMeta(result!.keys[2], glamSigner, true, true);
+      expectAccountMeta(result!.keys[7], accounts.bsAuth, true, false);
+      expectAccountMeta(result!.keys[8], accounts.nonce, true, false);
+      expectAccountMeta(result!.keys[9], accounts.strategy, false, true);
+      expectAccountMeta(
+        result!.keys[10],
+        accounts.marketInformation,
+        false,
+        false,
+      );
+      expectAccountMeta(result!.keys[11], accounts.principalMint, false, false);
+      expectAccountMeta(
+        result!.keys[12],
+        accounts.protocolAdminState,
+        false,
+        false,
+      );
+      expectAccountMeta(
+        result!.keys[13],
+        accounts.eventAuthority,
+        false,
+        false,
+      );
+    });
+
     it("should map Loopscale deposit_strategy and preserve remaining accounts", () => {
       const accounts = {
         bsAuth: PublicKey.unique(),
