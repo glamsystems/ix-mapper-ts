@@ -1,6 +1,6 @@
 {
   "name": "@glamsystems/ix-mapper",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Map Solana program instructions to GLAM integration instructions",
   "main": "./index.cjs",
   "module": "./index.esm.js",
