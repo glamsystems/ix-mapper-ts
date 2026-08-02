@@ -32,6 +32,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify compatibility artifacts
+        run: npm run verify:artifacts
+        env:
+          IX_MAPPER_VERIFY_SDK_TARBALLS: "1"
+
       - name: Build package
         run: npm run build
 
@@ -56,9 +61,19 @@ jobs:
             "index.esm.d.ts",
             "src/index.d.ts",
             "src/pda.d.ts",
+            "src/strict.d.ts",
             "src/types.d.ts",
+            "mapping-configs-v2/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json",
+            "mapping-configs-v2-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json",
+            "compatibility-manifests/schema-v1.json",
+            "compatibility-manifests/v1/kamino-kvaults-production.json",
+            "compatibility-manifests/v1/kamino-kvaults-staging.json",
+            "artifacts/kamino-kvaults/9.1.5/native-kvault.json",
+            "artifacts/ext-kamino/1.0.1/production.json",
+            "artifacts/ext-kamino/1.0.1/staging.json",
             "README.md",
             "LICENSE",
+            "THIRD_PARTY_NOTICES.md",
           ];
 
           for (const file of required) {
@@ -82,7 +97,7 @@ jobs:
 
       - name: Smoke test package entrypoint
         run: |
-          node -e "const mapper = require('./index.cjs'); if (typeof mapper.mapToGlamIx !== 'function') process.exit(1); if (typeof mapper.fixSignerAccounts !== 'function') process.exit(1);"
+          node -e "const mapper = require('./index.cjs'); for (const name of ['mapInstruction', 'mapInstructions', 'mapToGlamIx', 'fixSignerAccounts', 'normalizeInstruction']) if (typeof mapper[name] !== 'function') process.exit(1);"
 
       - name: Upload pack manifest
         uses: actions/upload-artifact@v4

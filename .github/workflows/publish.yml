@@ -63,6 +63,14 @@ jobs:
       - name: Build package
         run: npm run build
 
+      - name: Run tests
+        run: npm test
+
+      - name: Verify compatibility artifacts
+        run: npm run verify:artifacts
+        env:
+          IX_MAPPER_VERIFY_SDK_TARBALLS: "1"
+
       - name: Dry-run pack
         run: npm pack --dry-run --json > npm-pack-dry-run.json
 
@@ -80,7 +88,7 @@ jobs:
           VERSION="$(node -p "require('./package.json').version")"
           DIST_TAG="latest"
 
-          if [[ "${VERSION}" == *"-test"* ]]; then
+          if [[ "${VERSION}" == *-* ]]; then
             DIST_TAG="test"
           fi
 

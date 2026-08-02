@@ -1,6 +1,6 @@
 {
   "name": "@glamsystems/ix-mapper",
-  "version": "0.2.4",
+  "version": "0.3.0-test.0",
   "description": "Map Solana program instructions to GLAM integration instructions",
   "main": "./index.cjs",
   "module": "./index.esm.js",
@@ -19,32 +19,40 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "clean": "node scripts/clean.mjs",
-    "test": "vitest run --globals",
-    "prepack": "npm run build",
+    "test": "npm run test:types && vitest run --globals",
+    "test:types": "tsc -p tsconfig.test-types.json",
+    "verify:artifacts": "node scripts/verify-artifacts.mjs",
+    "prepack": "npm test && npm run verify:artifacts && npm run build",
     "pack:dry-run": "npm pack --dry-run --json"
   },
   "files": [
     "README.md",
     "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "artifacts/**/*.json",
+    "compatibility-manifests/**/*.json",
     "index.cjs",
     "index.esm.js",
     "index.cjs.d.ts",
     "index.esm.d.ts",
+    "mapping-configs-v2/**/*.json",
+    "mapping-configs-v2-staging/**/*.json",
     "src/**/*.d.ts"
   ],
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "@solana/web3.js": "^1.98.0"
+    "@solana/web3.js": "1.98.4"
   },
   "engines": {
     "node": ">=24.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.17.30",
-    "esbuild": "^0.25.2",
-    "typescript": "^5.8.3",
-    "vitest": "^4.1.8"
+    "@kamino-finance/klend-sdk": "9.1.5",
+    "@types/node": "20.19.39",
+    "esbuild": "0.25.12",
+    "typescript": "5.9.3",
+    "vitest": "4.1.8"
   }
 }

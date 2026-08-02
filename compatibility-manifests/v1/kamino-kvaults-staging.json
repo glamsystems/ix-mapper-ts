@@ -1,0 +1,122 @@
+{
+  "$schema": "../schema-v1.json",
+  "manifest_version": 1,
+  "status": "proof-only",
+  "integration": "kamino-kvaults",
+  "cluster": "mainnet-beta",
+  "variant": "staging",
+  "native_protocol": {
+    "name": "Kamino Vaults",
+    "program_id": "KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd",
+    "official_sdk": {
+      "package": "@kamino-finance/klend-sdk",
+      "version": "9.1.5",
+      "npm_integrity": "sha512-sZKmAwcCnEqenwHh349hcC2m213vvMWgfB0ZoRf0BDIjepDXMxigypm4etP9n8ctDcu4S8K8l+AeCtNKiUAmkQ==",
+      "tarball_sha256": "7c3da5b8f44930dc5d5fa0f44e91fa153fd08b51177238d879b2678a9332447e",
+      "resolved_compatibility_dependencies": {
+        "@coral-xyz/anchor": "0.28.0",
+        "@kamino-finance/farms-sdk": "3.2.26",
+        "@kamino-finance/kliquidity-sdk": "11.0.3",
+        "@kamino-finance/scope-sdk": "10.2.6",
+        "@orca-so/whirlpools-core": "2.0.0",
+        "@solana-program/address-lookup-table": "0.8.0",
+        "@solana-program/system": "0.8.1",
+        "@solana-program/token": "0.6.0",
+        "@solana-program/token-2022": "0.5.0",
+        "@solana/kit": "2.3.0",
+        "zstddec": "0.1.0"
+      }
+    }
+  },
+  "proxy": {
+    "crate": "ext_kamino",
+    "version": "1.0.1",
+    "program_id": "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq"
+  },
+  "mapper": {
+    "package": "@glamsystems/ix-mapper",
+    "version": "0.3.0-test.0",
+    "config_schema_version": 2
+  },
+  "artifacts": {
+    "native_idl": {
+      "bundled_path": "artifacts/kamino-kvaults/9.1.5/native-kvault.json",
+      "sha256": "50304595f4a113bd90cdbbc2e2231ebf22202c9f8777ca150bb5e26f3067739f"
+    },
+    "native_deposit_schema": {
+      "package_path": "@kamino-finance/klend-sdk/dist/@codegen/kvault/instructions/deposit.js",
+      "sha256": "9af574647d40ccfde591181f933160ce0fd3ad8b5b0d7f85ce63b205dbbc175b"
+    },
+    "native_withdraw_schema": {
+      "package_path": "@kamino-finance/klend-sdk/dist/@codegen/kvault/instructions/withdraw.js",
+      "sha256": "d6083a2e3418bfae7e37ec6cfdb38af98512648f07e22520479801fe0a2488f4"
+    },
+    "proxy_idl": {
+      "bundled_path": "artifacts/ext-kamino/1.0.1/staging.json",
+      "sha256": "9e15e79b11cbe8bf12f166d84e61018af1c0d66cef4626bbd1a8e904a9b7d685"
+    },
+    "mapper_config": {
+      "bundled_path": "mapping-configs-v2-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json",
+      "sha256": "59567154e06efd1fc4f1a745367744760a107221666b72d1c76e7f5589e85e60"
+    }
+  },
+  "supported_mappings": [
+    {
+      "source_instruction": "deposit",
+      "source_discriminator": [242, 35, 198, 137, 82, 225, 242, 182],
+      "source_data_length": 16,
+      "source_fixed_accounts": 13,
+      "destination_instruction": "vaults_deposit",
+      "destination_discriminator": [124, 173, 191, 223, 48, 26, 84, 84],
+      "destination_fixed_accounts": 19,
+      "remaining_accounts": "0..25 writable non-signer reserves followed by the same number of readonly non-signer lending markets"
+    },
+    {
+      "source_instruction": "withdraw",
+      "source_discriminator": [183, 18, 70, 156, 148, 109, 161, 34],
+      "source_data_length": 16,
+      "source_fixed_accounts": 25,
+      "destination_instruction": "vaults_withdraw",
+      "destination_discriminator": [12, 8, 236, 92, 134, 144, 196, 87],
+      "destination_fixed_accounts": 31,
+      "remaining_accounts": "0..25 writable non-signer reserves followed by the same number of readonly non-signer lending markets"
+    }
+  ],
+  "explicitly_unsupported": [
+    {
+      "instruction": "depositWithMinSharesOut",
+      "discriminator": [74, 127, 128, 80, 4, 221, 193, 91],
+      "reason": "ext_kamino has no reviewed proxy wrapper"
+    },
+    {
+      "instruction": "withdrawFromAvailable",
+      "discriminator": [19, 131, 112, 155, 170, 220, 34, 57],
+      "reason": "ext_kamino has no reviewed proxy wrapper"
+    },
+    {
+      "instruction": "buy/buyWithMinSharesOut/sell/redeemInKind",
+      "reason": "not represented by the current GLAM permission and proxy surface"
+    },
+    {
+      "instruction": "farm setup/stake/unstake/cleanup",
+      "reason": "not part of the farm-free KVault compatibility slice"
+    },
+    {
+      "instruction": "complete high-level SDK helper sequences",
+      "reason": "the proof covers generated inner deposit/withdraw instructions only; ATA, WSOL setup/cleanup, and other emitted instructions must each gain an explicit mapping or audited passthrough rule"
+    }
+  ],
+  "runtime_validation": {
+    "verified_on": "2026-08-02",
+    "node_golden_fixtures": true,
+    "next_client_build": false,
+    "expo_hermes_bundle": false,
+    "dependency_peer_graph": false
+  },
+  "known_blockers": [
+    "The official SDK package root eagerly loads an Orca WebAssembly module and zstddec; Next client and Expo/Hermes gates fail.",
+    "The official SDK has no exports map or supported tree-shakeable KVault entrypoint.",
+    "The resolved official SDK graph pins @solana/kit 2.3.0 while several direct @solana-program dependencies require Kit 3.",
+    "High-level KVault helpers emit wallet-specific WSOL wrap/unwrap and token-account cleanup that cannot be reused unchanged for a GLAM vault PDA."
+  ]
+}

@@ -1,6 +1,14 @@
 # ix-mapper
 
-GLAM vaults execute DeFi operations through integration programs that enforce access control and policy checks. **This SDK transforms standard Solana instructions into their GLAM-proxied equivalents by remapping accounts and instruction discriminators according to predefined mapping configurations.**
+GLAM vaults execute external-protocol instructions through `ext_*` proxy
+programs that enforce permissions and policy onchain. `ix-mapper` transforms a
+reviewed native instruction into its matching GLAM proxy instruction and fails
+closed when the program, instruction, data, accounts, or compatibility shape is
+not explicitly supported.
+
+The mapper does not fetch protocol state, select reserves or markets, decide
+slippage, or reproduce an external protocol's SDK. Those semantics remain in
+the protocol's official SDK.
 
 ## Installation
 
@@ -8,106 +16,146 @@ GLAM vaults execute DeFi operations through integration programs that enforce ac
 npm install @glamsystems/ix-mapper
 ```
 
-## Usage
+## Fail-closed API
+
+Use `mapInstruction` for new integrations:
 
 ```typescript
-import { PublicKey, SystemProgram } from "@solana/web3.js";
-import { mapToGlamIx } from "@glamsystems/ix-mapper";
+import { PublicKey } from "@solana/web3.js";
+import { mapInstruction } from "@glamsystems/ix-mapper";
 
-// GLAM state PDA (identifies the vault)
+const nativeInstruction = buildWithOfficialSdk();
 const glamState = new PublicKey("...");
+const governanceSigner = new PublicKey("...");
 
-// Signer should be the vault owner or a delegate
-const glamSigner = new PublicKey("...");
+const result = mapInstruction(
+  nativeInstruction,
+  glamState,
+  governanceSigner,
+  { staging: false },
+);
 
-// The vault PDA is derived from the state PDA internally
-const glamVault = getVaultPda(glamState);
-
-// Build a standard Solana instruction as if signing from the vault PDA
-const transferIx = SystemProgram.transfer({
-  fromPubkey: glamVault,
-  toPubkey: recipient,
-  lamports,
-});
-
-// Transform to a GLAM proxy instruction
-const glamInstruction = mapToGlamIx(transferIx, glamState, glamSigner);
-
-// glamInstruction can now be added to a transaction
+switch (result.kind) {
+  case "mapped":
+  case "safePassthrough":
+    transaction.add(result.instruction);
+    break;
+  case "unsupported":
+    throw new Error(`${result.reason}: ${result.message}`);
+}
 ```
 
-### Staging Environment
+`mapInstruction` accepts both web3.js `TransactionInstruction` values and the
+Solana Kit-shaped instructions returned by current official Kamino builders.
+Use the exported `normalizeInstruction` helper only when composition code needs
+the equivalent web3.js value before mapping; it validates Kit account roles and
+fails on missing byte data.
 
-To use staging program deployments, pass `staging = true`:
+Every input receives one explicit result:
+
+- `mapped`: a schema-v2 mapping validated the complete source and destination
+  layouts.
+- `safePassthrough`: an audited rule allows the instruction unchanged. No
+  passthrough rules ship in the initial `0.3.0-test.0` compatibility proof.
+- `unsupported`: the caller must abort the complete operation. Unknown must
+  never be treated as native passthrough.
+
+`mapInstructions` applies the same contract to an ordered sequence and returns
+one result for every input without dropping failures:
 
 ```typescript
-const glamInstruction = mapToGlamIx(transferIx, glamState, glamSigner, true);
+const results = mapInstructions(
+  officialSdkInstructions,
+  glamState,
+  governanceSigner,
+);
+
+if (results.some((result) => result.kind === "unsupported")) {
+  throw new Error("The official SDK emitted an unsupported instruction");
+}
 ```
 
-## API
+The initial schema-v2 set supports the generated inner Kamino KVault `deposit`
+and `withdraw` instructions. The golden fixtures intentionally call the pinned
+official SDK's generated builders; they do not claim compatibility with a full
+high-level helper sequence. Those helpers can also emit ATA, WSOL setup/cleanup,
+or `withdrawFromAvailable` instructions, so callers must map and require success
+for every instruction in the returned sequence. Operations such as
+`depositWithMinSharesOut` and
+`withdrawFromAvailable` are deliberately unsupported until the onchain proxy,
+permission model, program-size impact, and audit cost are reviewed.
 
-### `mapToGlamIx(ix, glamState, glamSigner, staging?)`
+## What schema v2 validates
 
-Transforms a standard Solana `TransactionInstruction` into a GLAM proxy instruction.
+Before mapping, the strict API validates:
 
-**Parameters:**
+- the exact native program and instruction discriminator;
+- the exact instruction data length;
+- every fixed source account's position and signer/writable privileges;
+- fixed program, token-program, sysvar, event-authority, and other reviewed
+  addresses;
+- required account equality and GLAM-vault-PDA identity;
+- bounded, structured remaining accounts rather than an arbitrary suffix;
+- the destination program, discriminator, payload, account count, ordering,
+  identities, and privileges after transformation.
 
-| Parameter    | Type                     | Description                                       |
-| ------------ | ------------------------ | ------------------------------------------------- |
-| `ix`         | `TransactionInstruction` | The original Solana instruction to transform      |
-| `glamState`  | `PublicKey`              | The GLAM state PDA that identifies the vault      |
-| `glamSigner` | `PublicKey`              | The vault owner or delegate signing the operation |
-| `staging`    | `boolean` (optional)     | Use staging program IDs (default: `false`)        |
+Malformed untrusted instructions return `unsupported`. Invalid bundled config
+is rejected when the package initializes.
 
-**Returns:** `TransactionInstruction | null` - The transformed instruction, or `null` if the program/instruction is not supported or does not require remapping.
+## Versioned compatibility artifacts
 
-### `getVaultPda(statePda, staging?)`
+The npm package includes the reviewed schema-v2 configs, native/proxy IDLs, and
+machine-readable compatibility manifests under:
 
-Derives the vault PDA from a state PDA.
-
-### `getIntegrationAuthority(integrationProgram)`
-
-Derives the integration authority PDA for a given proxy program.
-
-## How It Works
-
-```mermaid
-flowchart TD
-    subgraph input["Standard Solana Instruction"]
-        direction LR
-        I1["programId: Drift"]
-        I2["disc: src_discriminator"]
-        I3["accounts: [user, market, vault, ...]"]
-        I4["data: payload"]
-    end
-
-    input -->|"mapToGlamIx(ix, glamState, glamSigner)"| lookup
-
-    lookup["Lookup mapping config by programId"] --> match
-    match["Match instruction by src_discriminator"] --> transform
-
-    subgraph transform["Build Proxy Instruction"]
-        direction LR
-        subgraph disc["Discriminator"]
-            T1["src_disc --> dst_disc"]
-        end
-        subgraph accounts["Accounts"]
-            direction TB
-            T2["Inject dynamic accounts<br/>state, vault, signer, integration_authority"]
-            T3["Add static accounts from config"]
-            T4["Reorder original accounts via index_map<br/>drop accounts where index = -1"]
-            T5["Append remaining accounts as-is"]
-            T2 --> T3 --> T4 --> T5
-        end
-    end
-
-    transform --> output
-
-    subgraph output["GLAM Proxy Instruction"]
-        direction LR
-        O1["programId: ext_drift"]
-        O2["disc: dst_discriminator"]
-        O3["accounts: [state, vault, signer, auth, ..., user, market, ...]"]
-        O4["data: payload (unchanged)"]
-    end
+```text
+mapping-configs-v2*/
+artifacts/
+compatibility-manifests/
 ```
+
+Each manifest pins the official SDK, relevant resolved dependencies, native and
+proxy program IDs, IDL and instruction-schema hashes, mapper/config versions,
+supported mappings, explicit rejections, and runtime gates. From a source
+checkout or release CI, run:
+
+```bash
+npm run verify:artifacts
+```
+
+Release CI additionally downloads the exact official SDK tarball named by the
+lockfile and verifies the manifest's SHA-256. Stable package versions reject
+any bundled manifest still marked `proof-only`; this initial proof therefore
+uses the `0.3.0-test.0` prerelease and the npm `test` dist-tag.
+
+The first Kamino manifests are marked `proof-only`: Node golden fixtures pass,
+while the official SDK's current package graph does not pass Next client or
+Expo/Hermes runtime gates. A manifest cannot be marked `supported` while any
+runtime gate is false or a known blocker remains.
+
+## Legacy API
+
+`mapToGlamIx(ix, glamState, glamSigner, staging?)` remains available for
+existing consumers. It returns `TransactionInstruction | null` and uses the
+legacy v1 mappings.
+
+The nullable result cannot distinguish an unsupported instruction from one a
+caller might believe is safe to pass through, so it must not be used as the
+boundary for new official-SDK integrations. Migrate new and updated flows to
+`mapInstruction`/`mapInstructions`.
+
+`fixSignerAccounts` also remains for compatibility. The strict path does not
+call it because mechanically replacing signers can change the economic source
+or destination of an instruction.
+
+## Staging
+
+Pass `{ staging: true }` to select the staging GLAM core and proxy programs:
+
+```typescript
+const result = mapInstruction(nativeInstruction, glamState, signer, {
+  staging: true,
+});
+```
+
+Staging selection is part of the mapping context and should be persisted by
+durable transaction plans rather than inferred from ambient process state.

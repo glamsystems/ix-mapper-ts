@@ -26,12 +26,24 @@ import StagingLoopscaleProgramConfig from "../mapping-configs-v1-staging/1oopBoJ
 import StagingPhoenixProgramConfig from "../mapping-configs-v1-staging/EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih.json";
 import StagingEmberProgramConfig from "../mapping-configs-v1-staging/EMBERpYNE6ehWmXymZZS2skiFmCa9V5dp14e1iduM5qy.json";
 
+import StrictKvauGMspProgramConfig from "../mapping-configs-v2/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
+import StrictStagingKvauGMspProgramConfig from "../mapping-configs-v2-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
+
 import {
   type Instruction as RemappingInstruction,
+  type MappableInstruction,
   type RemappingConfigs,
   type RemappingConfig,
+  type MapInstructionOptions,
+  type MapInstructionResult,
+  type StrictRemappingConfig,
+  type StrictRemappingConfigs,
 } from "./types";
 import { getIntegrationAuthority, getVaultPda } from "./pda";
+import {
+  mapInstructionWithConfigs,
+  validateStrictRemappingConfigs,
+} from "./strict";
 
 const DYNAMIC_ACCOUNT_NAMES = new Set([
   "glam_state",
@@ -181,6 +193,112 @@ const STAGING_REMAPPING_CONFIGS: RemappingConfigs = validateRemappingConfigs({
 });
 
 /**
+ * Production mappings whose complete source layouts have been audited against
+ * schema v2. The strict API never falls back to the v1 configuration set.
+ */
+const STRICT_REMAPPING_CONFIGS: StrictRemappingConfigs =
+  validateStrictRemappingConfigs({
+    [StrictKvauGMspProgramConfig.program_id]:
+      StrictKvauGMspProgramConfig as StrictRemappingConfig,
+  });
+
+/** Staging counterparts to the audited production schema-v2 mappings. */
+const STRICT_STAGING_REMAPPING_CONFIGS: StrictRemappingConfigs =
+  validateStrictRemappingConfigs({
+    [StrictStagingKvauGMspProgramConfig.program_id]:
+      StrictStagingKvauGMspProgramConfig as StrictRemappingConfig,
+  });
+
+function isWeb3Instruction(
+  instruction: MappableInstruction,
+): instruction is TransactionInstruction {
+  if (typeof instruction !== "object" || instruction === null) return false;
+  const candidate = instruction as Partial<TransactionInstruction>;
+  return (
+    typeof candidate.programId?.toBase58 === "function" &&
+    Array.isArray(candidate.keys) &&
+    candidate.data instanceof Uint8Array
+  );
+}
+
+function normalizeByteData(data: ArrayLike<number> | undefined): Buffer {
+  if (
+    data === undefined ||
+    !Number.isSafeInteger(data.length) ||
+    data.length < 0 ||
+    data.length > 1232
+  ) {
+    throw new TypeError(
+      "Instruction data must be a bounded byte-array value",
+    );
+  }
+  const bytes = Array.from({ length: data.length }, (_, index) => data[index]);
+  if (bytes.some((byte) => !Number.isInteger(byte) || byte < 0 || byte > 255)) {
+    throw new TypeError("Instruction data contains a non-byte value");
+  }
+  return Buffer.from(bytes);
+}
+
+/** Normalize a web3.js or Solana Kit-shaped instruction to web3.js. */
+function normalizeInstruction(
+  instruction: MappableInstruction,
+): TransactionInstruction {
+  if (isWeb3Instruction(instruction)) {
+    const keys = instruction.keys.map((account, index) => {
+      if (
+        typeof account?.pubkey?.toBase58 !== "function" ||
+        typeof account.isSigner !== "boolean" ||
+        typeof account.isWritable !== "boolean"
+      ) {
+        throw new TypeError(`web3.js account ${index} is malformed`);
+      }
+      return {
+        pubkey: new PublicKey(account.pubkey.toBase58()),
+        isSigner: account.isSigner,
+        isWritable: account.isWritable,
+      };
+    });
+    return new TransactionInstruction({
+      programId: new PublicKey(instruction.programId.toBase58()),
+      keys,
+      data: normalizeByteData(instruction.data),
+    });
+  }
+  if (
+    typeof instruction !== "object" ||
+    instruction === null ||
+    typeof instruction.programAddress !== "string"
+  ) {
+    throw new TypeError(
+      "Solana Kit instruction requires a program address and byte data",
+    );
+  }
+
+  const accounts = instruction.accounts ?? [];
+  const keys = accounts.map((account, index) => {
+    if (
+      typeof account?.address !== "string" ||
+      !Number.isInteger(account.role) ||
+      account.role < 0 ||
+      account.role > 3
+    ) {
+      throw new TypeError(`Solana Kit account ${index} is malformed`);
+    }
+    return {
+      pubkey: new PublicKey(account.address),
+      isSigner: (account.role & 2) !== 0,
+      isWritable: (account.role & 1) !== 0,
+    };
+  });
+
+  return new TransactionInstruction({
+    programId: new PublicKey(instruction.programAddress),
+    keys,
+    data: normalizeByteData(instruction.data),
+  });
+}
+
+/**
  * Applies remapping config and transforms ix into a GLAM ix
  */
 function mapToGlamIx(
@@ -317,6 +435,53 @@ function mapToGlamIx(
 }
 
 /**
+ * Fail-closed instruction mapping using only audited schema-v2 layouts.
+ *
+ * Unlike `mapToGlamIx`, this API distinguishes mapped, explicitly safe
+ * passthrough, and unsupported instructions. Unknown programs, unknown
+ * discriminators, and malformed source layouts are always unsupported.
+ */
+function mapInstruction(
+  ix: MappableInstruction,
+  glamState: PublicKey,
+  glamSigner: PublicKey,
+  options: MapInstructionOptions | boolean = {},
+): MapInstructionResult {
+  const staging =
+    typeof options === "boolean" ? options : (options?.staging ?? false);
+  let normalized: TransactionInstruction;
+  try {
+    normalized = normalizeInstruction(ix);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "unknown error";
+    return {
+      kind: "unsupported",
+      reason: "invalid-instruction",
+      message: `Instruction could not be normalized safely: ${message}`,
+    };
+  }
+  return mapInstructionWithConfigs(
+    normalized,
+    glamState,
+    glamSigner,
+    staging ? STRICT_STAGING_REMAPPING_CONFIGS : STRICT_REMAPPING_CONFIGS,
+    staging,
+  );
+}
+
+/** Map an ordered instruction sequence without dropping unsupported entries. */
+function mapInstructions(
+  instructions: readonly MappableInstruction[],
+  glamState: PublicKey,
+  glamSigner: PublicKey,
+  options: MapInstructionOptions | boolean = {},
+): MapInstructionResult[] {
+  return instructions.map((instruction) =>
+    mapInstruction(instruction, glamState, glamSigner, options),
+  );
+}
+
+/**
  * Replace vault PDA with glamSigner wherever the vault appears as a signer.
  * The vault PDA can't sign at the transaction level — only the on-chain program
  * can sign for it via CPI. This fixes accounts like fee_payer (InitObligation)
@@ -342,4 +507,32 @@ function fixSignerAccounts(
   });
 }
 
-export { mapToGlamIx, fixSignerAccounts };
+export {
+  fixSignerAccounts,
+  mapInstruction,
+  mapInstructions,
+  mapToGlamIx,
+  normalizeInstruction,
+};
+export type {
+  MappableInstruction,
+  MapInstructionOptions,
+  MapInstructionResult,
+  MappedInstructionResult,
+  SafePassthroughInstructionResult,
+  SolanaKitAccountMeta,
+  SolanaKitAccountRole,
+  SolanaKitInstruction,
+  StrictAccountConstraint,
+  StrictDynamicAccountName,
+  StrictInstruction,
+  StrictInstructionMetadata,
+  StrictNoRemainingAccounts,
+  StrictPairedRemainingAccounts,
+  StrictRemainingAccountMeta,
+  StrictRemainingAccounts,
+  StrictRemappingConfig,
+  StrictRemappingConfigs,
+  UnsupportedInstructionReason,
+  UnsupportedInstructionResult,
+} from "./types";

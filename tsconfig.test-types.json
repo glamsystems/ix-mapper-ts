@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts", "tests/official-sdk.types.ts"],
+  "exclude": ["node_modules", ".build", "examples"]
+}
