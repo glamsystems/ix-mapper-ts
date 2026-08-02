@@ -1,6 +1,7 @@
 {
   "$schema": "../schema-v1.json",
   "manifest_version": 1,
+  "manifest_revision": 1,
   "status": "proof-only",
   "integration": "kamino-kvaults",
   "cluster": "mainnet-beta",
@@ -13,6 +14,25 @@
       "version": "9.1.5",
       "npm_integrity": "sha512-sZKmAwcCnEqenwHh349hcC2m213vvMWgfB0ZoRf0BDIjepDXMxigypm4etP9n8ctDcu4S8K8l+AeCtNKiUAmkQ==",
       "tarball_sha256": "7c3da5b8f44930dc5d5fa0f44e91fa153fd08b51177238d879b2678a9332447e",
+      "solana_kit": {
+        "package": "@solana/kit",
+        "version": "2.3.0",
+        "npm_integrity": "sha512-sb6PgwoW2LjE5oTFu4lhlS/cGt/NB3YrShEyx7JgWFWysfgLdJnhwWThgwy/4HjNsmtMrQGWVls0yVBHcMvlMQ=="
+      },
+      "verified_compatibility_packages": {
+        "@kamino-finance/farms-sdk": {
+          "version": "3.2.26",
+          "npm_integrity": "sha512-G6aziMz0ounatUEGlkiul14ERPXZD/RtzG21b72E/PKVBiFhKP/4fmpolHJjcgJWF4V4i+ITSXevi9oQ0EkLCA=="
+        }
+      },
+      "program_bindings": [
+        {
+          "name": "kamino-farms",
+          "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+          "mode": "sdk-default-only",
+          "constraint": "Deposit helpers use the Farms SDK default. KaminoVaultClient farmsProgramId must be omitted or equal this address for withdraw; any other value is outside this profile and unsupported."
+        }
+      ],
       "resolved_compatibility_dependencies": {
         "@coral-xyz/anchor": "0.28.0",
         "@kamino-finance/farms-sdk": "3.2.26",
@@ -20,6 +40,7 @@
         "@kamino-finance/scope-sdk": "10.2.6",
         "@orca-so/whirlpools-core": "2.0.0",
         "@solana-program/address-lookup-table": "0.8.0",
+        "@solana-program/memo": "0.7.0",
         "@solana-program/system": "0.8.1",
         "@solana-program/token": "0.6.0",
         "@solana-program/token-2022": "0.5.0",
@@ -36,7 +57,32 @@
   "mapper": {
     "package": "@glamsystems/ix-mapper",
     "version": "0.3.0-test.0",
-    "config_schema_version": 2
+    "config_schema_version": 2,
+    "config_revision": 1
+  },
+  "instruction_classification": {
+    "artifact": "instruction_classification_config",
+    "schema_version": 1,
+    "config_revision": 1,
+    "mapped_rule_ids": ["kvault.deposit", "kvault.withdraw"],
+    "safe_passthrough_rule_ids": [],
+    "unsupported_rule_ids": [
+      "kvault.deposit-with-min-shares-out",
+      "kvault.withdraw-from-available",
+      "deposit.create-shares-ata",
+      "deposit.create-wsol-ata",
+      "deposit.transfer-sol-to-wsol-ata",
+      "deposit.sync-native-wsol",
+      "deposit.memo",
+      "deposit.farm.initialize-user",
+      "deposit.farm.stake",
+      "withdraw.create-destination-ata",
+      "withdraw.farm.create-shares-ata",
+      "withdraw.farm.unstake",
+      "withdraw.farm.withdraw-unstaked-deposits",
+      "withdraw.close-wsol-ata",
+      "withdraw.close-shares-ata"
+    ]
   },
   "artifacts": {
     "native_idl": {
@@ -51,13 +97,61 @@
       "package_path": "@kamino-finance/klend-sdk/dist/@codegen/kvault/instructions/withdraw.js",
       "sha256": "d6083a2e3418bfae7e37ec6cfdb38af98512648f07e22520479801fe0a2488f4"
     },
+    "high_level_kvault_helper_source": {
+      "package_path": "@kamino-finance/klend-sdk/dist/classes/vault.js",
+      "sha256": "cb9ce1338e1c5d6bad3628f04faaa1483b74c5c0493e837c19ee11c9e4833831"
+    },
+    "high_level_ata_helper_source": {
+      "package_path": "@kamino-finance/klend-sdk/dist/utils/ata.js",
+      "sha256": "07e04f9d1db21f9a23c3ea18d68523a678b694cfb65bb62496c37a533fe526c5"
+    },
+    "high_level_farm_helper_source": {
+      "package_path": "@kamino-finance/klend-sdk/dist/classes/farm_utils.js",
+      "sha256": "72c275acf371323d917fd29fd94971c9640f875b6700009d041a6e706af14bbf"
+    },
+    "farms_client_source": {
+      "package_path": "@kamino-finance/farms-sdk/dist/Farms.js",
+      "sha256": "7b1cd629d3727c0d97b5b69f669aaf3503e0f09ecf4188470aed3a2a82c62026"
+    },
+    "farms_operations_source": {
+      "package_path": "@kamino-finance/farms-sdk/dist/utils/operations.js",
+      "sha256": "7fcb2ec4b6ce3107b63f7b5d79e28eceb2ddec86b5488d17f6c663d9620d20a3"
+    },
+    "farms_program_source": {
+      "package_path": "@kamino-finance/farms-sdk/dist/@codegen/farms/programs/farms.js",
+      "sha256": "13b4831ca0ac88838088652d086fcabb0c52d8d47ac0a7b8868545e99e44d7ef"
+    },
+    "farms_initialize_user_schema": {
+      "package_path": "@kamino-finance/farms-sdk/dist/@codegen/farms/instructions/initializeUser.js",
+      "sha256": "12a413b5064a274c21fb04fd71460110b5c66faa750779ac1cfabf6ca7325f10"
+    },
+    "farms_stake_schema": {
+      "package_path": "@kamino-finance/farms-sdk/dist/@codegen/farms/instructions/stake.js",
+      "sha256": "78a10d19eeb3c0bc071db902918368342a0cfcab5fd2451cabbaef3b87338342"
+    },
+    "farms_unstake_schema": {
+      "package_path": "@kamino-finance/farms-sdk/dist/@codegen/farms/instructions/unstake.js",
+      "sha256": "3cce781b7094dde4dec16e10435649f8de8e712981bc7fea942c195fb8b037c5"
+    },
+    "farms_withdraw_unstaked_deposits_schema": {
+      "package_path": "@kamino-finance/farms-sdk/dist/@codegen/farms/instructions/withdrawUnstakedDeposits.js",
+      "sha256": "a5de3b41b169cd169efab401cf48b5cbcc19b0e21bbcbece5204091d08719f1c"
+    },
     "proxy_idl": {
       "bundled_path": "artifacts/ext-kamino/1.0.1/production.json",
       "sha256": "36edceffa5c71d3a0e3d17e14d075dc82086f44e84177a63aae41cdaedb879b2"
     },
     "mapper_config": {
       "bundled_path": "mapping-configs-v2/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json",
-      "sha256": "0d87134ed4d9b928eae1119473b099d6e66df75b131b7a7067cf4e12d4adf7d5"
+      "sha256": "a897d67e8da7e416d0f14472ed8b2ddad5fdb076d275f42568d069ccadb5440b"
+    },
+    "instruction_classification_schema": {
+      "bundled_path": "instruction-classifications-v1/schema-v1.json",
+      "sha256": "a9045f2f060e0048bd500d5f6ca8351b6399a8cb207f2268d3ea2d25e7ec03cf"
+    },
+    "instruction_classification_config": {
+      "bundled_path": "instruction-classifications-v1/kamino-kvaults.json",
+      "sha256": "cf1489a656ee4a7aeb92b3114190f72e674e5fa6a8ae8761101d7394a3ac8ec7"
     }
   },
   "supported_mappings": [
@@ -84,30 +178,97 @@
   ],
   "explicitly_unsupported": [
     {
+      "classification_rule_id": "kvault.deposit-with-min-shares-out",
       "instruction": "depositWithMinSharesOut",
       "discriminator": [74, 127, 128, 80, 4, 221, 193, 91],
-      "reason": "ext_kamino has no reviewed proxy wrapper"
+      "reason": "ext_kamino has no reviewed proxy wrapper for this instruction"
     },
     {
+      "classification_rule_id": "kvault.withdraw-from-available",
       "instruction": "withdrawFromAvailable",
       "discriminator": [19, 131, 112, 155, 170, 220, 34, 57],
-      "reason": "ext_kamino has no reviewed proxy wrapper"
+      "reason": "ext_kamino has no reviewed proxy wrapper for this instruction"
     },
     {
-      "instruction": "buy/buyWithMinSharesOut/sell/redeemInKind",
-      "reason": "not represented by the current GLAM permission and proxy surface"
+      "classification_rule_id": "deposit.create-shares-ata",
+      "instruction": "CreateIdempotent",
+      "discriminator": [1],
+      "reason": "the exact ATA, mint, owner, token program, and external payer bindings are not yet approved for native passthrough"
     },
     {
-      "instruction": "farm setup/stake/unstake/cleanup",
-      "reason": "not part of the farm-free KVault compatibility slice"
+      "classification_rule_id": "deposit.create-wsol-ata",
+      "instruction": "CreateIdempotent",
+      "discriminator": [1],
+      "reason": "the exact WSOL ATA, vault owner, token program, and external payer bindings are not yet approved for native passthrough"
     },
     {
-      "instruction": "complete high-level SDK helper sequences",
-      "reason": "the proof covers generated inner deposit/withdraw instructions only; ATA, WSOL setup/cleanup, and other emitted instructions must each gain an explicit mapping or audited passthrough rule"
+      "classification_rule_id": "deposit.transfer-sol-to-wsol-ata",
+      "instruction": "TransferSol",
+      "discriminator": [2, 0, 0, 0],
+      "reason": "this signer-bearing value transfer requires a reviewed strict GLAM mapping and cannot use native passthrough"
+    },
+    {
+      "classification_rule_id": "deposit.sync-native-wsol",
+      "instruction": "SyncNative",
+      "discriminator": [17],
+      "reason": "the exact WSOL account binding has not yet been reviewed and allowlisted for native passthrough"
+    },
+    {
+      "classification_rule_id": "deposit.memo",
+      "instruction": "Memo",
+      "reason": "the initial KVault profile forbids memo emission and has no approved data constraint"
+    },
+    {
+      "classification_rule_id": "deposit.farm.initialize-user",
+      "instruction": "initializeUser",
+      "discriminator": [111, 17, 185, 250, 60, 122, 38, 254],
+      "reason": "the initial KVault profile requires both farm inputs to be null; initializeUser has no reviewed GLAM mapping"
+    },
+    {
+      "classification_rule_id": "deposit.farm.stake",
+      "instruction": "stake",
+      "discriminator": [206, 176, 202, 18, 200, 209, 179, 108],
+      "reason": "the initial KVault profile requires both farm inputs to be null; stake has no reviewed GLAM mapping"
+    },
+    {
+      "classification_rule_id": "withdraw.create-destination-ata",
+      "instruction": "CreateIdempotent",
+      "discriminator": [1],
+      "reason": "the exact ATA, mint, owner, token program, and external payer bindings are not yet approved for native passthrough"
+    },
+    {
+      "classification_rule_id": "withdraw.farm.create-shares-ata",
+      "instruction": "CreateIdempotent",
+      "discriminator": [1],
+      "reason": "the exact shares ATA, mint, owner, token program, and external payer bindings are not yet approved for native passthrough"
+    },
+    {
+      "classification_rule_id": "withdraw.farm.unstake",
+      "instruction": "unstake",
+      "discriminator": [90, 95, 107, 42, 205, 124, 50, 225],
+      "reason": "the initial KVault profile requires both farm inputs to be null; unstake has no reviewed GLAM mapping"
+    },
+    {
+      "classification_rule_id": "withdraw.farm.withdraw-unstaked-deposits",
+      "instruction": "withdrawUnstakedDeposits",
+      "discriminator": [36, 102, 187, 49, 220, 36, 132, 67],
+      "reason": "the initial KVault profile requires both farm inputs to be null; withdrawUnstakedDeposits has no reviewed GLAM mapping"
+    },
+    {
+      "classification_rule_id": "withdraw.close-wsol-ata",
+      "instruction": "CloseAccount",
+      "discriminator": [9],
+      "reason": "this signer-bearing close requires a reviewed strict GLAM mapping and cannot use native passthrough"
+    },
+    {
+      "classification_rule_id": "withdraw.close-shares-ata",
+      "instruction": "CloseAccount",
+      "discriminator": [9],
+      "reason": "this signer-bearing close requires a reviewed strict GLAM mapping and cannot use native passthrough"
     }
   ],
   "runtime_validation": {
-    "verified_on": "2026-08-02",
+    "verified_on": "2026-08-03",
     "node_golden_fixtures": true,
     "next_client_build": false,
     "expo_hermes_bundle": false,

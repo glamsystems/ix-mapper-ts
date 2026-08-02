@@ -5,6 +5,30 @@
   "main": "./index.cjs",
   "module": "./index.esm.js",
   "types": "./index.cjs.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.cjs.d.ts",
+      "import": "./index.esm.mjs",
+      "require": "./index.cjs"
+    },
+    "./core": {
+      "types": "./core.d.ts",
+      "import": "./core.esm.mjs",
+      "require": "./core.cjs"
+    },
+    "./legacy-web3": {
+      "types": "./legacy-web3.d.ts",
+      "import": "./legacy-web3.esm.mjs",
+      "require": "./legacy-web3.cjs"
+    },
+    "./artifacts/*": "./artifacts/*",
+    "./compatibility-manifests/*": "./compatibility-manifests/*",
+    "./instruction-classifications-v1/*": "./instruction-classifications-v1/*",
+    "./mapping-configs-v2/*": "./mapping-configs-v2/*",
+    "./mapping-configs-v2-staging/*": "./mapping-configs-v2-staging/*",
+    "./package.json": "./package.json",
+    "./*": "./*"
+  },
   "homepage": "https://www.glam.systems",
   "repository": {
     "type": "git",
@@ -27,14 +51,23 @@
   },
   "files": [
     "README.md",
+    "ARCHITECTURE.md",
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "artifacts/**/*.json",
     "compatibility-manifests/**/*.json",
+    "instruction-classifications-v1/**/*.json",
+    "core.cjs",
+    "core.esm.mjs",
+    "core.d.ts",
     "index.cjs",
     "index.esm.js",
+    "index.esm.mjs",
     "index.cjs.d.ts",
     "index.esm.d.ts",
+    "legacy-web3.cjs",
+    "legacy-web3.esm.mjs",
+    "legacy-web3.d.ts",
     "mapping-configs-v2/**/*.json",
     "mapping-configs-v2-staging/**/*.json",
     "src/**/*.d.ts"
@@ -50,6 +83,7 @@
   },
   "devDependencies": {
     "@kamino-finance/klend-sdk": "9.1.5",
+    "@solana/kit": "2.3.0",
     "@types/node": "20.19.39",
     "esbuild": "0.25.12",
     "typescript": "5.9.3",

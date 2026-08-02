@@ -31,19 +31,20 @@ import StrictStagingKvauGMspProgramConfig from "../mapping-configs-v2-staging/Kv
 
 import {
   type Instruction as RemappingInstruction,
-  type MappableInstruction,
   type RemappingConfigs,
   type RemappingConfig,
   type MapInstructionOptions,
   type MapInstructionResult,
-  type StrictRemappingConfig,
-  type StrictRemappingConfigs,
+  type NeutralMapInstructionResult,
+  type NeutralMappingContext,
 } from "./types";
-import { getIntegrationAuthority, getVaultPda } from "./pda";
+import { createNeutralMapper } from "./core";
 import {
-  mapInstructionWithConfigs,
-  validateStrictRemappingConfigs,
-} from "./strict";
+  normalizeLegacyInstruction,
+  toWeb3Instruction,
+  type MappableInstruction,
+} from "./legacy-web3";
+import { getIntegrationAuthority, getVaultPda } from "./pda";
 
 const DYNAMIC_ACCOUNT_NAMES = new Set([
   "glam_state",
@@ -192,110 +193,73 @@ const STAGING_REMAPPING_CONFIGS: RemappingConfigs = validateRemappingConfigs({
     StagingEmberProgramConfig as RemappingConfig,
 });
 
-/**
- * Production mappings whose complete source layouts have been audited against
- * schema v2. The strict API never falls back to the v1 configuration set.
- */
-const STRICT_REMAPPING_CONFIGS: StrictRemappingConfigs =
-  validateStrictRemappingConfigs({
-    [StrictKvauGMspProgramConfig.program_id]:
-      StrictKvauGMspProgramConfig as StrictRemappingConfig,
-  });
+const WEB3_MAPPER_ENVIRONMENT = {
+  normalizeAddress(address: string): string {
+    return new PublicKey(address).toBase58();
+  },
+};
 
-/** Staging counterparts to the audited production schema-v2 mappings. */
-const STRICT_STAGING_REMAPPING_CONFIGS: StrictRemappingConfigs =
-  validateStrictRemappingConfigs({
-    [StrictStagingKvauGMspProgramConfig.program_id]:
-      StrictStagingKvauGMspProgramConfig as StrictRemappingConfig,
-  });
+const neutralMapper = createNeutralMapper(WEB3_MAPPER_ENVIRONMENT);
 
-function isWeb3Instruction(
-  instruction: MappableInstruction,
-): instruction is TransactionInstruction {
-  if (typeof instruction !== "object" || instruction === null) return false;
-  const candidate = instruction as Partial<TransactionInstruction>;
-  return (
-    typeof candidate.programId?.toBase58 === "function" &&
-    Array.isArray(candidate.keys) &&
-    candidate.data instanceof Uint8Array
-  );
-}
-
-function normalizeByteData(data: ArrayLike<number> | undefined): Buffer {
-  if (
-    data === undefined ||
-    !Number.isSafeInteger(data.length) ||
-    data.length < 0 ||
-    data.length > 1232
-  ) {
-    throw new TypeError(
-      "Instruction data must be a bounded byte-array value",
-    );
-  }
-  const bytes = Array.from({ length: data.length }, (_, index) => data[index]);
-  if (bytes.some((byte) => !Number.isInteger(byte) || byte < 0 || byte > 255)) {
-    throw new TypeError("Instruction data contains a non-byte value");
-  }
-  return Buffer.from(bytes);
-}
-
-/** Normalize a web3.js or Solana Kit-shaped instruction to web3.js. */
+/** Normalize a Kit-shaped or web3.js instruction to a fresh web3.js object. */
 function normalizeInstruction(
   instruction: MappableInstruction,
 ): TransactionInstruction {
-  if (isWeb3Instruction(instruction)) {
-    const keys = instruction.keys.map((account, index) => {
-      if (
-        typeof account?.pubkey?.toBase58 !== "function" ||
-        typeof account.isSigner !== "boolean" ||
-        typeof account.isWritable !== "boolean"
-      ) {
-        throw new TypeError(`web3.js account ${index} is malformed`);
-      }
-      return {
-        pubkey: new PublicKey(account.pubkey.toBase58()),
-        isSigner: account.isSigner,
-        isWritable: account.isWritable,
-      };
-    });
-    return new TransactionInstruction({
-      programId: new PublicKey(instruction.programId.toBase58()),
-      keys,
-      data: normalizeByteData(instruction.data),
-    });
-  }
+  return toWeb3Instruction(
+    normalizeLegacyInstruction(instruction, WEB3_MAPPER_ENVIRONMENT),
+  );
+}
+
+function toWeb3Result(
+  result: NeutralMapInstructionResult,
+): MapInstructionResult {
+  if (result.kind === "unsupported") return result;
+  return { ...result, instruction: toWeb3Instruction(result.instruction) };
+}
+
+function parseLegacyOptions(
+  options: MapInstructionOptions | boolean,
+): MapInstructionOptions {
+  if (typeof options === "boolean") return { staging: options };
   if (
-    typeof instruction !== "object" ||
-    instruction === null ||
-    typeof instruction.programAddress !== "string"
+    typeof options !== "object" ||
+    options === null ||
+    Array.isArray(options)
   ) {
-    throw new TypeError(
-      "Solana Kit instruction requires a program address and byte data",
-    );
+    throw new TypeError("Mapper options must be a boolean or object");
   }
+  const unknown = Object.keys(options).filter((key) => key !== "staging");
+  if (unknown.length > 0) {
+    throw new TypeError(`Unknown mapper option: ${unknown.sort()[0]}`);
+  }
+  if (options.staging !== undefined && typeof options.staging !== "boolean") {
+    throw new TypeError("Mapper staging option must be boolean");
+  }
+  return options;
+}
 
-  const accounts = instruction.accounts ?? [];
-  const keys = accounts.map((account, index) => {
-    if (
-      typeof account?.address !== "string" ||
-      !Number.isInteger(account.role) ||
-      account.role < 0 ||
-      account.role > 3
-    ) {
-      throw new TypeError(`Solana Kit account ${index} is malformed`);
-    }
-    return {
-      pubkey: new PublicKey(account.address),
-      isSigner: (account.role & 2) !== 0,
-      isWritable: (account.role & 1) !== 0,
-    };
-  });
-
-  return new TransactionInstruction({
-    programId: new PublicKey(instruction.programAddress),
-    keys,
-    data: normalizeByteData(instruction.data),
-  });
+function createWeb3MappingContext(
+  glamState: PublicKey,
+  glamSigner: PublicKey,
+  staging: boolean,
+): NeutralMappingContext {
+  const productionProxy = new PublicKey(
+    StrictKvauGMspProgramConfig.proxy_program_id,
+  );
+  const stagingProxy = new PublicKey(
+    StrictStagingKvauGMspProgramConfig.proxy_program_id,
+  );
+  return {
+    glamStateAddress: glamState.toBase58(),
+    glamVaultAddress: getVaultPda(glamState, staging).toBase58(),
+    glamSignerAddress: glamSigner.toBase58(),
+    integrationAuthorityByProxyProgram: {
+      [productionProxy.toBase58()]:
+        getIntegrationAuthority(productionProxy).toBase58(),
+      [stagingProxy.toBase58()]:
+        getIntegrationAuthority(stagingProxy).toBase58(),
+    },
+  };
 }
 
 /**
@@ -320,9 +284,9 @@ function mapToGlamIx(
       .equals(new Uint8Array(src_discriminator));
   });
   if (!ixConfig) {
-    // No remapping config found for the incoming instruction. This happens when
-    // 1. The instruction is not supported
-    // 2. The instruction doesn't need to be remapped (e.g., it's permissionless and doesn't need to be signed by GLAM vault PDA)
+    // Legacy nullable API: null means no v1 mapping exists. It is not approval
+    // to pass an instruction through. New code must use mapInstruction(), which
+    // returns an explicit fail-closed tagged result.
     return null;
   }
 
@@ -447,11 +411,20 @@ function mapInstruction(
   glamSigner: PublicKey,
   options: MapInstructionOptions | boolean = {},
 ): MapInstructionResult {
-  const staging =
-    typeof options === "boolean" ? options : (options?.staging ?? false);
-  let normalized: TransactionInstruction;
   try {
-    normalized = normalizeInstruction(ix);
+    const parsedOptions = parseLegacyOptions(options);
+    const context = createWeb3MappingContext(
+      glamState,
+      glamSigner,
+      parsedOptions.staging ?? false,
+    );
+    return toWeb3Result(
+      neutralMapper.mapInstructionNeutral(
+        normalizeLegacyInstruction(ix, WEB3_MAPPER_ENVIRONMENT),
+        context,
+        parsedOptions,
+      ),
+    );
   } catch (error) {
     const message = error instanceof Error ? error.message : "unknown error";
     return {
@@ -460,13 +433,6 @@ function mapInstruction(
       message: `Instruction could not be normalized safely: ${message}`,
     };
   }
-  return mapInstructionWithConfigs(
-    normalized,
-    glamState,
-    glamSigner,
-    staging ? STRICT_STAGING_REMAPPING_CONFIGS : STRICT_REMAPPING_CONFIGS,
-    staging,
-  );
 }
 
 /** Map an ordered instruction sequence without dropping unsupported entries. */
@@ -515,7 +481,6 @@ export {
   normalizeInstruction,
 };
 export type {
-  MappableInstruction,
   MapInstructionOptions,
   MapInstructionResult,
   MappedInstructionResult,
@@ -536,3 +501,4 @@ export type {
   UnsupportedInstructionReason,
   UnsupportedInstructionResult,
 } from "./types";
+export type { MappableInstruction } from "./legacy-web3";

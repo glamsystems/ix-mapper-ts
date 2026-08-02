@@ -1,0 +1,216 @@
+{
+  "$schema": "./schema-v1.json",
+  "schema_version": 1,
+  "config_revision": 1,
+  "integration": "kamino-kvaults",
+  "rules": [
+    {
+      "id": "kvault.deposit",
+      "outcome": "mapped",
+      "program_id": "KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd",
+      "instruction": "deposit",
+      "phase": "protocol",
+      "emitted_by": [
+        "KaminoVaultClient.depositIxs",
+        "@kamino-finance/klend-sdk generated deposit"
+      ],
+      "condition": "minSharesOut is omitted and the reserve-backed deposit layout is selected",
+      "discriminator": [242, 35, 198, 137, 82, 225, 242, 182],
+      "mapping_ref": {
+        "config_schema_version": 2,
+        "config_revision": 1,
+        "source_instruction": "deposit"
+      }
+    },
+    {
+      "id": "kvault.withdraw",
+      "outcome": "mapped",
+      "program_id": "KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd",
+      "instruction": "withdraw",
+      "phase": "protocol",
+      "emitted_by": [
+        "KaminoVaultClient.withdrawIxs",
+        "@kamino-finance/klend-sdk generated withdraw"
+      ],
+      "condition": "the reserve-backed classic withdraw layout is selected",
+      "discriminator": [183, 18, 70, 156, 148, 109, 161, 34],
+      "mapping_ref": {
+        "config_schema_version": 2,
+        "config_revision": 1,
+        "source_instruction": "withdraw"
+      }
+    },
+    {
+      "id": "kvault.deposit-with-min-shares-out",
+      "outcome": "unsupported",
+      "program_id": "KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd",
+      "instruction": "depositWithMinSharesOut",
+      "phase": "protocol",
+      "emitted_by": ["KaminoVaultClient.depositIxs"],
+      "condition": "minSharesOut is provided",
+      "discriminator": [74, 127, 128, 80, 4, 221, 193, 91],
+      "reason": "ext_kamino has no reviewed proxy wrapper for this instruction"
+    },
+    {
+      "id": "kvault.withdraw-from-available",
+      "outcome": "unsupported",
+      "program_id": "KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd",
+      "instruction": "withdrawFromAvailable",
+      "phase": "protocol",
+      "emitted_by": ["KaminoVaultClient.withdrawIxs"],
+      "condition": "the helper determines that allocated reserves do not need to be exited",
+      "discriminator": [19, 131, 112, 155, 170, 220, 34, 57],
+      "reason": "ext_kamino has no reviewed proxy wrapper for this instruction"
+    },
+    {
+      "id": "deposit.create-shares-ata",
+      "outcome": "unsupported",
+      "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      "instruction": "CreateIdempotent",
+      "phase": "setup",
+      "emitted_by": ["KaminoVaultClient.depositIxs"],
+      "condition": "always emitted for the user shares associated token account",
+      "discriminator": [1],
+      "reason": "the exact ATA, mint, owner, token program, and external payer bindings are not yet approved for native passthrough"
+    },
+    {
+      "id": "deposit.create-wsol-ata",
+      "outcome": "unsupported",
+      "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      "instruction": "CreateIdempotent",
+      "phase": "setup",
+      "emitted_by": ["KaminoVaultClient.depositIxs"],
+      "condition": "the vault token mint is wrapped SOL",
+      "discriminator": [1],
+      "reason": "the exact WSOL ATA, vault owner, token program, and external payer bindings are not yet approved for native passthrough"
+    },
+    {
+      "id": "deposit.transfer-sol-to-wsol-ata",
+      "outcome": "unsupported",
+      "program_id": "11111111111111111111111111111111",
+      "instruction": "TransferSol",
+      "phase": "setup",
+      "emitted_by": ["KaminoVaultClient.depositIxs"],
+      "condition": "the vault token mint is wrapped SOL",
+      "discriminator": [2, 0, 0, 0],
+      "reason": "this signer-bearing value transfer requires a reviewed strict GLAM mapping and cannot use native passthrough"
+    },
+    {
+      "id": "deposit.sync-native-wsol",
+      "outcome": "unsupported",
+      "program_id": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "instruction": "SyncNative",
+      "phase": "setup",
+      "emitted_by": ["KaminoVaultClient.depositIxs"],
+      "condition": "the vault token mint is wrapped SOL",
+      "discriminator": [17],
+      "reason": "the exact WSOL account binding has not yet been reviewed and allowlisted for native passthrough"
+    },
+    {
+      "id": "deposit.memo",
+      "outcome": "unsupported",
+      "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+      "instruction": "Memo",
+      "phase": "setup",
+      "emitted_by": ["KaminoVaultClient.depositIxs"],
+      "condition": "the optional memo argument is provided",
+      "reason": "the initial KVault profile forbids memo emission and has no approved data constraint"
+    },
+    {
+      "id": "deposit.farm.initialize-user",
+      "outcome": "unsupported",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "initializeUser",
+      "phase": "setup",
+      "emitted_by": [
+        "KaminoVaultClient.depositIxs -> getFarmStakeIxs -> Farms.createNewUserIx"
+      ],
+      "condition": "farmState or flcFarmState is supplied and the selected farm user state does not exist",
+      "discriminator": [111, 17, 185, 250, 60, 122, 38, 254],
+      "reason": "the initial KVault profile requires both farm inputs to be null; initializeUser has no reviewed GLAM mapping"
+    },
+    {
+      "id": "deposit.farm.stake",
+      "outcome": "unsupported",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "stake",
+      "phase": "protocol",
+      "emitted_by": [
+        "KaminoVaultClient.depositIxs -> getFarmStakeIxs -> Farms.stakeIx"
+      ],
+      "condition": "farmState or flcFarmState is supplied and shares are selected for staking",
+      "discriminator": [206, 176, 202, 18, 200, 209, 179, 108],
+      "reason": "the initial KVault profile requires both farm inputs to be null; stake has no reviewed GLAM mapping"
+    },
+    {
+      "id": "withdraw.create-destination-ata",
+      "outcome": "unsupported",
+      "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      "instruction": "CreateIdempotent",
+      "phase": "setup",
+      "emitted_by": ["KaminoVaultClient.withdrawIxs"],
+      "condition": "always emitted for the destination token associated account",
+      "discriminator": [1],
+      "reason": "the exact ATA, mint, owner, token program, and external payer bindings are not yet approved for native passthrough"
+    },
+    {
+      "id": "withdraw.farm.create-shares-ata",
+      "outcome": "unsupported",
+      "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      "instruction": "CreateIdempotent",
+      "phase": "setup",
+      "emitted_by": ["KaminoVaultClient.buildFarmUnstakeIxsIfNeeded"],
+      "condition": "a selected farm holds shares needed by the withdraw and the shares ATA must receive them",
+      "discriminator": [1],
+      "reason": "the exact shares ATA, mint, owner, token program, and external payer bindings are not yet approved for native passthrough"
+    },
+    {
+      "id": "withdraw.farm.unstake",
+      "outcome": "unsupported",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "unstake",
+      "phase": "protocol",
+      "emitted_by": [
+        "KaminoVaultClient.buildFarmUnstakeIxsIfNeeded -> getFarmUnstakeIx -> Farms.unstakeIx"
+      ],
+      "condition": "a selected farm holds shares needed by the withdraw",
+      "discriminator": [90, 95, 107, 42, 205, 124, 50, 225],
+      "reason": "the initial KVault profile requires both farm inputs to be null; unstake has no reviewed GLAM mapping"
+    },
+    {
+      "id": "withdraw.farm.withdraw-unstaked-deposits",
+      "outcome": "unsupported",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "withdrawUnstakedDeposits",
+      "phase": "protocol",
+      "emitted_by": [
+        "KaminoVaultClient.buildFarmUnstakeIxsIfNeeded -> getFarmWithdrawUnstakedDepositIx -> Farms.withdrawUnstakedDepositIx"
+      ],
+      "condition": "an unstake instruction is emitted for shares needed by the withdraw",
+      "discriminator": [36, 102, 187, 49, 220, 36, 132, 67],
+      "reason": "the initial KVault profile requires both farm inputs to be null; withdrawUnstakedDeposits has no reviewed GLAM mapping"
+    },
+    {
+      "id": "withdraw.close-wsol-ata",
+      "outcome": "unsupported",
+      "program_id": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "instruction": "CloseAccount",
+      "phase": "cleanup",
+      "emitted_by": ["KaminoVaultClient.withdrawIxs"],
+      "condition": "the vault token mint is wrapped SOL",
+      "discriminator": [9],
+      "reason": "this signer-bearing close requires a reviewed strict GLAM mapping and cannot use native passthrough"
+    },
+    {
+      "id": "withdraw.close-shares-ata",
+      "outcome": "unsupported",
+      "program_id": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "instruction": "CloseAccount",
+      "phase": "cleanup",
+      "emitted_by": ["KaminoVaultClient.withdrawIxs"],
+      "condition": "the liquidity plan can burn all user shares",
+      "discriminator": [9],
+      "reason": "this signer-bearing close requires a reviewed strict GLAM mapping and cannot use native passthrough"
+    }
+  ]
+}

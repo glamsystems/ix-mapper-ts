@@ -21,8 +21,13 @@ const manifestSchema = JSON.parse(
     "utf8",
   ),
 );
-const verifySdkTarballs =
-  process.env.IX_MAPPER_VERIFY_SDK_TARBALLS === "1";
+const instructionClassificationSchema = JSON.parse(
+  await readFile(
+    path.join(packageRoot, "instruction-classifications-v1/schema-v1.json"),
+    "utf8",
+  ),
+);
+const verifySdkTarballs = process.env.IX_MAPPER_VERIFY_SDK_TARBALLS === "1";
 const sdkTarballChecks = new Map();
 
 function invariant(condition, message) {
@@ -38,6 +43,32 @@ function equalBytes(left, right) {
     left.length === right.length &&
     left.every((value, index) => value === right[index])
   );
+}
+
+function isExactVersion(value) {
+  return (
+    typeof value === "string" &&
+    /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(value)
+  );
+}
+
+function assertUniqueStrings(values, label) {
+  invariant(Array.isArray(values), `${label} must be an array`);
+  const unique = new Set(values);
+  invariant(
+    values.every((value) => typeof value === "string" && value.length > 0),
+    `${label} must contain non-empty strings`,
+  );
+  invariant(unique.size === values.length, `${label} contains duplicates`);
+  return unique;
+}
+
+function discriminatorsOverlap(left, right) {
+  const prefixLength = Math.min(left.length, right.length);
+  for (let index = 0; index < prefixLength; index += 1) {
+    if (left[index] !== right[index]) return false;
+  }
+  return true;
 }
 
 function resolveSchemaRef(rootSchema, reference) {
@@ -79,7 +110,10 @@ function validateJsonSchema(value, schema, rootSchema, location = "manifest") {
         // A oneOf branch is expected to reject when another branch matches.
       }
     }
-    invariant(matches === 1, `${location} must match exactly one schema branch`);
+    invariant(
+      matches === 1,
+      `${location} must match exactly one schema branch`,
+    );
   }
 
   if (schema.type) {
@@ -119,11 +153,32 @@ function validateJsonSchema(value, schema, rootSchema, location = "manifest") {
 
   if (Array.isArray(value)) {
     if (schema.minItems !== undefined) {
-      invariant(value.length >= schema.minItems, `${location} has too few items`);
+      invariant(
+        value.length >= schema.minItems,
+        `${location} has too few items`,
+      );
     }
     if (schema.items) {
       value.forEach((item, index) =>
-        validateJsonSchema(item, schema.items, rootSchema, `${location}[${index}]`),
+        validateJsonSchema(
+          item,
+          schema.items,
+          rootSchema,
+          `${location}[${index}]`,
+        ),
+      );
+    }
+    if (schema.maxItems !== undefined) {
+      invariant(
+        value.length <= schema.maxItems,
+        `${location} has too many items`,
+      );
+    }
+    if (schema.uniqueItems === true) {
+      invariant(
+        new Set(value.map((item) => JSON.stringify(item))).size ===
+          value.length,
+        `${location} contains duplicate items`,
       );
     }
   }
@@ -300,7 +355,12 @@ function flattenNativeAccounts(accounts, parents = []) {
   });
 }
 
-function verifyAccountLayouts(label, configured, nativeInstruction, proxyInstruction) {
+function verifyAccountLayouts(
+  label,
+  configured,
+  nativeInstruction,
+  proxyInstruction,
+) {
   const nativeAccounts = flattenNativeAccounts(nativeInstruction.accounts);
   invariant(
     nativeAccounts.length === configured.strict.fixed_accounts.length,
@@ -352,7 +412,10 @@ function verifyAccountLayouts(label, configured, nativeInstruction, proxyInstruc
   });
 
   expected.forEach((account, index) => {
-    invariant(account, `${label}:${configured.dst_ix_name} destination ${index} is unbound`);
+    invariant(
+      account,
+      `${label}:${configured.dst_ix_name} destination ${index} is unbound`,
+    );
     const proxyAccount = proxyInstruction.accounts[index];
     const proxyWritable = proxyAccount.writable ?? false;
     const proxySigner = proxyAccount.signer ?? false;
@@ -374,6 +437,363 @@ function verifyAccountLayouts(label, configured, nativeInstruction, proxyInstruc
   });
 }
 
+function safePassthroughShapeKey(rule) {
+  return JSON.stringify({
+    program_id: rule.program_id,
+    data: rule.strict.data.bytes,
+    accounts: rule.strict.fixed_accounts.map((account) => ({
+      index: account.index,
+      writable: account.writable,
+      signer: account.signer,
+      account: account.account,
+      one_of_accounts: account.one_of_accounts
+        ? [...account.one_of_accounts].sort()
+        : undefined,
+      dynamic_account: account.dynamic_account,
+      same_as: account.same_as,
+    })),
+  });
+}
+
+function verifySafePassthroughRule(label, rule, rules) {
+  invariant(
+    Array.isArray(rule.discriminator) && rule.discriminator.length > 0,
+    `${label}:${rule.id} safe passthrough requires an exact discriminator`,
+  );
+  invariant(
+    rule.strict?.data?.kind === "exact" &&
+      Array.isArray(rule.strict.data.bytes) &&
+      rule.strict.data.bytes.length >= rule.discriminator.length &&
+      rule.discriminator.every(
+        (byte, index) => rule.strict.data.bytes[index] === byte,
+      ),
+    `${label}:${rule.id} safe passthrough requires exact data beginning with its discriminator`,
+  );
+
+  const accountConstraints = rule.strict.fixed_accounts;
+  invariant(
+    Array.isArray(accountConstraints) &&
+      rule.strict.remaining_accounts?.kind === "none" &&
+      Object.keys(rule.strict.remaining_accounts).length === 1,
+    `${label}:${rule.id} safe passthrough requires an exact account count`,
+  );
+  const indices = new Set();
+  accountConstraints.forEach((account, expectedIndex) => {
+    invariant(
+      account.index === expectedIndex && !indices.has(account.index),
+      `${label}:${rule.id} safe passthrough account indices must be dense and unique`,
+    );
+    indices.add(account.index);
+    invariant(
+      typeof account.writable === "boolean" &&
+        typeof account.signer === "boolean",
+      `${label}:${rule.id} safe passthrough account ${account.index} has an invalid role`,
+    );
+    const identities = [
+      account.account !== undefined,
+      account.one_of_accounts !== undefined,
+      account.dynamic_account !== undefined,
+      account.same_as !== undefined,
+    ].filter(Boolean).length;
+    invariant(
+      identities === 1,
+      `${label}:${rule.id} safe passthrough account ${account.index} must have exactly one identity constraint`,
+    );
+    if (account.one_of_accounts !== undefined) {
+      invariant(
+        Array.isArray(account.one_of_accounts) &&
+          account.one_of_accounts.length > 0 &&
+          new Set(account.one_of_accounts).size ===
+            account.one_of_accounts.length,
+        `${label}:${rule.id} safe passthrough account ${account.index} has an invalid address allowlist`,
+      );
+    }
+    if (account.dynamic_account !== undefined) {
+      invariant(
+        ["glam_state", "glam_vault", "glam_signer"].includes(
+          account.dynamic_account,
+        ),
+        `${label}:${rule.id} safe passthrough account ${account.index} has a wildcard or unknown binding`,
+      );
+    }
+    if (account.same_as !== undefined) {
+      invariant(
+        Number.isInteger(account.same_as) &&
+          account.same_as >= 0 &&
+          account.same_as < expectedIndex,
+        `${label}:${rule.id} safe passthrough account ${account.index} has an invalid same_as constraint`,
+      );
+    }
+  });
+  invariant(
+    typeof rule.rationale === "string" && rule.rationale.trim().length >= 8,
+    `${label}:${rule.id} safe passthrough requires a rationale`,
+  );
+
+  for (const other of rules) {
+    if (other.id === rule.id || other.program_id !== rule.program_id) continue;
+    if (other.outcome === "mapped") {
+      invariant(
+        !discriminatorsOverlap(rule.discriminator, other.discriminator),
+        `${label}:${rule.id} safe passthrough overlaps mapped ${other.id}`,
+      );
+    }
+    if (other.outcome === "safePassthrough") {
+      invariant(
+        safePassthroughShapeKey(rule) !== safePassthroughShapeKey(other),
+        `${label}:${rule.id} duplicates passthrough shape ${other.id}`,
+      );
+    }
+  }
+}
+
+async function verifyInstructionClassifications(
+  label,
+  manifest,
+  config,
+  verifiedArtifacts,
+) {
+  const declaration = manifest.instruction_classification;
+  invariant(
+    Object.hasOwn(verifiedArtifacts, declaration.artifact),
+    `${label} classification artifact reference is missing`,
+  );
+  invariant(
+    verifiedArtifacts.instruction_classification_schema,
+    `${label} classification schema artifact is missing`,
+  );
+
+  const bundledSchema = JSON.parse(
+    await readFile(verifiedArtifacts.instruction_classification_schema, "utf8"),
+  );
+  invariant(
+    JSON.stringify(bundledSchema) ===
+      JSON.stringify(instructionClassificationSchema),
+    `${label} classification schema artifact does not match the verifier schema`,
+  );
+  const classification = JSON.parse(
+    await readFile(verifiedArtifacts[declaration.artifact], "utf8"),
+  );
+  validateJsonSchema(
+    classification,
+    instructionClassificationSchema,
+    instructionClassificationSchema,
+    `${label}:instruction-classification`,
+  );
+  invariant(
+    classification.$schema === "./schema-v1.json" &&
+      classification.schema_version === declaration.schema_version &&
+      classification.config_revision === declaration.config_revision &&
+      classification.integration === manifest.integration,
+    `${label} classification schema, revision, or integration drift`,
+  );
+
+  const rulesById = new Map();
+  for (const rule of classification.rules) {
+    invariant(!rulesById.has(rule.id), `${label} duplicate rule id ${rule.id}`);
+    rulesById.set(rule.id, rule);
+    assertUniqueStrings(rule.emitted_by, `${label}:${rule.id} emitted_by`);
+  }
+
+  const farmsProgramBinding =
+    manifest.native_protocol.official_sdk.program_bindings.find(
+      ({ name }) => name === "kamino-farms",
+    );
+  if (farmsProgramBinding) {
+    const farmInstructions = new Set([
+      "initializeUser",
+      "stake",
+      "unstake",
+      "withdrawUnstakedDeposits",
+    ]);
+    const farmRules = classification.rules.filter(({ instruction }) =>
+      farmInstructions.has(instruction),
+    );
+    invariant(
+      farmRules.length === farmInstructions.size &&
+        farmRules.every(
+          ({ program_id }) => program_id === farmsProgramBinding.program_id,
+        ),
+      `${label} farm classifications do not exhaust the pinned Farms program profile`,
+    );
+  }
+
+  const declarationsByOutcome = {
+    mapped: assertUniqueStrings(
+      declaration.mapped_rule_ids,
+      `${label} mapped rule ids`,
+    ),
+    safePassthrough: assertUniqueStrings(
+      declaration.safe_passthrough_rule_ids,
+      `${label} safe passthrough rule ids`,
+    ),
+    unsupported: assertUniqueStrings(
+      declaration.unsupported_rule_ids,
+      `${label} unsupported rule ids`,
+    ),
+  };
+  const allDeclaredIds = new Set();
+  for (const [outcome, declaredIds] of Object.entries(declarationsByOutcome)) {
+    for (const id of declaredIds) {
+      invariant(
+        !allDeclaredIds.has(id),
+        `${label} classification ${id} is declared more than once`,
+      );
+      allDeclaredIds.add(id);
+      invariant(rulesById.has(id), `${label} classification ${id} is missing`);
+      invariant(
+        rulesById.get(id).outcome === outcome,
+        `${label} classification ${id} outcome drift`,
+      );
+    }
+  }
+  invariant(
+    allDeclaredIds.size === classification.rules.length,
+    `${label} manifest does not exhaustively reference classification rules`,
+  );
+
+  const mappedRules = classification.rules.filter(
+    ({ outcome }) => outcome === "mapped",
+  );
+  invariant(
+    mappedRules.length === config.instructions.length &&
+      mappedRules.length === manifest.supported_mappings.length,
+    `${label} mapped classification count drift`,
+  );
+  const mappedReferences = new Set();
+  for (const rule of mappedRules) {
+    const mapping = config.instructions.find(
+      ({ src_ix_name }) => src_ix_name === rule.mapping_ref.source_instruction,
+    );
+    invariant(mapping, `${label}:${rule.id} mapping reference is missing`);
+    const mappingReference = `${rule.program_id}:${mapping.src_ix_name}`;
+    invariant(
+      !mappedReferences.has(mappingReference),
+      `${label}:${rule.id} duplicates mapping ${mappingReference}`,
+    );
+    mappedReferences.add(mappingReference);
+    invariant(
+      rule.program_id === config.program_id &&
+        rule.instruction === mapping.src_ix_name &&
+        rule.mapping_ref.config_schema_version === config.schema_version &&
+        rule.mapping_ref.config_revision === config.config_revision &&
+        equalBytes(rule.discriminator, mapping.src_discriminator),
+      `${label}:${rule.id} mapping reference drift`,
+    );
+    const supported = manifest.supported_mappings.find(
+      ({ source_instruction }) => source_instruction === rule.instruction,
+    );
+    invariant(
+      supported &&
+        equalBytes(supported.source_discriminator, rule.discriminator),
+      `${label}:${rule.id} supported mapping mirror drift`,
+    );
+  }
+
+  const safeRules = classification.rules.filter(
+    ({ outcome }) => outcome === "safePassthrough",
+  );
+  safeRules.forEach((rule) =>
+    verifySafePassthroughRule(label, rule, classification.rules),
+  );
+
+  const unsupportedRules = classification.rules.filter(
+    ({ outcome }) => outcome === "unsupported",
+  );
+  const unsupportedMirrors = new Map();
+  for (const mirror of manifest.explicitly_unsupported) {
+    invariant(
+      !unsupportedMirrors.has(mirror.classification_rule_id),
+      `${label} duplicate unsupported mirror ${mirror.classification_rule_id}`,
+    );
+    unsupportedMirrors.set(mirror.classification_rule_id, mirror);
+  }
+  invariant(
+    unsupportedMirrors.size === unsupportedRules.length,
+    `${label} unsupported classification mirror count drift`,
+  );
+  for (const rule of unsupportedRules) {
+    const mirror = unsupportedMirrors.get(rule.id);
+    invariant(mirror, `${label}:${rule.id} unsupported mirror is missing`);
+    invariant(
+      mirror.instruction === rule.instruction &&
+        mirror.reason === rule.reason &&
+        (rule.discriminator === undefined
+          ? mirror.discriminator === undefined
+          : equalBytes(mirror.discriminator, rule.discriminator)),
+      `${label}:${rule.id} unsupported mirror drift`,
+    );
+  }
+
+  return {
+    classifications: classification.rules.length,
+    safePassthrough: safeRules.length,
+  };
+}
+
+function verifySafePassthroughPolicyContract() {
+  const fixtureRule = {
+    id: "contract.exact-native",
+    outcome: "safePassthrough",
+    program_id: "11111111111111111111111111111111",
+    instruction: "ExactNative",
+    phase: "setup",
+    emitted_by: ["policy contract fixture"],
+    condition: "only this exact structural fixture",
+    discriminator: [42],
+    rationale: "Exercises the published schema and release verifier together.",
+    strict: {
+      data: { kind: "exact", bytes: [42, 7] },
+      fixed_accounts: [
+        {
+          index: 0,
+          writable: false,
+          signer: true,
+          dynamic_account: "glam_signer",
+        },
+        {
+          index: 1,
+          writable: false,
+          signer: false,
+          same_as: 0,
+        },
+      ],
+      remaining_accounts: { kind: "none" },
+    },
+  };
+  const fixtureConfig = {
+    $schema: "./schema-v1.json",
+    schema_version: 1,
+    config_revision: 1,
+    integration: "policy-contract-fixture",
+    rules: [
+      fixtureRule,
+      {
+        id: "contract.unapproved-native-variant",
+        outcome: "unsupported",
+        program_id: fixtureRule.program_id,
+        instruction: "UnapprovedNativeVariant",
+        phase: "setup",
+        emitted_by: ["policy contract fixture"],
+        condition: "any unapproved variant sharing the discriminator",
+        discriminator: fixtureRule.discriminator,
+        reason: "Sharing a discriminator never grants passthrough approval.",
+      },
+    ],
+  };
+  validateJsonSchema(
+    fixtureConfig,
+    instructionClassificationSchema,
+    instructionClassificationSchema,
+    "safe-passthrough-policy-contract",
+  );
+  verifySafePassthroughRule(
+    "safe-passthrough-policy-contract",
+    fixtureRule,
+    fixtureConfig.rules,
+  );
+}
+
 async function verifyManifest(fileName) {
   const manifestPath = path.join(
     packageRoot,
@@ -384,7 +804,12 @@ async function verifyManifest(fileName) {
   validateJsonSchema(manifest, manifestSchema, manifestSchema, fileName);
   const label = `${manifest.integration}:${manifest.variant}`;
 
-  invariant(manifest.manifest_version === 1, `${label} manifest version`);
+  invariant(
+    manifest.manifest_version === 1 &&
+      Number.isInteger(manifest.manifest_revision) &&
+      manifest.manifest_revision >= 1,
+    `${label} manifest version or revision`,
+  );
   invariant(
     ["proof-only", "supported", "deprecated", "withdraw-only"].includes(
       manifest.status,
@@ -394,13 +819,17 @@ async function verifyManifest(fileName) {
   invariant(
     manifest.mapper.package === packageManifest.name &&
       manifest.mapper.version === packageManifest.version &&
-      manifest.mapper.config_schema_version === 2,
+      isExactVersion(manifest.mapper.version) &&
+      manifest.mapper.config_schema_version === 2 &&
+      Number.isInteger(manifest.mapper.config_revision) &&
+      manifest.mapper.config_revision >= 1,
     `${label} mapper tuple does not match package.json`,
   );
 
   const sdk = manifest.native_protocol.official_sdk;
   invariant(
-    packageManifest.devDependencies?.[sdk.package] === sdk.version,
+    isExactVersion(sdk.version) &&
+      packageManifest.devDependencies?.[sdk.package] === sdk.version,
     `${label} official SDK is not pinned exactly in devDependencies`,
   );
   const sdkLockKey = `node_modules/${sdk.package}`;
@@ -412,9 +841,62 @@ async function verifyManifest(fileName) {
   );
   const sdkTarballVerified = await verifySdkTarball(label, sdk, sdkLock);
 
+  const programBindingsByName = new Map();
+  for (const binding of sdk.program_bindings) {
+    invariant(
+      !programBindingsByName.has(binding.name),
+      `${label} duplicate program binding ${binding.name}`,
+    );
+    programBindingsByName.set(binding.name, binding);
+  }
+  const farmsProgramBinding = programBindingsByName.get("kamino-farms");
+  invariant(
+    manifest.integration !== "kamino-kvaults" ||
+      (farmsProgramBinding?.mode === "sdk-default-only" &&
+        typeof farmsProgramBinding.constraint === "string" &&
+        farmsProgramBinding.constraint.includes("outside this profile")),
+    `${label} must pin the default-only Kamino Farms program profile`,
+  );
+
+  const kit = sdk.solana_kit;
+  const kitLock = packageLock.packages?.[`node_modules/${kit.package}`];
+  invariant(
+    kit.package === "@solana/kit" &&
+      isExactVersion(kit.version) &&
+      packageManifest.devDependencies?.[kit.package] === kit.version &&
+      sdk.resolved_compatibility_dependencies[kit.package] === kit.version &&
+      kitLock?.version === kit.version &&
+      kitLock?.integrity === kit.npm_integrity,
+    `${label} Solana Kit tuple is not pinned exactly`,
+  );
+
+  for (const [dependency, pin] of Object.entries(
+    sdk.verified_compatibility_packages,
+  )) {
+    const dependencyLock = packageLock.packages?.[`node_modules/${dependency}`];
+    const dependencyManifest = JSON.parse(
+      await readFile(
+        path.join(packageRoot, "node_modules", dependency, "package.json"),
+        "utf8",
+      ),
+    );
+    invariant(
+      isExactVersion(pin.version) &&
+        sdk.resolved_compatibility_dependencies[dependency] === pin.version &&
+        dependencyManifest.version === pin.version &&
+        dependencyLock?.version === pin.version &&
+        dependencyLock?.integrity === pin.npm_integrity,
+      `${label} verified compatibility package ${dependency} is not pinned exactly`,
+    );
+  }
+
   for (const [dependency, version] of Object.entries(
     sdk.resolved_compatibility_dependencies,
   )) {
+    invariant(
+      isExactVersion(version),
+      `${label} resolved ${dependency} is not an exact version`,
+    );
     const dependencyManifestPath = path.join(
       packageRoot,
       "node_modules",
@@ -428,17 +910,65 @@ async function verifyManifest(fileName) {
       dependencyManifest.version === version,
       `${label} resolved ${dependency} ${dependencyManifest.version} != ${version}`,
     );
+    const dependencyLock = packageLock.packages?.[`node_modules/${dependency}`];
+    invariant(
+      dependencyLock?.version === version &&
+        typeof dependencyLock.integrity === "string" &&
+        dependencyLock.integrity.length > 0,
+      `${label} resolved ${dependency} is not pinned by lockfile integrity`,
+    );
   }
 
   const verifiedArtifacts = {};
   for (const [name, artifact] of Object.entries(manifest.artifacts)) {
-    verifiedArtifacts[name] = await verifyArtifact(`${label}:${name}`, artifact);
+    verifiedArtifacts[name] = await verifyArtifact(
+      `${label}:${name}`,
+      artifact,
+    );
+  }
+  for (const requiredArtifact of [
+    "mapper_config",
+    "instruction_classification_schema",
+    "instruction_classification_config",
+    "high_level_kvault_helper_source",
+    "high_level_ata_helper_source",
+    "high_level_farm_helper_source",
+    "farms_client_source",
+    "farms_operations_source",
+    "farms_program_source",
+    "farms_initialize_user_schema",
+    "farms_stake_schema",
+    "farms_unstake_schema",
+    "farms_withdraw_unstaked_deposits_schema",
+  ]) {
+    invariant(
+      verifiedArtifacts[requiredArtifact],
+      `${label} required artifact ${requiredArtifact} is missing`,
+    );
+  }
+
+  if (farmsProgramBinding) {
+    const farmsProgramSource = await readFile(
+      verifiedArtifacts.farms_program_source,
+      "utf8",
+    );
+    const defaultProgram = /FARMS_PROGRAM_ADDRESS\s*=\s*["']([^"']+)["']/.exec(
+      farmsProgramSource,
+    )?.[1];
+    invariant(
+      defaultProgram === farmsProgramBinding.program_id,
+      `${label} Farms SDK default program does not match the pinned profile`,
+    );
   }
 
   const config = JSON.parse(
     await readFile(verifiedArtifacts.mapper_config, "utf8"),
   );
-  invariant(config.schema_version === 2, `${label} config schema`);
+  invariant(
+    config.schema_version === manifest.mapper.config_schema_version &&
+      config.config_revision === manifest.mapper.config_revision,
+    `${label} config schema or revision`,
+  );
   invariant(
     config.program_id === manifest.native_protocol.program_id,
     `${label} native program ID mismatch`,
@@ -451,7 +981,10 @@ async function verifyManifest(fileName) {
   const proxyIdl = JSON.parse(
     await readFile(verifiedArtifacts.proxy_idl, "utf8"),
   );
-  invariant(proxyIdl.address === manifest.proxy.program_id, `${label} proxy IDL`);
+  invariant(
+    proxyIdl.address === manifest.proxy.program_id,
+    `${label} proxy IDL`,
+  );
   invariant(
     proxyIdl.metadata?.version === manifest.proxy.version,
     `${label} proxy IDL version`,
@@ -470,7 +1003,10 @@ async function verifyManifest(fileName) {
     );
     invariant(configured, `${label} missing ${supported.source_instruction}`);
     invariant(
-      equalBytes(configured.src_discriminator, supported.source_discriminator) &&
+      equalBytes(
+        configured.src_discriminator,
+        supported.source_discriminator,
+      ) &&
         equalBytes(
           configured.dst_discriminator,
           supported.destination_discriminator,
@@ -493,7 +1029,9 @@ async function verifyManifest(fileName) {
       equalBytes(
         proxyInstruction.discriminator,
         supported.destination_discriminator,
-      ) && proxyInstruction.accounts.length === supported.destination_fixed_accounts,
+      ) &&
+        proxyInstruction.accounts.length ===
+          supported.destination_fixed_accounts,
       `${label}:${supported.destination_instruction} proxy IDL drift`,
     );
     const nativeInstruction = nativeIdl.instructions.find(
@@ -507,6 +1045,13 @@ async function verifyManifest(fileName) {
       proxyInstruction,
     );
   }
+
+  const classificationSummary = await verifyInstructionClassifications(
+    label,
+    manifest,
+    config,
+    verifiedArtifacts,
+  );
 
   if (manifest.status === "supported") {
     const requiredRuntimeGates = [
@@ -527,18 +1072,22 @@ async function verifyManifest(fileName) {
     integration: manifest.integration,
     variant: manifest.variant,
     status: manifest.status,
+    manifestRevision: manifest.manifest_revision,
     sdkTarballVerified,
     artifacts: Object.keys(verifiedArtifacts).length,
     mappings: manifest.supported_mappings.length,
+    classifications: classificationSummary.classifications,
+    safePassthrough: classificationSummary.safePassthrough,
   };
 }
 
-const manifestFiles = (await readdir(
-  path.join(packageRoot, "compatibility-manifests/v1"),
-))
+const manifestFiles = (
+  await readdir(path.join(packageRoot, "compatibility-manifests/v1"))
+)
   .filter((fileName) => fileName.endsWith(".json"))
   .sort();
 invariant(manifestFiles.length > 0, "No compatibility manifests found");
+verifySafePassthroughPolicyContract();
 
 const verified = [];
 for (const fileName of manifestFiles) {

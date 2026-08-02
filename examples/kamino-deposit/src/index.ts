@@ -268,7 +268,7 @@ async function main() {
 
   const finalIxs: TransactionInstruction[] = [];
   let mappedCount = 0;
-  let keptCount = 0;
+  let rejectedCount = 0;
 
   for (let i = 0; i < rawIxs.length; i++) {
     const { ix, label } = rawIxs[i];
@@ -322,13 +322,14 @@ async function main() {
         `      Discriminator (dst): [${Array.from(mapped.data.subarray(0, 8)).join(", ")}]`,
       );
     } else {
-      // Not mapped — fix vault PDA signer to wallet where needed (e.g. ATA payer)
-      const fixed = fixSignerAccounts(ix, glamState, signer.publicKey, STAGING);
-      finalIxs.push(fixed);
-      keptCount++;
+      // A missing legacy mapping never authorizes native passthrough.
+      rejectedCount++;
       console.log(`  [${i + 1}] ${label}`);
-      console.log(`      ${srcProgram}  (kept as-is)`);
-      console.log(`      Accounts: ${ix.keys.length}  |  KEPT`);
+      console.log(`      ${srcProgram}  (unsupported)`);
+      console.log(`      Accounts: ${ix.keys.length}  |  REJECTED`);
+      throw new Error(
+        `Legacy mapper has no reviewed mapping for ${label}; aborting the complete operation`,
+      );
     }
     console.log();
   }
@@ -336,7 +337,7 @@ async function main() {
   console.log(
     "---------------------------------------------------------------",
   );
-  console.log(`  Summary: ${mappedCount} mapped | ${keptCount} kept as-is`);
+  console.log(`  Summary: ${mappedCount} mapped | ${rejectedCount} rejected`);
   console.log(`  Total instructions: ${finalIxs.length}`);
   console.log(
     "---------------------------------------------------------------",

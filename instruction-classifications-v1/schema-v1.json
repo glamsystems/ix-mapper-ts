@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://idl.glam.systems/schemas/instruction-classification-v1.json",
+  "title": "GLAM instruction classification configuration v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "config_revision",
+    "integration",
+    "rules"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schema_version": { "const": 1 },
+    "config_revision": { "type": "integer", "minimum": 1 },
+    "integration": { "type": "string", "minLength": 1 },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/mapped_rule" },
+          { "$ref": "#/$defs/safe_passthrough_rule" },
+          { "$ref": "#/$defs/unsupported_rule" }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "public_key": {
+      "type": "string",
+      "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+    },
+    "byte_array": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 0, "maximum": 255 },
+      "minItems": 1,
+      "maxItems": 1232
+    },
+    "phase": { "enum": ["setup", "protocol", "cleanup"] },
+    "emitted_by": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "mapping_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "config_schema_version",
+        "config_revision",
+        "source_instruction"
+      ],
+      "properties": {
+        "config_schema_version": { "const": 2 },
+        "config_revision": { "type": "integer", "minimum": 1 },
+        "source_instruction": { "type": "string", "minLength": 1 }
+      }
+    },
+    "exact_data_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "bytes"],
+      "properties": {
+        "kind": { "const": "exact" },
+        "bytes": { "$ref": "#/$defs/byte_array" }
+      }
+    },
+    "account_constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "writable", "signer"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0 },
+        "writable": { "type": "boolean" },
+        "signer": { "type": "boolean" },
+        "account": { "$ref": "#/$defs/public_key" },
+        "one_of_accounts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/public_key" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "dynamic_account": {
+          "enum": ["glam_state", "glam_vault", "glam_signer"]
+        },
+        "same_as": { "type": "integer", "minimum": 0 }
+      },
+      "oneOf": [
+        { "required": ["account"] },
+        { "required": ["one_of_accounts"] },
+        { "required": ["dynamic_account"] },
+        { "required": ["same_as"] }
+      ]
+    },
+    "no_remaining_accounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "const": "none" }
+      }
+    },
+    "safe_passthrough_strict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["data", "fixed_accounts", "remaining_accounts"],
+      "properties": {
+        "data": { "$ref": "#/$defs/exact_data_constraint" },
+        "fixed_accounts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/account_constraint" },
+          "maxItems": 256
+        },
+        "remaining_accounts": { "$ref": "#/$defs/no_remaining_accounts" }
+      }
+    },
+    "mapped_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "outcome",
+        "program_id",
+        "instruction",
+        "phase",
+        "emitted_by",
+        "condition",
+        "discriminator",
+        "mapping_ref"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "outcome": { "const": "mapped" },
+        "program_id": { "$ref": "#/$defs/public_key" },
+        "instruction": { "type": "string", "minLength": 1 },
+        "phase": { "$ref": "#/$defs/phase" },
+        "emitted_by": { "$ref": "#/$defs/emitted_by" },
+        "condition": { "type": "string", "minLength": 1 },
+        "discriminator": { "$ref": "#/$defs/byte_array" },
+        "mapping_ref": { "$ref": "#/$defs/mapping_ref" }
+      }
+    },
+    "safe_passthrough_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "outcome",
+        "program_id",
+        "instruction",
+        "phase",
+        "emitted_by",
+        "condition",
+        "discriminator",
+        "strict",
+        "rationale"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "outcome": { "const": "safePassthrough" },
+        "program_id": { "$ref": "#/$defs/public_key" },
+        "instruction": { "type": "string", "minLength": 1 },
+        "phase": { "$ref": "#/$defs/phase" },
+        "emitted_by": { "$ref": "#/$defs/emitted_by" },
+        "condition": { "type": "string", "minLength": 1 },
+        "discriminator": { "$ref": "#/$defs/byte_array" },
+        "strict": { "$ref": "#/$defs/safe_passthrough_strict" },
+        "rationale": { "type": "string", "minLength": 8 }
+      }
+    },
+    "unsupported_rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "outcome",
+        "program_id",
+        "instruction",
+        "phase",
+        "emitted_by",
+        "condition",
+        "reason"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "outcome": { "const": "unsupported" },
+        "program_id": { "$ref": "#/$defs/public_key" },
+        "instruction": { "type": "string", "minLength": 1 },
+        "phase": { "$ref": "#/$defs/phase" },
+        "emitted_by": { "$ref": "#/$defs/emitted_by" },
+        "condition": { "type": "string", "minLength": 1 },
+        "discriminator": { "$ref": "#/$defs/byte_array" },
+        "reason": { "type": "string", "minLength": 8 }
+      }
+    }
+  }
+}

@@ -3,10 +3,19 @@ import { join } from "node:path";
 
 const rootFiles = [
   ".build",
+  "core.cjs",
+  "core.esm.mjs",
+  "core.esm.js",
+  "core.d.ts",
   "index.cjs",
+  "index.esm.mjs",
   "index.esm.js",
   "index.cjs.d.ts",
   "index.esm.d.ts",
+  "legacy-web3.cjs",
+  "legacy-web3.esm.mjs",
+  "legacy-web3.esm.js",
+  "legacy-web3.d.ts",
 ];
 
 async function removeDtsFiles(dir) {

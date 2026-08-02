@@ -1,11 +1,15 @@
 # Kamino Deposit via GLAM Vault
 
-End-to-end example that uses Kamino's official `klend-sdk` to build raw deposit instructions, then maps them through `@glamsystems/ix-mapper` for execution via a GLAM vault.
+Legacy Kamino Lending demonstration retained for migration reference. It uses
+the nullable v1 mapper and is not the current KVault/strict integration
+template; new work must use the neutral fail-closed API described in the root
+README.
 
 ## What it does
 
 1. Loads the Kamino lending market and builds raw USDC deposit instructions with the vault PDA as owner
-2. Passes each instruction through `mapToGlamIx()` — Kamino Lending instructions are mapped to the GLAM `ext_kamino` proxy program; others (ATA creation, compute budget) are kept as-is
+2. Passes each instruction through `mapToGlamIx()` and aborts if any instruction
+   is not mapped; a missing v1 mapping never authorizes passthrough
 3. Fixes signer accounts so the wallet (not the vault PDA) pays fees
 4. Builds a versioned transaction and simulates it on mainnet
 
@@ -25,13 +29,13 @@ cp .env.example .env
 
 Fill in `.env`:
 
-| Variable | Description |
-|---|---|
-| `ANCHOR_PROVIDER_URL` | Mainnet RPC endpoint |
-| `ANCHOR_WALLET` | Path to manager keypair JSON |
-| `GLAM_STATE` | Vault state PDA address |
-| `GLAM_STAGING` | `true` for staging programs, `false` for production (default: `true`) |
-| `DEPOSIT_AMOUNT` | Amount in USDC lamports (default: `1000000` = 1 USDC) |
+| Variable              | Description                                                           |
+| --------------------- | --------------------------------------------------------------------- |
+| `ANCHOR_PROVIDER_URL` | Mainnet RPC endpoint                                                  |
+| `ANCHOR_WALLET`       | Path to manager keypair JSON                                          |
+| `GLAM_STATE`          | Vault state PDA address                                               |
+| `GLAM_STAGING`        | `true` for staging programs, `false` for production (default: `true`) |
+| `DEPOSIT_AMOUNT`      | Amount in USDC lamports (default: `1000000` = 1 USDC)                 |
 
 ## Run
 
@@ -40,4 +44,6 @@ pnpm install
 pnpm dev
 ```
 
-The script will print a mapping report showing which instructions were mapped to the GLAM proxy and which were kept as-is, followed by the simulation result.
+The script prints a mapping report and stops at the first unmapped instruction.
+It is expected to stop when the official SDK emits setup instructions outside
+the old v1 mapping set.

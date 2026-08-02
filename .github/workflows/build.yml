@@ -55,14 +55,28 @@ jobs:
           const pack = JSON.parse(fs.readFileSync("npm-pack-dry-run.json", "utf8"))[0];
           const files = new Set(pack.files.map((file) => file.path));
           const required = [
+            "ARCHITECTURE.md",
+            "core.cjs",
+            "core.esm.mjs",
+            "core.d.ts",
             "index.cjs",
             "index.esm.js",
+            "index.esm.mjs",
             "index.cjs.d.ts",
             "index.esm.d.ts",
+            "legacy-web3.cjs",
+            "legacy-web3.esm.mjs",
+            "legacy-web3.d.ts",
+            "src/core-types.d.ts",
+            "src/core.d.ts",
             "src/index.d.ts",
+            "src/legacy-web3.d.ts",
+            "src/neutral.d.ts",
             "src/pda.d.ts",
             "src/strict.d.ts",
             "src/types.d.ts",
+            "instruction-classifications-v1/schema-v1.json",
+            "instruction-classifications-v1/kamino-kvaults.json",
             "mapping-configs-v2/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json",
             "mapping-configs-v2-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json",
             "compatibility-manifests/schema-v1.json",
@@ -95,9 +109,10 @@ jobs:
           );
           NODE
 
-      - name: Smoke test package entrypoint
+      - name: Smoke test package entrypoints
         run: |
-          node -e "const mapper = require('./index.cjs'); for (const name of ['mapInstruction', 'mapInstructions', 'mapToGlamIx', 'fixSignerAccounts', 'normalizeInstruction']) if (typeof mapper[name] !== 'function') process.exit(1);"
+          node -e "const root = require('@glamsystems/ix-mapper'); const core = require('@glamsystems/ix-mapper/core'); const legacy = require('@glamsystems/ix-mapper/legacy-web3'); for (const name of ['mapInstruction', 'mapInstructions', 'mapToGlamIx', 'fixSignerAccounts', 'normalizeInstruction']) if (typeof root[name] !== 'function' || typeof legacy[name] !== 'function') process.exit(1); if (typeof core.createNeutralMapper !== 'function') process.exit(1);"
+          node --input-type=module -e "const root = await import('@glamsystems/ix-mapper'); const core = await import('@glamsystems/ix-mapper/core'); const legacy = await import('@glamsystems/ix-mapper/legacy-web3'); if (typeof root.mapInstruction !== 'function' || typeof legacy.mapInstruction !== 'function' || typeof core.createNeutralMapper !== 'function') process.exit(1);"
 
       - name: Upload pack manifest
         uses: actions/upload-artifact@v4

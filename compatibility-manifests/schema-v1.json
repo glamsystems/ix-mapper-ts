@@ -6,6 +6,7 @@
   "additionalProperties": false,
   "required": [
     "manifest_version",
+    "manifest_revision",
     "status",
     "integration",
     "cluster",
@@ -13,6 +14,7 @@
     "native_protocol",
     "proxy",
     "mapper",
+    "instruction_classification",
     "artifacts",
     "supported_mappings",
     "explicitly_unsupported",
@@ -22,6 +24,7 @@
   "properties": {
     "$schema": { "type": "string" },
     "manifest_version": { "const": 1 },
+    "manifest_revision": { "type": "integer", "minimum": 1 },
     "status": {
       "enum": ["proof-only", "supported", "deprecated", "withdraw-only"]
     },
@@ -31,6 +34,9 @@
     "native_protocol": { "$ref": "#/$defs/native_protocol" },
     "proxy": { "$ref": "#/$defs/proxy" },
     "mapper": { "$ref": "#/$defs/mapper" },
+    "instruction_classification": {
+      "$ref": "#/$defs/instruction_classification"
+    },
     "artifacts": {
       "type": "object",
       "additionalProperties": { "$ref": "#/$defs/artifact" },
@@ -80,6 +86,9 @@
             "version",
             "npm_integrity",
             "tarball_sha256",
+            "solana_kit",
+            "verified_compatibility_packages",
+            "program_bindings",
             "resolved_compatibility_dependencies"
           ],
           "properties": {
@@ -87,6 +96,17 @@
             "version": { "type": "string" },
             "npm_integrity": { "type": "string" },
             "tarball_sha256": { "$ref": "#/$defs/sha256" },
+            "solana_kit": { "$ref": "#/$defs/solana_kit" },
+            "verified_compatibility_packages": {
+              "type": "object",
+              "additionalProperties": { "$ref": "#/$defs/package_pin" }
+            },
+            "program_bindings": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/program_binding" },
+              "minItems": 1,
+              "uniqueItems": true
+            },
             "resolved_compatibility_dependencies": {
               "type": "object",
               "additionalProperties": { "type": "string" }
@@ -108,11 +128,77 @@
     "mapper": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["package", "version", "config_schema_version"],
+      "required": [
+        "package",
+        "version",
+        "config_schema_version",
+        "config_revision"
+      ],
       "properties": {
         "package": { "type": "string" },
         "version": { "type": "string" },
-        "config_schema_version": { "const": 2 }
+        "config_schema_version": { "const": 2 },
+        "config_revision": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "solana_kit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package", "version", "npm_integrity"],
+      "properties": {
+        "package": { "const": "@solana/kit" },
+        "version": { "type": "string", "minLength": 1 },
+        "npm_integrity": { "type": "string", "minLength": 1 }
+      }
+    },
+    "package_pin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "npm_integrity"],
+      "properties": {
+        "version": { "type": "string", "minLength": 1 },
+        "npm_integrity": { "type": "string", "minLength": 1 }
+      }
+    },
+    "program_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "program_id", "mode", "constraint"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "program_id": { "$ref": "#/$defs/public_key" },
+        "mode": { "enum": ["sdk-default-only"] },
+        "constraint": { "type": "string", "minLength": 8 }
+      }
+    },
+    "instruction_classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact",
+        "schema_version",
+        "config_revision",
+        "mapped_rule_ids",
+        "safe_passthrough_rule_ids",
+        "unsupported_rule_ids"
+      ],
+      "properties": {
+        "artifact": { "type": "string", "minLength": 1 },
+        "schema_version": { "const": 1 },
+        "config_revision": { "type": "integer", "minimum": 1 },
+        "mapped_rule_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "safe_passthrough_rule_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "unsupported_rule_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
       }
     },
     "artifact": {
@@ -156,8 +242,9 @@
     "unsupported": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["instruction", "reason"],
+      "required": ["classification_rule_id", "instruction", "reason"],
       "properties": {
+        "classification_rule_id": { "type": "string", "minLength": 1 },
         "instruction": { "type": "string" },
         "discriminator": { "$ref": "#/$defs/byte_array" },
         "reason": { "type": "string" }
