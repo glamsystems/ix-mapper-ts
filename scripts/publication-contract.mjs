@@ -113,6 +113,75 @@ export function releasePolicy(packageVersion, statuses) {
   };
 }
 
+export function verifyActiveCompatibilityTuples(contract, members) {
+  const packedActiveManifests = [...members.keys()]
+    .filter(
+      (member) =>
+        member.startsWith("package/compatibility-manifests/v2/") &&
+        member.endsWith(".json"),
+    )
+    .map((member) => member.slice("package/".length))
+    .sort();
+  const contractedActiveManifests = contract.activeCompatibilityTuples
+    .map(({ manifest }) => manifest.path)
+    .sort();
+  if (
+    JSON.stringify(packedActiveManifests) !==
+    JSON.stringify(contractedActiveManifests)
+  ) {
+    throw new Error("Publication contract does not exhaust active manifests");
+  }
+
+  const parsedManifests = [];
+  for (const tuple of contract.activeCompatibilityTuples) {
+    const manifestBytes = members.get(`package/${tuple.manifest.path}`);
+    if (!manifestBytes || hash(manifestBytes) !== tuple.manifest.sha256) {
+      throw new Error(`Compatibility manifest drift: ${tuple.manifest.path}`);
+    }
+    const manifest = JSON.parse(manifestBytes.toString("utf8"));
+    if (
+      tuple.integration !== manifest.integration ||
+      tuple.variant !== manifest.variant ||
+      tuple.status !== manifest.status ||
+      tuple.manifestVersion !== manifest.manifest_version ||
+      tuple.manifestRevision !== manifest.manifest_revision
+    ) {
+      throw new Error(
+        `Compatibility tuple metadata drift: ${tuple.manifest.path}`,
+      );
+    }
+    if (
+      JSON.stringify(Object.keys(tuple.artifacts).sort()) !==
+      JSON.stringify([...BUNDLED_TUPLE_ARTIFACTS].sort())
+    ) {
+      throw new Error(
+        `Compatibility tuple artifact inventory drift: ${tuple.manifest.path}`,
+      );
+    }
+    for (const name of BUNDLED_TUPLE_ARTIFACTS) {
+      const declaration = manifest.artifacts?.[name];
+      const artifact = tuple.artifacts[name];
+      if (
+        declaration?.bundled_path !== artifact.path ||
+        declaration?.sha256 !== artifact.sha256
+      ) {
+        throw new Error(
+          `Compatibility tuple ${name} metadata drift: ${tuple.manifest.path}`,
+        );
+      }
+      const bundled = members.get(`package/${declaration.bundled_path}`);
+      if (!bundled || hash(bundled) !== declaration.sha256) {
+        throw new Error(
+          `Compatibility artifact drift: ${declaration.bundled_path}`,
+        );
+      }
+    }
+    parsedManifests.push(manifest);
+  }
+
+  return parsedManifests;
+}
+
 export function verifyContract(contract, tarball) {
   if (contract.contractVersion !== PUBLICATION_CONTRACT_VERSION) {
     throw new Error("Unknown publication contract version");
@@ -173,9 +242,10 @@ export function verifyContract(contract, tarball) {
     throw new Error("Publication package tuple does not match the tarball");
   }
 
+  const activeManifests = verifyActiveCompatibilityTuples(contract, members);
   const policy = releasePolicy(
     contract.package.version,
-    contract.activeCompatibilityTuples.map(({ status }) => status),
+    activeManifests.map(({ status }) => status),
   );
   if (
     JSON.stringify(policy.maturity) !==
@@ -184,44 +254,6 @@ export function verifyContract(contract, tarball) {
     policy.defaultPublicDiscovery !== contract.release.defaultPublicDiscovery
   ) {
     throw new Error("Publication maturity boundary drift");
-  }
-
-  const packedActiveManifests = [...members.keys()]
-    .filter(
-      (member) =>
-        member.startsWith("package/compatibility-manifests/v2/") &&
-        member.endsWith(".json"),
-    )
-    .map((member) => member.slice("package/".length))
-    .sort();
-  const contractedActiveManifests = contract.activeCompatibilityTuples
-    .map(({ manifest }) => manifest.path)
-    .sort();
-  if (
-    JSON.stringify(packedActiveManifests) !==
-    JSON.stringify(contractedActiveManifests)
-  ) {
-    throw new Error("Publication contract does not exhaust active manifests");
-  }
-  for (const tuple of contract.activeCompatibilityTuples) {
-    const manifest = members.get(`package/${tuple.manifest.path}`);
-    if (!manifest || hash(manifest) !== tuple.manifest.sha256) {
-      throw new Error(`Compatibility manifest drift: ${tuple.manifest.path}`);
-    }
-    if (
-      JSON.stringify(Object.keys(tuple.artifacts).sort()) !==
-      JSON.stringify([...BUNDLED_TUPLE_ARTIFACTS].sort())
-    ) {
-      throw new Error(
-        `Compatibility tuple artifact inventory drift: ${tuple.manifest.path}`,
-      );
-    }
-    for (const artifact of Object.values(tuple.artifacts)) {
-      const bundled = members.get(`package/${artifact.path}`);
-      if (!bundled || hash(bundled) !== artifact.sha256) {
-        throw new Error(`Compatibility artifact drift: ${artifact.path}`);
-      }
-    }
   }
 
   return { members, policy };

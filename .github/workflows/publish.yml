@@ -80,6 +80,9 @@ jobs:
       - name: Verify immutable publication contract
         run: npm run verify:publication-contract
 
+      - name: Reject mutated publication sidecar metadata
+        run: npm run verify:publication-adversarial
+
       - name: Upload exact publication archive and contract
         uses: actions/upload-artifact@v4
         with:

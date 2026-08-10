@@ -59,6 +59,9 @@ jobs:
       - name: Verify immutable publication contract
         run: npm run verify:publication-contract
 
+      - name: Reject mutated publication sidecar metadata
+        run: npm run verify:publication-adversarial
+
       - name: Upload immutable proof artifact
         uses: actions/upload-artifact@v4
         with:
