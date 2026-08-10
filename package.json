@@ -79,7 +79,7 @@
     "@solana/web3.js": "1.98.4"
   },
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=22.22.0"
   },
   "devDependencies": {
     "@kamino-finance/klend-sdk": "9.1.5",
