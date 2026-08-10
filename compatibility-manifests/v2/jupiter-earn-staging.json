@@ -1,0 +1,60 @@
+{
+  "$schema": "../schema-v2.json",
+  "manifest_version": 2,
+  "manifest_revision": 1,
+  "status": "proof-only",
+  "integration": "jupiter-earn",
+  "cluster": "mainnet-beta",
+  "variant": "staging",
+  "native_protocol": {
+    "name": "Jupiter Earn",
+    "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+    "official_sdk": {
+      "package": "@jup-ag/lend",
+      "version": "0.1.10",
+      "npm_integrity": "sha512-Kmwb9jfPya+K+AR8pL9MmWSJz8X7Wj451iEh/j9HEhat53b9CjRMK9IDnDyLmPPCgZPDCMgZBZIZqRfjfG3uuw==",
+      "tarball_sha256": "fd84fefecc1a517ddfae64b2b61d293e2cbc854a84c7836181a42dcdec6f5810",
+      "solana_kit": { "package": "@solana/kit", "version": "2.3.0", "npm_integrity": "sha512-sb6PgwoW2LjE5oTFu4lhlS/cGt/NB3YrShEyx7JgWFWysfgLdJnhwWThgwy/4HjNsmtMrQGWVls0yVBHcMvlMQ==" },
+      "verified_compatibility_packages": {},
+      "program_bindings": [
+        { "name": "jupiter-lending-main", "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9", "mode": "sdk-default-only", "constraint": "Only the exact main-market jupiter-earn-main-classic-spl-v1 profile is reviewed; every alternate Lending program or market is outside this profile." },
+        { "name": "jupiter-liquidity", "program_id": "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC", "mode": "sdk-default-only", "constraint": "Only the exact Liquidity program bound by jupiter-earn-main-classic-spl-v1 is reviewed; every override is outside this profile." }
+      ],
+      "resolved_compatibility_dependencies": { "@coral-xyz/anchor": "0.31.1", "@solana/spl-token": "0.4.15", "@solana/web3.js": "1.98.4", "axios": "1.19.0", "bn.js": "5.2.3" }
+    }
+  },
+  "proxy": { "crate": "ext_jupiter", "version": "0.1.0", "program_id": "gstgJbGqoE3p1SdFA2dET9tcaCzNqGcdD8wpbGctnU9" },
+  "mapper": { "package": "@glamsystems/ix-mapper", "version": "0.3.0-test.1", "config_schema_version": 2, "config_revision": 1 },
+  "instruction_classification": { "artifact": "instruction_classification_config", "schema_version": 1, "config_revision": 1, "mapped_rule_ids": ["jupiter-earn.deposit-with-min-out", "jupiter-earn.redeem-with-min-out"], "safe_passthrough_rule_ids": [], "unsupported_rule_ids": ["jupiter-earn.unbounded-deposit", "jupiter-earn.mint-variants", "jupiter-earn.withdraw-variants", "jupiter-earn.unbounded-redeem", "jupiter-earn.ata-setup", "jupiter-earn.token-2022", "jupiter-earn.wrapped-sol", "jupiter-earn.ethena", "jupiter-earn.alternate-program", "jupiter-earn.remaining-or-extra"] },
+  "operation_profile": { "artifact": "operation_profile_config", "schema_version": 2, "config_revision": 1, "operation_ids": ["jupiter-earn.main-classic-spl-deposit-with-min-out", "jupiter-earn.main-classic-spl-redeem-with-min-out"], "operation_bound_passthrough_ids": [] },
+  "artifacts": {
+    "native_idl": { "bundled_path": "artifacts/jupiter-lend/0.1.10/native-lending.json", "sha256": "ef547c925d93149437ffa7cd6be91f7bf3d97a95960c219227b0da91cadb9bd0" },
+    "official_earn_entry_source": { "package_path": "@jup-ag/lend/earn", "sha256": "3f0d9bfc18a999c21dfd02177bab855e367626776e8b70bd436911d9107f4a62" },
+    "portable_binding_provenance": { "bundled_path": "artifacts/jupiter-lend/0.1.10/portable-binding.json", "sha256": "a440e2daad52f343686154e4ad4092f99a996a80e68f661cb1d87564bd470186" },
+    "operation_vectors": { "bundled_path": "artifacts/jupiter-lend/0.1.10/operation-vectors.json", "sha256": "08503390a2f235cad434022ffbe4e38791c704eed0bfec2dca20030e30b159b0" },
+    "proxy_idl": { "bundled_path": "artifacts/ext-jupiter/0.1.0/staging.json", "sha256": "f92df407ecc4399200c6f4a6afa49a4127e5a5d866aed187210051d94f362bd9" },
+    "mapper_config": { "bundled_path": "mapping-configs-v2-staging/jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9.json", "sha256": "56d9ac59756d39961da00b4c1628c10af1bb7d4cb76e761e46a45c1fbb477fba" },
+    "instruction_classification_schema": { "bundled_path": "instruction-classifications-v1/schema-v1.json", "sha256": "a9045f2f060e0048bd500d5f6ca8351b6399a8cb207f2268d3ea2d25e7ec03cf" },
+    "instruction_classification_config": { "bundled_path": "instruction-classifications-v1/jupiter-earn.json", "sha256": "fa939a503c903ad8de5893a76c1a01df0dd860fed4344b88b84a79f785f744b5" },
+    "operation_profile_schema": { "bundled_path": "operation-profiles-v2/schema-v2.json", "sha256": "cbdb504d6c42e9ebedcbfb0755450b5f8335e06cd1f87740ea5068ff5dc5c572" },
+    "operation_profile_config": { "bundled_path": "operation-profiles-v2/jupiter-earn.json", "sha256": "29592986ff47e9737003b73a287109d70705d1ddd6276fb2e6c7a83586676177" }
+  },
+  "supported_mappings": [
+    { "source_instruction": "deposit_with_min_amount_out", "source_discriminator": [116, 144, 16, 97, 118, 109, 40, 119], "source_data_length": 24, "source_fixed_accounts": 17, "destination_instruction": "earn_deposit", "destination_discriminator": [81, 98, 113, 207, 82, 192, 187, 234], "destination_fixed_accounts": 22, "remaining_accounts": "none; usable only inside the exact existing-ATA main-market deposit operation profile" },
+    { "source_instruction": "redeem_with_min_amount_out", "source_discriminator": [235, 189, 237, 56, 166, 180, 184, 149], "source_data_length": 24, "source_fixed_accounts": 18, "destination_instruction": "earn_redeem_with_min_amount_out", "destination_discriminator": [204, 196, 159, 42, 52, 107, 134, 153], "destination_fixed_accounts": 23, "remaining_accounts": "none; usable only inside the exact existing-ATA main-market redeem operation profile" }
+  ],
+  "explicitly_unsupported": [
+    { "classification_rule_id": "jupiter-earn.unbounded-deposit", "instruction": "deposit", "discriminator": [242, 35, 198, 137, 82, 225, 242, 182], "reason": "The initial profile requires an explicit nonzero minimum output." },
+    { "classification_rule_id": "jupiter-earn.mint-variants", "instruction": "mint/mint_with_max_assets", "reason": "Exact-share mint branches have not been reviewed by this bounded operation profile." },
+    { "classification_rule_id": "jupiter-earn.withdraw-variants", "instruction": "withdraw/withdraw_with_max_shares_burn", "reason": "Exact-asset withdrawal branches have not been reviewed by this bounded operation profile." },
+    { "classification_rule_id": "jupiter-earn.unbounded-redeem", "instruction": "redeem", "discriminator": [184, 12, 86, 149, 70, 196, 97, 225], "reason": "The initial profile requires an explicit nonzero minimum output." },
+    { "classification_rule_id": "jupiter-earn.ata-setup", "instruction": "Create/CreateIdempotent", "reason": "The first profile requires both canonical ATAs to exist and accepts no setup instructions." },
+    { "classification_rule_id": "jupiter-earn.token-2022", "instruction": "Token-2022 Earn path", "reason": "The first profile pins classic SPL Token for both mints." },
+    { "classification_rule_id": "jupiter-earn.wrapped-sol", "instruction": "wrapped-SOL setup/cleanup", "reason": "Wrapped-SOL account lifecycle is outside the initial profile." },
+    { "classification_rule_id": "jupiter-earn.ethena", "instruction": "Ethena Earn market", "reason": "Only the exact Jupiter main-market profile is reviewed." },
+    { "classification_rule_id": "jupiter-earn.alternate-program", "instruction": "alternate Lending/Liquidity program tuple", "reason": "Program selection is an explicit profile input and cannot inherit an override." },
+    { "classification_rule_id": "jupiter-earn.remaining-or-extra", "instruction": "remaining/reordered/extra output", "reason": "The operation matcher rejects every extra, missing, duplicated, or reordered instruction and every remaining account." }
+  ],
+  "runtime_validation": { "verified_on": "2026-08-10", "node_golden_fixtures": true, "next_client_build": false, "expo_hermes_bundle": false, "dependency_peer_graph": false },
+  "known_blockers": ["This proof directly differentially tests the two official Program.methods builders against the committed portable-binding vectors, but includes no app convenience API or transaction submission.", "The official @jup-ag/lend package depends on Anchor/web3.js and has not passed Next or Expo/Hermes gates.", "Only the classic-SPL main-market bounded deposit/redeem variants with existing ATAs are reviewed; every setup, alternate market, and unbounded variant remains unsupported."]
+}

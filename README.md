@@ -143,6 +143,25 @@ Scope, remaining accounts, and extra/reordered output fail the complete
 operation. Production and staging manifests are proof-only; Next and
 Expo/Hermes compatibility and a product convenience API remain open.
 
+### Jupiter Earn proof
+
+The schema-v2 Jupiter Earn profile pins `@jup-ag/lend@0.1.10`, the native
+Lending IDL, and the exact production or staging `ext_jupiter` IDL. It calls
+the official `Program.methods.depositWithMinAmountOut` and
+`Program.methods.redeemWithMinAmountOut` builders and differentially checks
+their byte/account output against the committed bounded portable-binding
+vectors.
+
+Only classic-SPL, main-market, existing-ATA deposit/redeem operations with
+explicit nonzero minimum output are accepted. The operation runtime binds the
+GLAM-vault signer, decoded Lending/Liquidity account owners and relationships,
+fresh observation slot, canonical ATAs, derived PDAs, fixed program identities,
+exact roles, and exact 24-byte u64 payloads. Unbounded variants, mint/withdraw
+alternates, Ethena, Token-2022, WSOL, setup/cleanup, remaining accounts, and
+extra/reordered output fail closed. Both manifests remain `proof-only`; the
+official SDK still carries Anchor/web3.js and has not passed Next or
+Expo/Hermes gates.
+
 ## Versioned compatibility evidence
 
 Published packages include:
@@ -164,9 +183,9 @@ and hashes. Verify a checkout with:
 npm run verify:artifacts
 ```
 
-Stable releases reject `proof-only` manifests. The initial Kamino manifests
-remain proof-only while the official SDK package graph fails the Next,
-Expo/Hermes, and dependency-peer gates.
+Stable releases reject `proof-only` manifests. The initial integration
+manifests remain proof-only while their official SDK package graphs fail the
+app-runtime and dependency-peer gates.
 
 CI packs the built package once and emits an adjacent immutable publication
 contract. The contract pins the archive SHA-256/npm integrity, every packed

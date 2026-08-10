@@ -166,6 +166,23 @@ existing `same_as` constraint. Every occurrence still has an exact role, the
 duplicates are dropped rather than copied by this mapping, and undeclared or
 destination privilege conflicts remain rejected.
 
+The first Jupiter Earn profile is a separate schema-v2, operation-only
+boundary over `@jup-ag/lend@0.1.10`, its committed native IDL, and the exact
+main-market portable binding. It accepts only one official
+`depositWithMinAmountOut` or `redeemWithMinAmountOut` instruction with
+existing canonical classic-SPL ATAs and nonzero u64 input/minimum-output
+amounts. The caller supplies an at-most-20-slot-old decoded Lending and
+TokenReserve snapshot; the mapper binds each account to its owning Lending or
+Liquidity program, validates the reserve/mint relationships, and independently
+derives the GLAM-vault ATAs plus every reviewed Lending/Liquidity PDA.
+
+No Jupiter instruction is globally passed through. Unbounded deposit/redeem,
+mint/withdraw alternates, Ethena, Token-2022, WSOL, ATA or other setup/cleanup,
+alternate programs, remaining accounts, and extra/reordered output fail the
+complete operation. The production and staging tuples remain `proof-only`:
+the official SDK differential is green in Node, but its Anchor/web3.js graph
+has not passed Next or Expo/Hermes compatibility gates.
+
 ## Versioned evidence
 
 Compatibility is one exact tuple, not a range:

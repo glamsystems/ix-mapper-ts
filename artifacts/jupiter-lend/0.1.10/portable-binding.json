@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "integration": "jupiter-earn",
+  "profile": "jupiter-earn-main-classic-spl-v1",
+  "repository": "glamsystems/glam",
+  "native_idl": {
+    "commit": "aa654a2e6739b25f9d72ac91da7540ba7e9990dd",
+    "path": "anchor/deps/jupiter_lending/jupiter_lending.json",
+    "sha256": "ef547c925d93149437ffa7cd6be91f7bf3d97a95960c219227b0da91cadb9bd0"
+  },
+  "portable_binding": {
+    "base_commit": "4053ffbad104ce7f17505f4b3b85d5b1b414fc37",
+    "hardening_commit": "356ed8420edc24ceb518d88440f4e17c24378c61",
+    "files": {
+      "instructions": {
+        "path": "packages/jupiter-adapter/src/instructions.ts",
+        "commit": "356ed8420edc24ceb518d88440f4e17c24378c61",
+        "sha256": "a522235f4d286a7cda8bc22999a79a4b7b435e3e34ac1e6425c3ed082d57c671"
+      },
+      "enumeration": {
+        "path": "packages/jupiter-adapter/src/enumeration.ts",
+        "commit": "4053ffbad104ce7f17505f4b3b85d5b1b414fc37",
+        "sha256": "61e144e9c8a7223b5915e5dfb37f015375eed4a0a25a5966e984c1fa8bc3add3"
+      },
+      "structural": {
+        "path": "packages/jupiter-adapter/src/structural.ts",
+        "commit": "4053ffbad104ce7f17505f4b3b85d5b1b414fc37",
+        "sha256": "2ff1b89c085621de4447f5aaac6f88180d84350f694ce84f1f5e09f1eef9e238"
+      },
+      "differential_check": {
+        "path": "packages/jupiter-adapter/scripts/jupiter-instruction-check.mjs",
+        "commit": "356ed8420edc24ceb518d88440f4e17c24378c61",
+        "sha256": "41081bb0df2a5b94c687229294369d15024e4c6f364b32860ae1af3b869f6cd1"
+      }
+    }
+  },
+  "programs": {
+    "lending": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+    "liquidity": "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC"
+  },
+  "token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+  "associated_token_program": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+  "system_program": "11111111111111111111111111111111",
+  "setup": "none",
+  "operations": [
+    {
+      "name": "deposit_with_min_amount_out",
+      "discriminator": [116, 144, 16, 97, 118, 109, 40, 119],
+      "data_length": 24,
+      "fixed_accounts": 17
+    },
+    {
+      "name": "redeem_with_min_amount_out",
+      "discriminator": [235, 189, 237, 56, 166, 180, 184, 149],
+      "data_length": 24,
+      "fixed_accounts": 18
+    }
+  ]
+}

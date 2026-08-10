@@ -1,0 +1,132 @@
+{
+  "$schema": "./schema-v1.json",
+  "schema_version": 1,
+  "config_revision": 1,
+  "integration": "jupiter-earn",
+  "rules": [
+    {
+      "id": "jupiter-earn.deposit-with-min-out",
+      "outcome": "mapped",
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "instruction": "deposit_with_min_amount_out",
+      "phase": "protocol",
+      "emitted_by": ["@jup-ag/lend Program.methods.depositWithMinAmountOut", "@glam/jupiter-adapter bounded instruction profile"],
+      "condition": "main-market classic-SPL deposit with existing canonical underlying and f-token ATAs, nonzero assets, and nonzero minimum output",
+      "discriminator": [116, 144, 16, 97, 118, 109, 40, 119],
+      "mapping_ref": { "config_schema_version": 2, "config_revision": 1, "source_instruction": "deposit_with_min_amount_out" }
+    },
+    {
+      "id": "jupiter-earn.redeem-with-min-out",
+      "outcome": "mapped",
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "instruction": "redeem_with_min_amount_out",
+      "phase": "protocol",
+      "emitted_by": ["@jup-ag/lend Program.methods.redeemWithMinAmountOut", "@glam/jupiter-adapter bounded instruction profile"],
+      "condition": "main-market classic-SPL redemption with existing canonical f-token and underlying ATAs, nonzero shares, and nonzero minimum output",
+      "discriminator": [235, 189, 237, 56, 166, 180, 184, 149],
+      "mapping_ref": { "config_schema_version": 2, "config_revision": 1, "source_instruction": "redeem_with_min_amount_out" }
+    },
+    {
+      "id": "jupiter-earn.unbounded-deposit",
+      "outcome": "unsupported",
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "instruction": "deposit",
+      "phase": "protocol",
+      "emitted_by": ["@jup-ag/lend Earn helpers"],
+      "condition": "deposit omits a minimum f-token output",
+      "discriminator": [242, 35, 198, 137, 82, 225, 242, 182],
+      "reason": "The initial profile requires an explicit nonzero minimum output."
+    },
+    {
+      "id": "jupiter-earn.mint-variants",
+      "outcome": "unsupported",
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "instruction": "mint/mint_with_max_assets",
+      "phase": "protocol",
+      "emitted_by": ["@jup-ag/lend Earn helpers"],
+      "condition": "any exact-share mint variant",
+      "reason": "Exact-share mint branches have not been reviewed by this bounded operation profile."
+    },
+    {
+      "id": "jupiter-earn.withdraw-variants",
+      "outcome": "unsupported",
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "instruction": "withdraw/withdraw_with_max_shares_burn",
+      "phase": "protocol",
+      "emitted_by": ["@jup-ag/lend Earn helpers"],
+      "condition": "any exact-asset withdrawal variant",
+      "reason": "Exact-asset withdrawal branches have not been reviewed by this bounded operation profile."
+    },
+    {
+      "id": "jupiter-earn.unbounded-redeem",
+      "outcome": "unsupported",
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "instruction": "redeem",
+      "phase": "protocol",
+      "emitted_by": ["@jup-ag/lend Earn helpers"],
+      "condition": "redeem omits a minimum underlying output",
+      "discriminator": [184, 12, 86, 149, 70, 196, 97, 225],
+      "reason": "The initial profile requires an explicit nonzero minimum output."
+    },
+    {
+      "id": "jupiter-earn.ata-setup",
+      "outcome": "unsupported",
+      "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      "instruction": "Create/CreateIdempotent",
+      "phase": "setup",
+      "emitted_by": ["caller setup", "@jup-ag/lend Earn helpers"],
+      "condition": "either vault ATA does not already exist or any ATA instruction is emitted",
+      "reason": "The first profile requires both canonical ATAs to exist and accepts no setup instructions."
+    },
+    {
+      "id": "jupiter-earn.token-2022",
+      "outcome": "unsupported",
+      "program_id": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+      "instruction": "Token-2022 Earn path",
+      "phase": "setup",
+      "emitted_by": ["caller setup", "@jup-ag/lend Earn helpers"],
+      "condition": "the underlying or f-token mint uses Token-2022",
+      "reason": "The first profile pins classic SPL Token for both mints."
+    },
+    {
+      "id": "jupiter-earn.wrapped-sol",
+      "outcome": "unsupported",
+      "program_id": "11111111111111111111111111111111",
+      "instruction": "wrapped-SOL setup/cleanup",
+      "phase": "setup",
+      "emitted_by": ["caller setup", "@jup-ag/lend Earn helpers"],
+      "condition": "the underlying mint is native wrapped SOL or any sync/close helper is emitted",
+      "reason": "Wrapped-SOL account lifecycle is outside the initial profile."
+    },
+    {
+      "id": "jupiter-earn.ethena",
+      "outcome": "unsupported",
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "instruction": "Ethena Earn market",
+      "phase": "protocol",
+      "emitted_by": ["@jup-ag/lend getLendingProgram"],
+      "condition": "market selector is not main",
+      "reason": "Only the exact Jupiter main-market profile is reviewed."
+    },
+    {
+      "id": "jupiter-earn.alternate-program",
+      "outcome": "unsupported",
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "instruction": "alternate Lending/Liquidity program tuple",
+      "phase": "protocol",
+      "emitted_by": ["operation caller"],
+      "condition": "either native program identity differs from the pinned main-market tuple",
+      "reason": "Program selection is an explicit profile input and cannot inherit an override."
+    },
+    {
+      "id": "jupiter-earn.remaining-or-extra",
+      "outcome": "unsupported",
+      "program_id": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "instruction": "remaining/reordered/extra output",
+      "phase": "protocol",
+      "emitted_by": ["operation caller"],
+      "condition": "any setup, cleanup, protocol instruction, account, tail, duplicate, or reordering exists outside the exact single-instruction operation",
+      "reason": "The operation matcher rejects every extra, missing, duplicated, or reordered instruction and every remaining account."
+    }
+  ]
+}

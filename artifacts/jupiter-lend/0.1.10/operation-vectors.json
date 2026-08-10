@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "source": {
+    "repository": "glamsystems/glam",
+    "base_commit": "4053ffbad104ce7f17505f4b3b85d5b1b414fc37",
+    "hardening_commit": "356ed8420edc24ceb518d88440f4e17c24378c61",
+    "fixture": "packages/jupiter-adapter/fixtures/jupiter-earn-markets-mainnet.json",
+    "slot": 437663558
+  },
+  "owner": "4QKFoFDzNFnvfkzVazABbCEfMwd3y1pZqUVzmpnkCphj",
+  "lending": {
+    "ownerProgramAddress": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+    "address": "2vVYHYM8VYnvZqQWpTJSj8o8DBf1wM8pVs3bsTgYZiqJ",
+    "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "fTokenMintAddress": "9BEcn9aPEmhSPbPQeFGjidRiEKki46fVQDyPpSQXPA2D",
+    "tokenReservesLiquidityAddress": "94vK29npVbyRHXH63rRcTiSr26SFhrQTzbpNJuhQEDu",
+    "supplyPositionOnLiquidityAddress": "Hf9gtkM4dpVBahVSzEXSVCAPpKzBsBcns3s8As3z77oF",
+    "rewardsRateModelAddress": "5xSPBiD3TibamAnwHDhZABdB4z4F9dcj5PnbteroBTTd"
+  },
+  "tokenReserve": {
+    "ownerProgramAddress": "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC",
+    "address": "94vK29npVbyRHXH63rRcTiSr26SFhrQTzbpNJuhQEDu",
+    "mintAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "vaultAddress": "BmkUoKMFYBxNSzWXyUjyMJjMAaVz4d8ZnxwwmhDCUXFB"
+  },
+  "deposit": {
+    "assets": "123456789",
+    "minAmountOut": "111000000",
+    "instruction": {
+      "programAddress": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "accounts": [
+        { "address": "4QKFoFDzNFnvfkzVazABbCEfMwd3y1pZqUVzmpnkCphj", "role": 3 },
+        { "address": "Bu6S6YCXZFGaPJpeLfctNfnmSn4JAtwU1nqd9dyZGNqt", "role": 1 },
+        { "address": "5qepGof9Jh6Rp87UHhyybCsPoCnRFw2krfxCW43r1B7U", "role": 1 },
+        { "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", "role": 0 },
+        { "address": "5nmGjA4s7ATzpBQXC5RNceRpaJ7pYw2wKsNBWyuSAZV6", "role": 0 },
+        { "address": "2vVYHYM8VYnvZqQWpTJSj8o8DBf1wM8pVs3bsTgYZiqJ", "role": 1 },
+        { "address": "9BEcn9aPEmhSPbPQeFGjidRiEKki46fVQDyPpSQXPA2D", "role": 1 },
+        { "address": "94vK29npVbyRHXH63rRcTiSr26SFhrQTzbpNJuhQEDu", "role": 1 },
+        { "address": "Hf9gtkM4dpVBahVSzEXSVCAPpKzBsBcns3s8As3z77oF", "role": 1 },
+        { "address": "5pjzT5dFTsXcwixoab1QDLvZQvpYJxJeBphkyfHGn688", "role": 0 },
+        { "address": "BmkUoKMFYBxNSzWXyUjyMJjMAaVz4d8ZnxwwmhDCUXFB", "role": 1 },
+        { "address": "7s1da8DduuBFqGra5bJBjpnvL5E9mGzCuMk1Qkh4or2Z", "role": 1 },
+        { "address": "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC", "role": 1 },
+        { "address": "5xSPBiD3TibamAnwHDhZABdB4z4F9dcj5PnbteroBTTd", "role": 0 },
+        { "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA", "role": 0 },
+        { "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL", "role": 0 },
+        { "address": "11111111111111111111111111111111", "role": 0 }
+      ],
+      "data": [116, 144, 16, 97, 118, 109, 40, 119, 21, 205, 91, 7, 0, 0, 0, 0, 192, 185, 157, 6, 0, 0, 0, 0]
+    }
+  },
+  "redeem": {
+    "shares": "98765432",
+    "minAmountOut": "90000000",
+    "instruction": {
+      "programAddress": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+      "accounts": [
+        { "address": "4QKFoFDzNFnvfkzVazABbCEfMwd3y1pZqUVzmpnkCphj", "role": 3 },
+        { "address": "5qepGof9Jh6Rp87UHhyybCsPoCnRFw2krfxCW43r1B7U", "role": 1 },
+        { "address": "Bu6S6YCXZFGaPJpeLfctNfnmSn4JAtwU1nqd9dyZGNqt", "role": 1 },
+        { "address": "5nmGjA4s7ATzpBQXC5RNceRpaJ7pYw2wKsNBWyuSAZV6", "role": 0 },
+        { "address": "2vVYHYM8VYnvZqQWpTJSj8o8DBf1wM8pVs3bsTgYZiqJ", "role": 1 },
+        { "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", "role": 0 },
+        { "address": "9BEcn9aPEmhSPbPQeFGjidRiEKki46fVQDyPpSQXPA2D", "role": 1 },
+        { "address": "94vK29npVbyRHXH63rRcTiSr26SFhrQTzbpNJuhQEDu", "role": 1 },
+        { "address": "Hf9gtkM4dpVBahVSzEXSVCAPpKzBsBcns3s8As3z77oF", "role": 1 },
+        { "address": "5pjzT5dFTsXcwixoab1QDLvZQvpYJxJeBphkyfHGn688", "role": 0 },
+        { "address": "BmkUoKMFYBxNSzWXyUjyMJjMAaVz4d8ZnxwwmhDCUXFB", "role": 1 },
+        { "address": "HN1r4VfkDn53xQQfeGDYrNuDKFdemAhZsHYRwBrFhsW", "role": 1 },
+        { "address": "7s1da8DduuBFqGra5bJBjpnvL5E9mGzCuMk1Qkh4or2Z", "role": 1 },
+        { "address": "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC", "role": 1 },
+        { "address": "5xSPBiD3TibamAnwHDhZABdB4z4F9dcj5PnbteroBTTd", "role": 0 },
+        { "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA", "role": 0 },
+        { "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL", "role": 0 },
+        { "address": "11111111111111111111111111111111", "role": 0 }
+      ],
+      "data": [235, 189, 237, 56, 166, 180, 184, 149, 120, 10, 227, 5, 0, 0, 0, 0, 128, 74, 93, 5, 0, 0, 0, 0]
+    }
+  }
+}

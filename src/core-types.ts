@@ -231,9 +231,13 @@ export interface MapInstructionOptions {
 export type KaminoKvaultOperationName = "deposit" | "withdraw";
 export type KaminoLendingOperationName = "repayObligationLiquidityV2";
 export type KaminoFarmsOperationName = "stake" | "initializeAndStake";
+export type JupiterEarnOperationName =
+  | "depositWithMinAmountOut"
+  | "redeemWithMinAmountOut";
 /** Active runtime tuple. Kamino 10 remains evaluation-only. */
 export type KaminoLendingSdkVersion = "9.1.5";
 export type KaminoFarmsSdkVersion = "3.2.26";
+export type JupiterEarnSdkVersion = "0.1.10";
 
 /** Complete, ordered helper emission for one supported KVault operation. */
 export interface MapKaminoKvaultOperationInput {
@@ -314,6 +318,53 @@ export interface MapKaminoFarmsStakeOperationInput {
   readonly officialSdkVersion: KaminoFarmsSdkVersion;
   readonly instructions: readonly NeutralInstructionInput[];
   readonly reviewedContext: KaminoFarmsStakeContext;
+}
+
+/** Exact portable Jupiter Earn profile selected explicitly by the caller. */
+export interface JupiterEarnExternalProfile {
+  readonly profile: "jupiter-earn-main-classic-spl-v1";
+  readonly market: "main";
+  readonly lendingProgramAddress: string;
+  readonly liquidityProgramAddress: string;
+  readonly assetTokenProgramAddress: string;
+  readonly fTokenProgramAddress: string;
+  readonly associatedTokenProgramAddress: string;
+  readonly systemProgramAddress: string;
+  readonly setup: "none";
+  readonly baseCommit: "4053ffbad104ce7f17505f4b3b85d5b1b414fc37";
+  readonly hardeningCommit: "356ed8420edc24ceb518d88440f4e17c24378c61";
+}
+
+/** Caller-supplied decoded state bound to one Jupiter Earn instruction. */
+export interface JupiterEarnReviewedContext {
+  readonly stateObservationSlot: bigint;
+  readonly currentSlot: bigint;
+  readonly underlyingAtaExists: true;
+  readonly fTokenAtaExists: true;
+  readonly lending: {
+    readonly ownerProgramAddress: string;
+    readonly address: string;
+    readonly mintAddress: string;
+    readonly fTokenMintAddress: string;
+    readonly tokenReservesLiquidityAddress: string;
+    readonly supplyPositionOnLiquidityAddress: string;
+    readonly rewardsRateModelAddress: string;
+  };
+  readonly tokenReserve: {
+    readonly ownerProgramAddress: string;
+    readonly address: string;
+    readonly mintAddress: string;
+    readonly vaultAddress: string;
+  };
+}
+
+/** Exact single-instruction output of the bounded Jupiter Earn binding. */
+export interface MapJupiterEarnOperationInput {
+  readonly operation: JupiterEarnOperationName;
+  readonly officialSdkVersion: JupiterEarnSdkVersion;
+  readonly externalProfile: JupiterEarnExternalProfile;
+  readonly instructions: readonly NeutralInstructionInput[];
+  readonly reviewedContext: JupiterEarnReviewedContext;
 }
 
 export type OperationSetupBinding =
@@ -405,7 +456,8 @@ export interface NeutralMappedOperationResult {
   operation:
     | KaminoKvaultOperationName
     | KaminoLendingOperationName
-    | KaminoFarmsOperationName;
+    | KaminoFarmsOperationName
+    | JupiterEarnOperationName;
   instructions: readonly (
     | NeutralMappedInstructionResult
     | NeutralSafePassthroughInstructionResult

@@ -313,6 +313,20 @@ function validateJsonSchema(value, schema, rootSchema, location = "manifest") {
         ),
       );
     }
+    if (schema.prefixItems) {
+      invariant(
+        value.length >= schema.prefixItems.length,
+        `${location} has fewer items than its required prefix`,
+      );
+      schema.prefixItems.forEach((itemSchema, index) =>
+        validateJsonSchema(
+          value[index],
+          itemSchema,
+          rootSchema,
+          `${location}[${index}]`,
+        ),
+      );
+    }
     if (schema.maxItems !== undefined) {
       invariant(
         value.length <= schema.maxItems,
@@ -1171,6 +1185,191 @@ async function verifyOperationProfiles(
     return { operationProfiles: 2 };
   }
 
+  if (manifest.integration === "jupiter-earn") {
+    invariant(
+      declaration.schema_version === 2 &&
+        profileConfig.operations.length === 2 &&
+        passthroughIds.size === 0,
+      `${label} Jupiter Earn requires two mapped-only schema-v2 profiles`,
+    );
+    const expectedSourceHashes = {
+      official_earn_entry:
+        "3f0d9bfc18a999c21dfd02177bab855e367626776e8b70bd436911d9107f4a62",
+      native_idl:
+        "ef547c925d93149437ffa7cd6be91f7bf3d97a95960c219227b0da91cadb9bd0",
+      portable_binding:
+        "a440e2daad52f343686154e4ad4092f99a996a80e68f661cb1d87564bd470186",
+      operation_vectors:
+        "08503390a2f235cad434022ffbe4e38791c704eed0bfec2dca20030e30b159b0",
+      portable_instructions:
+        "a522235f4d286a7cda8bc22999a79a4b7b435e3e34ac1e6425c3ed082d57c671",
+      portable_enumeration:
+        "61e144e9c8a7223b5915e5dfb37f015375eed4a0a25a5966e984c1fa8bc3add3",
+      portable_structural:
+        "2ff1b89c085621de4447f5aaac6f88180d84350f694ce84f1f5e09f1eef9e238",
+      portable_differential:
+        "41081bb0df2a5b94c687229294369d15024e4c6f364b32860ae1af3b869f6cd1",
+    };
+    const tuple = profileConfig.official_sdk_tuple;
+    invariant(
+      tuple.package === "@jup-ag/lend" &&
+        tuple.version === "0.1.10" &&
+        tuple.version === manifest.native_protocol.official_sdk.version &&
+        tuple.native_idl_version === "0.1.0" &&
+        tuple.solana_kit_version === "2.3.0" &&
+        tuple.tarball_sha256 ===
+          "fd84fefecc1a517ddfae64b2b61d293e2cbc854a84c7836181a42dcdec6f5810" &&
+        JSON.stringify(tuple.source_hashes) ===
+          JSON.stringify(expectedSourceHashes),
+      `${label} Jupiter official SDK/IDL/source tuple drift`,
+    );
+    const expected = {
+      depositWithMinAmountOut: {
+        id: "jupiter-earn.main-classic-spl-deposit-with-min-out",
+        emitter:
+          "@jup-ag/lend Program.methods.depositWithMinAmountOut + bounded portable binding",
+        amounts: "nonzero-u64-assets-and-min-out",
+        source: "deposit_with_min_amount_out",
+        accounts: 17,
+      },
+      redeemWithMinAmountOut: {
+        id: "jupiter-earn.main-classic-spl-redeem-with-min-out",
+        emitter:
+          "@jup-ag/lend Program.methods.redeemWithMinAmountOut + bounded portable binding",
+        amounts: "nonzero-u64-shares-and-min-out",
+        source: "redeem_with_min_amount_out",
+        accounts: 18,
+      },
+    };
+    for (const profile of profileConfig.operations) {
+      const shape = expected[profile.operation];
+      const external = profile.external_profile;
+      invariant(
+        shape &&
+          declaredIds.has(profile.id) &&
+          profile.id === shape.id &&
+          profile.official_emitter === shape.emitter &&
+          profile.bounded_binding ===
+            "pinned decoded Lending/TokenReserve state plus immutable jupiter-earn-main-classic-spl-v1 output" &&
+          profile.atomic === true &&
+          profile.maximum_snapshot_age_slots === 20 &&
+          profile.amounts === shape.amounts &&
+          profile.requires_existing_atas === true &&
+          external.profile === "jupiter-earn-main-classic-spl-v1" &&
+          external.market === "main" &&
+          external.lending_program ===
+            "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9" &&
+          external.liquidity_program ===
+            "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC" &&
+          external.asset_token_program ===
+            "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" &&
+          external.f_token_program ===
+            "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" &&
+          external.associated_token_program ===
+            "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL" &&
+          external.system_program === "11111111111111111111111111111111" &&
+          external.setup === "none" &&
+          external.base_commit ===
+            "4053ffbad104ce7f17505f4b3b85d5b1b414fc37" &&
+          external.hardening_commit ===
+            "356ed8420edc24ceb518d88440f4e17c24378c61" &&
+          profile.sequence.length === 1 &&
+          profile.sequence[0].position === 0 &&
+          profile.sequence[0].outcome === "mapped" &&
+          profile.sequence[0].source_instruction === shape.source &&
+          profile.sequence[0].account_bindings.length === shape.accounts,
+        `${label}:${profile.id} Jupiter operation grammar drift`,
+      );
+      const mapping = config.instructions.find(
+        ({ src_ix_name }) => src_ix_name === shape.source,
+      );
+      invariant(
+        mapping &&
+          mapping.strict.remaining_accounts.kind === "none" &&
+          mapping.strict.fixed_accounts.length === shape.accounts &&
+          mapping.strict.fixed_accounts.every(
+            (account, index) =>
+              account.index === index &&
+              account.writable ===
+                ((profile.sequence[0].account_bindings[index].role & 1) !== 0) &&
+              account.signer ===
+                ((profile.sequence[0].account_bindings[index].role & 2) !== 0),
+          ),
+        `${label}:${profile.id} Jupiter mapping/account binding drift`,
+      );
+    }
+
+    const provenance = JSON.parse(
+      await readFile(verifiedArtifacts.portable_binding_provenance, "utf8"),
+    );
+    invariant(
+      provenance.integration === "jupiter-earn" &&
+        provenance.profile === "jupiter-earn-main-classic-spl-v1" &&
+        provenance.repository === "glamsystems/glam" &&
+        provenance.native_idl.commit ===
+          "aa654a2e6739b25f9d72ac91da7540ba7e9990dd" &&
+        provenance.native_idl.sha256 === expectedSourceHashes.native_idl &&
+        provenance.portable_binding.base_commit ===
+          "4053ffbad104ce7f17505f4b3b85d5b1b414fc37" &&
+        provenance.portable_binding.hardening_commit ===
+          "356ed8420edc24ceb518d88440f4e17c24378c61" &&
+        provenance.portable_binding.files.instructions.sha256 ===
+          expectedSourceHashes.portable_instructions &&
+        provenance.portable_binding.files.enumeration.sha256 ===
+          expectedSourceHashes.portable_enumeration &&
+        provenance.portable_binding.files.structural.sha256 ===
+          expectedSourceHashes.portable_structural &&
+        provenance.portable_binding.files.differential_check.sha256 ===
+          expectedSourceHashes.portable_differential &&
+        provenance.programs.lending === manifest.native_protocol.program_id &&
+        provenance.programs.liquidity ===
+          "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC" &&
+        provenance.setup === "none" &&
+        provenance.operations.length === 2,
+      `${label} portable binding provenance drift`,
+    );
+    const vectors = JSON.parse(
+      await readFile(verifiedArtifacts.operation_vectors, "utf8"),
+    );
+    invariant(
+      vectors.source.base_commit === provenance.portable_binding.base_commit &&
+        vectors.source.hardening_commit ===
+          provenance.portable_binding.hardening_commit &&
+        Number.isInteger(vectors.source.slot) &&
+        vectors.lending.ownerProgramAddress ===
+          manifest.native_protocol.program_id &&
+        vectors.tokenReserve.ownerProgramAddress ===
+          provenance.programs.liquidity &&
+        vectors.tokenReserve.address ===
+          vectors.lending.tokenReservesLiquidityAddress &&
+        vectors.tokenReserve.mintAddress === vectors.lending.mintAddress,
+      `${label} Jupiter decoded-state vector provenance drift`,
+    );
+    for (const [operation, shape] of Object.entries(expected)) {
+      const vector =
+        operation === "depositWithMinAmountOut"
+          ? vectors.deposit.instruction
+          : vectors.redeem.instruction;
+      const mapping = config.instructions.find(
+        ({ src_ix_name }) => src_ix_name === shape.source,
+      );
+      invariant(
+        vector.programAddress === manifest.native_protocol.program_id &&
+          vector.accounts.length === shape.accounts &&
+          vector.data.length === 24 &&
+          equalBytes(vector.data.slice(0, 8), mapping.src_discriminator) &&
+          vector.accounts.every(
+            (account, index) =>
+              account.role ===
+              ((mapping.strict.fixed_accounts[index].signer ? 2 : 0) |
+                (mapping.strict.fixed_accounts[index].writable ? 1 : 0)),
+          ),
+        `${label}:${shape.source} portable vector drift`,
+      );
+    }
+    return { operationProfiles: 2 };
+  }
+
   invariant(
     manifest.integration === "kamino-kvaults" &&
       declaration.schema_version === 1,
@@ -1300,6 +1499,12 @@ async function verifyOperationProfileSchemaPolicyContract() {
       "utf8",
     ),
   );
+  const jupiter = JSON.parse(
+    await readFile(
+      path.join(packageRoot, "operation-profiles-v2/jupiter-earn.json"),
+      "utf8",
+    ),
+  );
   validateJsonSchema(
     klend,
     operationProfileSchemaV2,
@@ -1311,6 +1516,12 @@ async function verifyOperationProfileSchemaPolicyContract() {
     operationProfileSchemaV2,
     operationProfileSchemaV2,
     "operation-profile-schema-contract:farms",
+  );
+  validateJsonSchema(
+    jupiter,
+    operationProfileSchemaV2,
+    operationProfileSchemaV2,
+    "operation-profile-schema-contract:jupiter",
   );
 
   const expectRejected = (value, label) => {
@@ -1369,6 +1580,61 @@ async function verifyOperationProfileSchemaPolicyContract() {
   expectRejected(
     farmsWithStaleBoundDrift,
     "operation-profile-schema-contract:farms-snapshot-bound-drift",
+  );
+
+  for (const [name, tuple] of [
+    ["klend", klend.official_sdk_tuple],
+    ["farms", farms.official_sdk_tuple],
+  ]) {
+    const crossTuple = structuredClone(jupiter);
+    crossTuple.official_sdk_tuple = structuredClone(tuple);
+    expectRejected(
+      crossTuple,
+      `operation-profile-schema-contract:jupiter-${name}-tuple`,
+    );
+  }
+  const jupiterWithFarmsOperation = structuredClone(jupiter);
+  jupiterWithFarmsOperation.operations.push(
+    structuredClone(farms.operations[0]),
+  );
+  expectRejected(
+    jupiterWithFarmsOperation,
+    "operation-profile-schema-contract:jupiter-mixed-operation",
+  );
+  const farmsWithJupiterOperation = structuredClone(farms);
+  farmsWithJupiterOperation.operations.push(
+    structuredClone(jupiter.operations[0]),
+  );
+  expectRejected(
+    farmsWithJupiterOperation,
+    "operation-profile-schema-contract:farms-jupiter-operation",
+  );
+  const jupiterWithMismatchedBranch = structuredClone(jupiter);
+  jupiterWithMismatchedBranch.operations[0].sequence[0].source_instruction =
+    "redeem_with_min_amount_out";
+  expectRejected(
+    jupiterWithMismatchedBranch,
+    "operation-profile-schema-contract:jupiter-operation-branch-drift",
+  );
+  const jupiterWithDuplicateDeposit = structuredClone(jupiter);
+  jupiterWithDuplicateDeposit.operations[1] = structuredClone(
+    jupiter.operations[0],
+  );
+  expectRejected(
+    jupiterWithDuplicateDeposit,
+    "operation-profile-schema-contract:jupiter-duplicate-deposit",
+  );
+  const jupiterWithMarketDrift = structuredClone(jupiter);
+  jupiterWithMarketDrift.operations[0].external_profile.market = "ethena";
+  expectRejected(
+    jupiterWithMarketDrift,
+    "operation-profile-schema-contract:jupiter-market-drift",
+  );
+  const jupiterWithStaleBoundDrift = structuredClone(jupiter);
+  jupiterWithStaleBoundDrift.operations[0].maximum_snapshot_age_slots = 21;
+  expectRejected(
+    jupiterWithStaleBoundDrift,
+    "operation-profile-schema-contract:jupiter-snapshot-bound-drift",
   );
 }
 
@@ -1513,14 +1779,36 @@ async function verifyManifest(manifestVersion, fileName) {
         farmsProgramBinding.constraint.includes("outside this profile")),
     `${label} must pin the default-only Kamino Farms program profile`,
   );
+  if (manifest.integration === "jupiter-earn") {
+    const lendingBinding = programBindingsByName.get("jupiter-lending-main");
+    const liquidityBinding = programBindingsByName.get("jupiter-liquidity");
+    invariant(
+      programBindingsByName.size === 2 &&
+        lendingBinding?.program_id ===
+          "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9" &&
+        lendingBinding.mode === "sdk-default-only" &&
+        lendingBinding.constraint.includes("outside this profile") &&
+        liquidityBinding?.program_id ===
+          "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC" &&
+        liquidityBinding.mode === "sdk-default-only" &&
+        liquidityBinding.constraint.includes("outside this profile"),
+      `${label} must pin the exact Jupiter Lending/Liquidity program profile`,
+    );
+  }
 
   const kit = sdk.solana_kit;
   const kitLock = packageLock.packages?.[`node_modules/${kit.package}`];
+  const officialSdkDeclaresKit = Object.hasOwn(
+    sdkPackageManifest.dependencies ?? {},
+    kit.package,
+  );
   invariant(
     kit.package === "@solana/kit" &&
       isExactVersion(kit.version) &&
       packageManifest.devDependencies?.[kit.package] === kit.version &&
-      sdk.resolved_compatibility_dependencies[kit.package] === kit.version &&
+      (officialSdkDeclaresKit
+        ? sdk.resolved_compatibility_dependencies[kit.package] === kit.version
+        : sdk.resolved_compatibility_dependencies[kit.package] === undefined) &&
       kitLock?.version === kit.version &&
       kitLock?.integrity === kit.npm_integrity,
     `${label} Solana Kit tuple is not pinned exactly`,
@@ -1546,7 +1834,11 @@ async function verifyManifest(manifestVersion, fileName) {
     );
   }
 
-  if (manifest.integration === "kamino-farms-stake") {
+  const usesPackageScopedDependencyResolution = [
+    "kamino-farms-stake",
+    "jupiter-earn",
+  ].includes(manifest.integration);
+  if (usesPackageScopedDependencyResolution) {
     const officialDependencies = Object.keys(
       sdkPackageManifest.dependencies ?? {},
     ).sort();
@@ -1556,7 +1848,7 @@ async function verifyManifest(manifestVersion, fileName) {
     invariant(
       JSON.stringify(declaredDependencies) ===
         JSON.stringify(officialDependencies),
-      `${label} resolved dependencies do not exhaust the official Farms package`,
+      `${label} resolved dependencies do not exhaust the official SDK package`,
     );
     for (const dependency of officialDependencies) {
       const resolved = await resolveDependencyFromPackage(
@@ -1571,13 +1863,13 @@ async function verifyManifest(manifestVersion, fileName) {
           dependencyLock?.version === version &&
           typeof dependencyLock.integrity === "string" &&
           dependencyLock.integrity.length > 0,
-        `${label} Farms-resolved ${dependency} is not pinned at ${resolved.lockKey}`,
+        `${label} package-resolved ${dependency} is not pinned at ${resolved.lockKey}`,
       );
     }
   }
 
   for (const [dependency, version] of Object.entries(
-    manifest.integration === "kamino-farms-stake"
+    usesPackageScopedDependencyResolution
       ? {}
       : sdk.resolved_compatibility_dependencies,
   )) {
@@ -1646,6 +1938,12 @@ async function verifyManifest(manifestVersion, fileName) {
               "farms_stake_schema",
               "farms_unstake_schema",
             ]
+          : manifest.integration === "jupiter-earn"
+            ? [
+                "official_earn_entry_source",
+                "portable_binding_provenance",
+                "operation_vectors",
+              ]
           : [];
   for (const requiredArtifact of [
     "native_idl",
@@ -1714,6 +2012,13 @@ async function verifyManifest(manifestVersion, fileName) {
       nativeIdl.metadata?.version === "1.6.5" &&
         nativeIdl.address === manifest.native_protocol.program_id,
       `${label} Farms native IDL version/program drift`,
+    );
+  }
+  if (manifest.integration === "jupiter-earn") {
+    invariant(
+      nativeIdl.metadata?.version === "0.1.0" &&
+        nativeIdl.address === manifest.native_protocol.program_id,
+      `${label} Jupiter native IDL version/program drift`,
     );
   }
 

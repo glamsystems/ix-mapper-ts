@@ -4,12 +4,16 @@ import StrictKlendProgramConfig from "../mapping-configs-v2/KLend2g3cP87fffoy8q1
 import StrictStagingKlendProgramConfig from "../mapping-configs-v2-staging/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
 import StrictFarmsProgramConfig from "../mapping-configs-v2/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
 import StrictStagingFarmsProgramConfig from "../mapping-configs-v2-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
+import StrictJupiterEarnProgramConfig from "../mapping-configs-v2/jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9.json";
+import StrictStagingJupiterEarnProgramConfig from "../mapping-configs-v2-staging/jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9.json";
 import KaminoKvauInstructionClassifications from "../instruction-classifications-v1/kamino-kvaults.json";
 import KaminoLendingRepayClassifications from "../instruction-classifications-v1/kamino-lending-repay.json";
 import KaminoFarmsStakeClassifications from "../instruction-classifications-v1/kamino-farms-stake.json";
+import JupiterEarnClassifications from "../instruction-classifications-v1/jupiter-earn.json";
 import KaminoKvauOperationProfiles from "../operation-profiles-v1/kamino-kvaults.json";
 import KaminoLendingRepayOperationProfiles from "../operation-profiles-v2/kamino-lending-repay.json";
 import KaminoFarmsStakeOperationProfiles from "../operation-profiles-v2/kamino-farms-stake.json";
+import JupiterEarnOperationProfiles from "../operation-profiles-v2/jupiter-earn.json";
 
 import type {
   InstructionClassificationConfig,
@@ -42,6 +46,11 @@ import {
   validateFarmsOperationProfileConfig,
   type FarmsOperationProfileConfig,
 } from "./farms-operation";
+import {
+  mapJupiterEarnOperationWithConfigs,
+  validateJupiterOperationProfileConfig,
+  type JupiterOperationProfileConfig,
+} from "./jupiter-operation";
 
 function unsupported(message: string): NeutralMapInstructionResult {
   return { kind: "unsupported", reason: "invalid-instruction", message };
@@ -172,6 +181,41 @@ function createNeutralMapper(environment: NeutralMapperEnvironment) {
     productionFarms,
     environment,
   );
+  // Jupiter Earn remains operation-only. Both supported paths contain exactly
+  // one bounded native instruction and require pre-existing vault ATAs.
+  const productionJupiterEarn: StrictRemappingConfigs =
+    validateStrictRemappingConfigs(
+      {
+        [StrictJupiterEarnProgramConfig.program_id]:
+          StrictJupiterEarnProgramConfig as StrictRemappingConfig,
+      },
+      environment,
+    );
+  const stagingJupiterEarn: StrictRemappingConfigs =
+    validateStrictRemappingConfigs(
+      {
+        [StrictStagingJupiterEarnProgramConfig.program_id]:
+          StrictStagingJupiterEarnProgramConfig as StrictRemappingConfig,
+      },
+      environment,
+    );
+  const productionJupiterEarnClassifications =
+    validateInstructionClassificationConfig(
+      JupiterEarnClassifications as InstructionClassificationConfig,
+      productionJupiterEarn,
+      environment,
+    );
+  const stagingJupiterEarnClassifications =
+    validateInstructionClassificationConfig(
+      JupiterEarnClassifications as InstructionClassificationConfig,
+      stagingJupiterEarn,
+      environment,
+    );
+  const jupiterEarnOperationProfiles = validateJupiterOperationProfileConfig(
+    JupiterEarnOperationProfiles as JupiterOperationProfileConfig,
+    productionJupiterEarn,
+    environment,
+  );
 
   function mapInstructionNeutral(
     instruction: NeutralInstructionInput,
@@ -259,12 +303,31 @@ function createNeutralMapper(environment: NeutralMapperEnvironment) {
     );
   }
 
+  async function mapJupiterEarnOperationNeutral(
+    input: import("./core-types").MapJupiterEarnOperationInput,
+    context: NeutralMappingContext,
+    options?: MapInstructionOptions,
+  ): Promise<import("./core-types").NeutralMapOperationResult> {
+    const useStaging = parseStaging(options);
+    return mapJupiterEarnOperationWithConfigs(
+      input,
+      context,
+      useStaging ? stagingJupiterEarn : productionJupiterEarn,
+      useStaging
+        ? stagingJupiterEarnClassifications
+        : productionJupiterEarnClassifications,
+      jupiterEarnOperationProfiles,
+      environment,
+    );
+  }
+
   return {
     mapInstructionNeutral,
     mapInstructionsNeutral,
     mapKaminoKvaultOperationNeutral,
     mapKaminoLendingRepayOperationNeutral,
     mapKaminoFarmsStakeOperationNeutral,
+    mapJupiterEarnOperationNeutral,
   } as const;
 }
 

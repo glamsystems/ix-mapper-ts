@@ -80,7 +80,13 @@ try {
     "package/operation-profiles-v2/schema-v2.json",
     "package/operation-profiles-v2/kamino-lending-repay.json",
     "package/operation-profiles-v2/kamino-farms-stake.json",
+    "package/operation-profiles-v2/jupiter-earn.json",
     "package/artifacts/kamino-farms/1.6.5/native-farms.json",
+    "package/artifacts/jupiter-lend/0.1.10/native-lending.json",
+    "package/artifacts/jupiter-lend/0.1.10/portable-binding.json",
+    "package/artifacts/jupiter-lend/0.1.10/operation-vectors.json",
+    "package/artifacts/ext-jupiter/0.1.0/production.json",
+    "package/artifacts/ext-jupiter/0.1.0/staging.json",
     "package/compatibility-manifests/schema-v2.json",
     "package/compatibility-manifests/v2/kamino-kvaults-production.json",
     "package/compatibility-manifests/v2/kamino-kvaults-staging.json",
@@ -88,6 +94,8 @@ try {
     "package/compatibility-manifests/v2/kamino-lending-repay-staging.json",
     "package/compatibility-manifests/v2/kamino-farms-stake-production.json",
     "package/compatibility-manifests/v2/kamino-farms-stake-staging.json",
+    "package/compatibility-manifests/v2/jupiter-earn-production.json",
+    "package/compatibility-manifests/v2/jupiter-earn-staging.json",
   ]) {
     if (!members.includes(required)) {
       throw new Error(`Packed mapper artifact is missing ${required}`);
@@ -136,7 +144,9 @@ try {
       `if (klend.default.operations.length !== 1 || klend.default.schema_version !== 2) throw new Error("Klend operation profile export drift");\n` +
       `const farms = await import("@glamsystems/ix-mapper/operation-profiles-v2/kamino-farms-stake.json", { with: { type: "json" } });\n` +
       `if (farms.default.operations.length !== 2 || farms.default.schema_version !== 2) throw new Error("Farms operation profile export drift");\n` +
-      `const mapper = rootMapper({ normalizeAddress: value => value }); if (typeof mapper.mapKaminoFarmsStakeOperationNeutral !== "function") throw new Error("Farms mapper export missing");\n`,
+      `const jupiter = await import("@glamsystems/ix-mapper/operation-profiles-v2/jupiter-earn.json", { with: { type: "json" } });\n` +
+      `if (jupiter.default.operations.length !== 2 || jupiter.default.schema_version !== 2) throw new Error("Jupiter operation profile export drift");\n` +
+      `const mapper = rootMapper({ normalizeAddress: value => value }); if (typeof mapper.mapKaminoFarmsStakeOperationNeutral !== "function") throw new Error("Farms mapper export missing"); if (typeof mapper.mapJupiterEarnOperationNeutral !== "function") throw new Error("Jupiter mapper export missing");\n`,
   );
   run(process.execPath, ["probe.mjs"], consumerRoot);
   run(
@@ -226,7 +236,7 @@ try {
         web3Installed: false,
         legacyMissingPeerFailure: true,
         legacyWithPinnedPeer: pinnedWeb3Manifest.version,
-        operationProfiles: 5,
+        operationProfiles: 7,
       },
       null,
       2,

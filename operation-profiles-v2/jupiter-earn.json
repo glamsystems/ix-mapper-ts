@@ -1,0 +1,125 @@
+{
+  "$schema": "./schema-v2.json",
+  "schema_version": 2,
+  "config_revision": 1,
+  "integration": "jupiter-earn",
+  "official_sdk_tuple": {
+    "package": "@jup-ag/lend",
+    "version": "0.1.10",
+    "native_idl_version": "0.1.0",
+    "npm_integrity": "sha512-Kmwb9jfPya+K+AR8pL9MmWSJz8X7Wj451iEh/j9HEhat53b9CjRMK9IDnDyLmPPCgZPDCMgZBZIZqRfjfG3uuw==",
+    "tarball_sha256": "fd84fefecc1a517ddfae64b2b61d293e2cbc854a84c7836181a42dcdec6f5810",
+    "solana_kit_version": "2.3.0",
+    "source_hashes": {
+      "official_earn_entry": "3f0d9bfc18a999c21dfd02177bab855e367626776e8b70bd436911d9107f4a62",
+      "native_idl": "ef547c925d93149437ffa7cd6be91f7bf3d97a95960c219227b0da91cadb9bd0",
+      "portable_binding": "a440e2daad52f343686154e4ad4092f99a996a80e68f661cb1d87564bd470186",
+      "operation_vectors": "08503390a2f235cad434022ffbe4e38791c704eed0bfec2dca20030e30b159b0",
+      "portable_instructions": "a522235f4d286a7cda8bc22999a79a4b7b435e3e34ac1e6425c3ed082d57c671",
+      "portable_enumeration": "61e144e9c8a7223b5915e5dfb37f015375eed4a0a25a5966e984c1fa8bc3add3",
+      "portable_structural": "2ff1b89c085621de4447f5aaac6f88180d84350f694ce84f1f5e09f1eef9e238",
+      "portable_differential": "41081bb0df2a5b94c687229294369d15024e4c6f364b32860ae1af3b869f6cd1"
+    }
+  },
+  "operations": [
+    {
+      "id": "jupiter-earn.main-classic-spl-deposit-with-min-out",
+      "operation": "depositWithMinAmountOut",
+      "official_emitter": "@jup-ag/lend Program.methods.depositWithMinAmountOut + bounded portable binding",
+      "bounded_binding": "pinned decoded Lending/TokenReserve state plus immutable jupiter-earn-main-classic-spl-v1 output",
+      "external_profile": {
+        "profile": "jupiter-earn-main-classic-spl-v1",
+        "market": "main",
+        "lending_program": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+        "liquidity_program": "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC",
+        "asset_token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "f_token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "associated_token_program": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+        "system_program": "11111111111111111111111111111111",
+        "setup": "none",
+        "base_commit": "4053ffbad104ce7f17505f4b3b85d5b1b414fc37",
+        "hardening_commit": "356ed8420edc24ceb518d88440f4e17c24378c61"
+      },
+      "atomic": true,
+      "maximum_snapshot_age_slots": 20,
+      "amounts": "nonzero-u64-assets-and-min-out",
+      "requires_existing_atas": true,
+      "sequence": [
+        {
+          "position": 0,
+          "outcome": "mapped",
+          "source_instruction": "deposit_with_min_amount_out",
+          "account_bindings": [
+            { "index": 0, "role": 3, "binding": "glam_vault" },
+            { "index": 1, "role": 1, "binding": "derived_underlying_ata" },
+            { "index": 2, "role": 1, "binding": "derived_f_token_ata" },
+            { "index": 3, "role": 0, "binding": "underlying_mint" },
+            { "index": 4, "role": 0, "binding": "derived_lending_admin" },
+            { "index": 5, "role": 1, "binding": "derived_main_lending_market" },
+            { "index": 6, "role": 1, "binding": "derived_f_token_mint" },
+            { "index": 7, "role": 1, "binding": "decoded_token_reserve" },
+            { "index": 8, "role": 1, "binding": "decoded_supply_position" },
+            { "index": 9, "role": 0, "binding": "derived_rate_model" },
+            { "index": 10, "role": 1, "binding": "decoded_reserve_vault" },
+            { "index": 11, "role": 1, "binding": "derived_liquidity" },
+            { "index": 12, "role": 1, "binding": "liquidity_program" },
+            { "index": 13, "role": 0, "binding": "decoded_rewards_rate_model" },
+            { "index": 14, "role": 0, "binding": "classic_spl_token_program" },
+            { "index": 15, "role": 0, "binding": "associated_token_program" },
+            { "index": 16, "role": 0, "binding": "system_program" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jupiter-earn.main-classic-spl-redeem-with-min-out",
+      "operation": "redeemWithMinAmountOut",
+      "official_emitter": "@jup-ag/lend Program.methods.redeemWithMinAmountOut + bounded portable binding",
+      "bounded_binding": "pinned decoded Lending/TokenReserve state plus immutable jupiter-earn-main-classic-spl-v1 output",
+      "external_profile": {
+        "profile": "jupiter-earn-main-classic-spl-v1",
+        "market": "main",
+        "lending_program": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
+        "liquidity_program": "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC",
+        "asset_token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "f_token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "associated_token_program": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+        "system_program": "11111111111111111111111111111111",
+        "setup": "none",
+        "base_commit": "4053ffbad104ce7f17505f4b3b85d5b1b414fc37",
+        "hardening_commit": "356ed8420edc24ceb518d88440f4e17c24378c61"
+      },
+      "atomic": true,
+      "maximum_snapshot_age_slots": 20,
+      "amounts": "nonzero-u64-shares-and-min-out",
+      "requires_existing_atas": true,
+      "sequence": [
+        {
+          "position": 0,
+          "outcome": "mapped",
+          "source_instruction": "redeem_with_min_amount_out",
+          "account_bindings": [
+            { "index": 0, "role": 3, "binding": "glam_vault" },
+            { "index": 1, "role": 1, "binding": "derived_f_token_ata" },
+            { "index": 2, "role": 1, "binding": "derived_underlying_ata" },
+            { "index": 3, "role": 0, "binding": "derived_lending_admin" },
+            { "index": 4, "role": 1, "binding": "derived_main_lending_market" },
+            { "index": 5, "role": 0, "binding": "underlying_mint" },
+            { "index": 6, "role": 1, "binding": "derived_f_token_mint" },
+            { "index": 7, "role": 1, "binding": "decoded_token_reserve" },
+            { "index": 8, "role": 1, "binding": "decoded_supply_position" },
+            { "index": 9, "role": 0, "binding": "derived_rate_model" },
+            { "index": 10, "role": 1, "binding": "decoded_reserve_vault" },
+            { "index": 11, "role": 1, "binding": "derived_claim_account" },
+            { "index": 12, "role": 1, "binding": "derived_liquidity" },
+            { "index": 13, "role": 1, "binding": "liquidity_program" },
+            { "index": 14, "role": 0, "binding": "decoded_rewards_rate_model" },
+            { "index": 15, "role": 0, "binding": "classic_spl_token_program" },
+            { "index": 16, "role": 0, "binding": "associated_token_program" },
+            { "index": 17, "role": 0, "binding": "system_program" }
+          ]
+        }
+      ]
+    }
+  ]
+}
