@@ -55,7 +55,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          npm pack --dry-run --json > npm-pack-dry-run.json
+          npm pack --dry-run --json --ignore-scripts > npm-pack-dry-run.json
 
           node <<'NODE'
           const fs = require("node:fs");
