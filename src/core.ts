@@ -1,6 +1,7 @@
 import StrictKvauGMspProgramConfig from "../mapping-configs-v2/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
 import StrictStagingKvauGMspProgramConfig from "../mapping-configs-v2-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
 import KaminoKvauInstructionClassifications from "../instruction-classifications-v1/kamino-kvaults.json";
+import KaminoKvauOperationProfiles from "../operation-profiles-v1/kamino-kvaults.json";
 
 import type {
   InstructionClassificationConfig,
@@ -11,6 +12,7 @@ import type {
   NeutralMappingContext,
   StrictRemappingConfig,
   StrictRemappingConfigs,
+  OperationProfileConfig,
 } from "./core-types";
 import { normalizeInstructionNeutral } from "./neutral";
 import {
@@ -18,6 +20,10 @@ import {
   validateInstructionClassificationConfig,
   validateStrictRemappingConfigs,
 } from "./strict";
+import {
+  mapKaminoKvaultOperationWithConfigs,
+  validateOperationProfileConfig,
+} from "./kvault-operation";
 
 function unsupported(message: string): NeutralMapInstructionResult {
   return { kind: "unsupported", reason: "invalid-instruction", message };
@@ -76,6 +82,11 @@ function createNeutralMapper(environment: NeutralMapperEnvironment) {
     staging,
     environment,
   );
+  const kvaultOperationProfiles = validateOperationProfileConfig(
+    KaminoKvauOperationProfiles as OperationProfileConfig,
+    production,
+    environment,
+  );
 
   function mapInstructionNeutral(
     instruction: NeutralInstructionInput,
@@ -113,7 +124,27 @@ function createNeutralMapper(environment: NeutralMapperEnvironment) {
     );
   }
 
-  return { mapInstructionNeutral, mapInstructionsNeutral } as const;
+  async function mapKaminoKvaultOperationNeutral(
+    input: import("./core-types").MapKaminoKvaultOperationInput,
+    context: NeutralMappingContext,
+    options?: MapInstructionOptions,
+  ): Promise<import("./core-types").NeutralMapOperationResult> {
+    const useStaging = parseStaging(options);
+    return mapKaminoKvaultOperationWithConfigs(
+      input,
+      context,
+      useStaging ? staging : production,
+      useStaging ? stagingClassifications : productionClassifications,
+      kvaultOperationProfiles,
+      environment,
+    );
+  }
+
+  return {
+    mapInstructionNeutral,
+    mapInstructionsNeutral,
+    mapKaminoKvaultOperationNeutral,
+  } as const;
 }
 
 export { createNeutralMapper };

@@ -1,0 +1,309 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://idl.glam.systems/schemas/integration-compatibility-manifest-v2.json",
+  "title": "GLAM integration compatibility manifest v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifest_version",
+    "manifest_revision",
+    "status",
+    "integration",
+    "cluster",
+    "variant",
+    "native_protocol",
+    "proxy",
+    "mapper",
+    "instruction_classification",
+    "operation_profile",
+    "artifacts",
+    "supported_mappings",
+    "explicitly_unsupported",
+    "runtime_validation",
+    "known_blockers"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "manifest_version": { "const": 2 },
+    "manifest_revision": { "type": "integer", "minimum": 1 },
+    "status": {
+      "enum": [
+        "proof-only",
+        "preview",
+        "supported",
+        "withdraw-only",
+        "hold",
+        "deprecated"
+      ]
+    },
+    "integration": { "type": "string", "minLength": 1 },
+    "cluster": { "enum": ["mainnet-beta", "devnet", "localnet"] },
+    "variant": { "enum": ["production", "staging"] },
+    "native_protocol": { "$ref": "#/$defs/native_protocol" },
+    "proxy": { "$ref": "#/$defs/proxy" },
+    "mapper": { "$ref": "#/$defs/mapper" },
+    "instruction_classification": {
+      "$ref": "#/$defs/instruction_classification"
+    },
+    "operation_profile": { "$ref": "#/$defs/operation_profile" },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/artifact" },
+      "minProperties": 3
+    },
+    "supported_mappings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/mapping" },
+      "minItems": 1
+    },
+    "explicitly_unsupported": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/unsupported" }
+    },
+    "runtime_validation": { "$ref": "#/$defs/runtime_validation" },
+    "known_blockers": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "public_key": {
+      "type": "string",
+      "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "byte_array": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 0, "maximum": 255 },
+      "minItems": 1
+    },
+    "native_protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "program_id", "official_sdk"],
+      "properties": {
+        "name": { "type": "string" },
+        "program_id": { "$ref": "#/$defs/public_key" },
+        "official_sdk": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "package",
+            "version",
+            "npm_integrity",
+            "tarball_sha256",
+            "solana_kit",
+            "verified_compatibility_packages",
+            "program_bindings",
+            "resolved_compatibility_dependencies"
+          ],
+          "properties": {
+            "package": { "type": "string" },
+            "version": { "type": "string" },
+            "npm_integrity": { "type": "string" },
+            "tarball_sha256": { "$ref": "#/$defs/sha256" },
+            "solana_kit": { "$ref": "#/$defs/solana_kit" },
+            "verified_compatibility_packages": {
+              "type": "object",
+              "additionalProperties": { "$ref": "#/$defs/package_pin" }
+            },
+            "program_bindings": {
+              "type": "array",
+              "items": { "$ref": "#/$defs/program_binding" },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "resolved_compatibility_dependencies": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "proxy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["crate", "version", "program_id"],
+      "properties": {
+        "crate": { "type": "string" },
+        "version": { "type": "string" },
+        "program_id": { "$ref": "#/$defs/public_key" }
+      }
+    },
+    "mapper": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "version",
+        "config_schema_version",
+        "config_revision"
+      ],
+      "properties": {
+        "package": { "type": "string" },
+        "version": { "type": "string" },
+        "config_schema_version": { "const": 2 },
+        "config_revision": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "solana_kit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package", "version", "npm_integrity"],
+      "properties": {
+        "package": { "const": "@solana/kit" },
+        "version": { "type": "string", "minLength": 1 },
+        "npm_integrity": { "type": "string", "minLength": 1 }
+      }
+    },
+    "package_pin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "npm_integrity"],
+      "properties": {
+        "version": { "type": "string", "minLength": 1 },
+        "npm_integrity": { "type": "string", "minLength": 1 }
+      }
+    },
+    "program_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "program_id", "mode", "constraint"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "program_id": { "$ref": "#/$defs/public_key" },
+        "mode": { "enum": ["sdk-default-only"] },
+        "constraint": { "type": "string", "minLength": 8 }
+      }
+    },
+    "instruction_classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact",
+        "schema_version",
+        "config_revision",
+        "mapped_rule_ids",
+        "safe_passthrough_rule_ids",
+        "unsupported_rule_ids"
+      ],
+      "properties": {
+        "artifact": { "type": "string", "minLength": 1 },
+        "schema_version": { "const": 1 },
+        "config_revision": { "type": "integer", "minimum": 1 },
+        "mapped_rule_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "safe_passthrough_rule_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "unsupported_rule_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "operation_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact",
+        "schema_version",
+        "config_revision",
+        "operation_ids",
+        "operation_bound_passthrough_ids"
+      ],
+      "properties": {
+        "artifact": { "type": "string", "minLength": 1 },
+        "schema_version": { "const": 1 },
+        "config_revision": { "type": "integer", "minimum": 1 },
+        "operation_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "operation_bound_passthrough_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256"],
+      "properties": {
+        "bundled_path": { "type": "string", "minLength": 1 },
+        "package_path": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "oneOf": [
+        { "required": ["bundled_path"] },
+        { "required": ["package_path"] }
+      ]
+    },
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_instruction",
+        "source_discriminator",
+        "source_data_length",
+        "source_fixed_accounts",
+        "destination_instruction",
+        "destination_discriminator",
+        "destination_fixed_accounts",
+        "remaining_accounts"
+      ],
+      "properties": {
+        "source_instruction": { "type": "string" },
+        "source_discriminator": { "$ref": "#/$defs/byte_array" },
+        "source_data_length": { "type": "integer", "minimum": 1 },
+        "source_fixed_accounts": { "type": "integer", "minimum": 0 },
+        "destination_instruction": { "type": "string" },
+        "destination_discriminator": { "$ref": "#/$defs/byte_array" },
+        "destination_fixed_accounts": { "type": "integer", "minimum": 0 },
+        "remaining_accounts": { "type": "string" }
+      }
+    },
+    "unsupported": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification_rule_id", "instruction", "reason"],
+      "properties": {
+        "classification_rule_id": { "type": "string", "minLength": 1 },
+        "instruction": { "type": "string" },
+        "discriminator": { "$ref": "#/$defs/byte_array" },
+        "reason": { "type": "string" }
+      }
+    },
+    "runtime_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verified_on",
+        "node_golden_fixtures",
+        "next_client_build",
+        "expo_hermes_bundle",
+        "dependency_peer_graph"
+      ],
+      "properties": {
+        "verified_on": { "type": "string", "format": "date" },
+        "node_golden_fixtures": { "type": "boolean" },
+        "next_client_build": { "type": "boolean" },
+        "expo_hermes_bundle": { "type": "boolean" },
+        "dependency_peer_graph": { "type": "boolean" }
+      }
+    }
+  }
+}

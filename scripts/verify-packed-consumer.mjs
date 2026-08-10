@@ -1,0 +1,147 @@
+import { execFileSync } from "node:child_process";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const packageRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+);
+const temporaryRoot = await mkdtemp(
+  path.join(tmpdir(), "ix-mapper-packed-consumer-"),
+);
+
+function run(command, args, cwd) {
+  return execFileSync(command, args, {
+    cwd,
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      NPM_CONFIG_CACHE: path.join(temporaryRoot, "npm-cache"),
+    },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+}
+
+try {
+  const archiveRoot = path.join(temporaryRoot, "archive");
+  const consumerRoot = path.join(temporaryRoot, "consumer");
+  await mkdir(archiveRoot);
+  await mkdir(consumerRoot);
+  await mkdir(path.join(temporaryRoot, "npm-cache"));
+
+  const packed = JSON.parse(
+    run(
+      "npm",
+      ["pack", "--ignore-scripts", "--json", "--pack-destination", archiveRoot],
+      packageRoot,
+    ),
+  );
+  if (!Array.isArray(packed) || packed.length !== 1) {
+    throw new Error("Packed mapper output must identify exactly one archive");
+  }
+  const archivePath = path.join(archiveRoot, packed[0].filename);
+  const members = run("tar", ["-tzf", archivePath], packageRoot)
+    .trim()
+    .split("\n");
+  for (const required of [
+    "package/core.cjs",
+    "package/core.esm.mjs",
+    "package/core.d.ts",
+    "package/legacy-web3.cjs",
+    "package/legacy-web3.esm.mjs",
+    "package/legacy-web3.d.ts",
+    "package/operation-profiles-v1/schema-v1.json",
+    "package/operation-profiles-v1/kamino-kvaults.json",
+    "package/compatibility-manifests/schema-v2.json",
+    "package/compatibility-manifests/v2/kamino-kvaults-production.json",
+    "package/compatibility-manifests/v2/kamino-kvaults-staging.json",
+  ]) {
+    if (!members.includes(required)) {
+      throw new Error(`Packed mapper artifact is missing ${required}`);
+    }
+  }
+
+  await writeFile(
+    path.join(consumerRoot, "package.json"),
+    `${JSON.stringify(
+      {
+        private: true,
+        type: "module",
+        dependencies: {
+          "@glamsystems/ix-mapper": `file:${archivePath}`,
+        },
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  run(
+    "npm",
+    [
+      "install",
+      "--offline",
+      "--omit=peer",
+      "--ignore-scripts",
+      "--package-lock=false",
+      "--no-audit",
+      "--no-fund",
+    ],
+    consumerRoot,
+  );
+
+  await writeFile(
+    path.join(consumerRoot, "probe.mjs"),
+    `import { createRequire } from "node:module";\n` +
+      `import { createNeutralMapper as rootMapper } from "@glamsystems/ix-mapper";\n` +
+      `import { createNeutralMapper as coreMapper } from "@glamsystems/ix-mapper/core";\n` +
+      `if (rootMapper !== coreMapper) throw new Error("root/core export mismatch");\n` +
+      `const require = createRequire(import.meta.url);\n` +
+      `try { require.resolve("@solana/web3.js"); throw new Error("neutral install contains web3.js"); } catch (error) { if (error?.code !== "MODULE_NOT_FOUND") throw error; }\n` +
+      `const profile = await import("@glamsystems/ix-mapper/operation-profiles-v1/kamino-kvaults.json", { with: { type: "json" } });\n` +
+      `if (profile.default.operations.length !== 2) throw new Error("operation profile export drift");\n`,
+  );
+  run(process.execPath, ["probe.mjs"], consumerRoot);
+  run(
+    process.execPath,
+    [
+      "-e",
+      `const root=require("@glamsystems/ix-mapper"); const core=require("@glamsystems/ix-mapper/core"); if(root.createNeutralMapper!==core.createNeutralMapper) throw new Error("CJS root/core export mismatch");`,
+    ],
+    consumerRoot,
+  );
+
+  const installedManifest = JSON.parse(
+    await readFile(
+      path.join(
+        consumerRoot,
+        "node_modules/@glamsystems/ix-mapper/package.json",
+      ),
+      "utf8",
+    ),
+  );
+  if (
+    installedManifest.dependencies?.["@solana/web3.js"] !== undefined ||
+    installedManifest.peerDependenciesMeta?.["@solana/web3.js"]?.optional !==
+      true
+  ) {
+    throw new Error("Packed mapper web3.js boundary is not optional-peer only");
+  }
+
+  console.log(
+    JSON.stringify(
+      {
+        archive: packed[0].filename,
+        files: packed[0].entryCount,
+        neutralRoot: true,
+        web3Installed: false,
+        operationProfiles: 2,
+      },
+      null,
+      2,
+    ),
+  );
+} finally {
+  await rm(temporaryRoot, { recursive: true, force: true });
+}

@@ -60,11 +60,10 @@ It converts web3.js values at the edge and delegates strict decisions to the
 neutral core. web3.js is an optional peer installed only by consumers of that
 entrypoint. The dependency direction must never reverse.
 
-The current proof package still aliases its root to the legacy facade. Before
-public release, the root must switch to the neutral API, packed-consumer tests
-must prove that a neutral install does not install or bundle web3.js, and the
-legacy subpath must retain byte/account parity. This is a controlled package
-transition, not a silent claim about the current artifact.
+The `0.3.0-test.1` proof switches the package root to the neutral API and keeps
+the legacy facade only at `/legacy-web3`. web3.js is an optional peer and a
+packed-consumer gate proves that a root/core-only install neither installs nor
+bundles it. Legacy byte/account parity remains an independent release gate.
 
 ## Result contract
 
@@ -74,6 +73,11 @@ Every input produces exactly one result:
 - `safePassthrough`: an exact reviewed rule permits the original native
   instruction unchanged;
 - `unsupported`: the whole operation must stop.
+
+Complete operation profiles return `mappedOperation` only after every setup
+and protocol instruction passes. Any failure returns one `unsupported` result
+with the failing source index (or `null` for an operation-wide shape failure)
+and no partial instruction list.
 
 Callers must preserve official-SDK ordering and inspect every result. They may
 not drop an unsupported result, infer safety from a missing mapping, or replace
@@ -98,11 +102,20 @@ GLAM. Unknown programs, unknown discriminators, different data, changed roles,
 changed identities, additional accounts, and instructions described as
 permissionless but absent from the allowlist are `unsupported`.
 
-The current Kamino proof approves no passthrough rules. ATA creation,
-`SyncNative`, memo, farms, WSOL setup/cleanup, and every other instruction
-emitted around KVault `deposit`/`withdraw` remain unsupported until
-individually reviewed. Signer-bearing value transfers and account closes
-require a strict GLAM mapping rather than native passthrough.
+The current Kamino proof approves no global passthrough rules. Standalone ATA
+creation, `SyncNative`, memo, farms, WSOL setup/cleanup, and every other helper
+remain unsupported. A separate operation profile permits one exact
+CreateIdempotent ATA only at position zero of the reviewed classic KVault
+deposit/withdraw sequence, with its payer, GLAM-vault owner, mint, token
+program, and derived ATA bound to the mapped native instruction(s). It is
+never considered by the standalone instruction mapper. Signer-bearing value
+transfers and account closes require a strict GLAM mapping rather than native
+passthrough.
+
+The raw operation matcher proves only that the complete list presented to it
+matches the operation profile. Provenance belongs to the bounded adapter: it
+constructs the named operation and submits its immutable output directly to
+the matcher without exposing a spliceable intermediate list.
 
 The KVault profile pins Kamino Farms to the Farms SDK's default program ID.
 Deposit helpers already use that default; `KaminoVaultClient.farmsProgramId`
@@ -119,15 +132,18 @@ Compatibility is one exact tuple, not a range:
 - mapper package version;
 - mapping schema and config revision plus config hash;
 - instruction-classification schema and config revision plus config hash;
+- complete-operation profile schema and config revision plus config hash;
 - compatibility-manifest schema and manifest revision;
 - native and proxy program IDs, proxy version, IDLs, and source hashes.
 
 The mapping configs define proxy transformations. The adjacent
 `instruction-classifications-v1/` profile inventories official-SDK protocol,
 setup, and cleanup emissions as `mapped`, `safePassthrough`, or `unsupported`.
-Compatibility manifests pin both. Absence from the runtime allowlist always
-means `unsupported`, even if a prose inventory entry calls an instruction
-permissionless.
+The adjacent `operation-profiles-v1/` artifact separately defines reviewed
+all-or-nothing sequences and operation-bound passthrough. Compatibility
+manifest v2 pins all three. Absence from either applicable runtime allowlist
+always means `unsupported`, even if a prose inventory entry calls an
+instruction permissionless.
 
 Any official SDK, Kit, IDL, proxy, mapper, config, or manifest change invalidates
 the tuple until regenerated evidence and tests pass.
@@ -173,5 +189,7 @@ these pass:
 - exact versions, revisions, and artifact hashes agree;
 - Node, web, Expo/Hermes, and dependency-graph runtime gates pass.
 
-The Kamino KVault manifest remains `proof-only` until its full helper sequence
-and client-runtime blockers are resolved.
+The Kamino KVault manifest remains `proof-only` until the bounded convenience
+API and client-runtime blockers are resolved. The operation profile does not
+promote memo, farms, WSOL, minimum-shares, available-withdraw, or close-account
+branches.

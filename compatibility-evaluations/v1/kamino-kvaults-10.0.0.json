@@ -1,7 +1,7 @@
 {
   "$schema": "../schema-v1.json",
   "evaluation_version": 1,
-  "evaluation_revision": 1,
+  "evaluation_revision": 2,
   "status": "proof-only",
   "integration": "kamino-kvaults",
   "official_sdk": {
@@ -64,16 +64,19 @@
     }
   },
   "runtime_validation": {
-    "node": "not-run",
-    "next_client": "not-run",
-    "expo_metro": "not-run",
-    "hermes": "not-run"
+    "node": "pass",
+    "next_client": "fail",
+    "expo_metro": "fail",
+    "hermes": "fail"
   },
   "findings": [
     "Kamino 10.0.0 still publishes one dist/index.js root with no exports map or side-effect metadata.",
     "The KVault IDL and four generated deposit/withdraw builders are byte-identical to 9.1.5.",
-    "The high-level vault helper changed, so helper emission/order parity must be rerun before promotion.",
-    "Kamino 10.0.0 still declares Kit ^2.3.0, Anchor ^0.28.0, zstddec, and the same broad eager dependency families as the 9.1.5 blocker."
+    "The isolated Node 22.22 corpus proves exact CJS/ESM generated-builder parity, complete helper-branch inventory, fail-closed classification, baseline immutability, and a packed neutral mapper consumer.",
+    "The generated low-level KVault builders compile in a real Next 15.5.21 client build and an Expo 54 Metro bundle; the Metro bundle also compiles with the installed Hermes compiler.",
+    "The eager official SDK root fails both Next and Expo because dist/utils/signer.js imports Node fs. Hermes is therefore recorded as failed for the package tuple even though the isolated low-level bundle compiles.",
+    "The candidate declares Kit ^2.3.0 while four installed direct Solana-program dependencies require Kit ^3.0, so the dependency peer graph remains unresolved.",
+    "The high-level vault helper changed, but its emitted KVault branch corpus was re-inventoried; unsupported memo, farms, wrapped-SOL, close, protected-deposit, and available-only variants still fail closed."
   ],
-  "next_action": "Install 10.0.0 in an isolated harness, run the complete KVault helper corpus and Node/Next/Expo/Hermes gates, then publish a separate immutable proof-only tuple without changing the 9.1.5 manifests."
+  "next_action": "Keep 10.0.0 proof-only. Resolve or isolate the eager root fs import and the Kit 2/3 peer-major conflict, then rerun this exact corpus before creating any independently promoted compatibility manifest."
 }

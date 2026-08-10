@@ -1,16 +1,16 @@
 {
   "name": "@glamsystems/ix-mapper",
-  "version": "0.3.0-test.0",
+  "version": "0.3.0-test.1",
   "packageManager": "npm@11.6.2",
   "description": "Map Solana program instructions to GLAM integration instructions",
-  "main": "./index.cjs",
-  "module": "./index.esm.js",
-  "types": "./index.cjs.d.ts",
+  "main": "./core.cjs",
+  "module": "./core.esm.mjs",
+  "types": "./core.d.ts",
   "exports": {
     ".": {
-      "types": "./index.cjs.d.ts",
-      "import": "./index.esm.mjs",
-      "require": "./index.cjs"
+      "types": "./core.d.ts",
+      "import": "./core.esm.mjs",
+      "require": "./core.cjs"
     },
     "./core": {
       "types": "./core.d.ts",
@@ -26,6 +26,7 @@
     "./compatibility-evaluations/*": "./compatibility-evaluations/*",
     "./compatibility-manifests/*": "./compatibility-manifests/*",
     "./instruction-classifications-v1/*": "./instruction-classifications-v1/*",
+    "./operation-profiles-v1/*": "./operation-profiles-v1/*",
     "./mapping-configs-v2/*": "./mapping-configs-v2/*",
     "./mapping-configs-v2-staging/*": "./mapping-configs-v2-staging/*",
     "./package.json": "./package.json",
@@ -48,7 +49,8 @@
     "test": "npm run test:types && vitest run --globals",
     "test:types": "tsc -p tsconfig.test-types.json",
     "verify:artifacts": "node scripts/verify-artifacts.mjs",
-    "prepack": "npm test && npm run verify:artifacts && npm run build",
+    "prepack": "npm test && npm run verify:artifacts && npm run build && npm run verify:packed-consumer",
+    "verify:packed-consumer": "node scripts/verify-packed-consumer.mjs",
     "pack:dry-run": "npm pack --dry-run --json"
   },
   "files": [
@@ -60,14 +62,10 @@
     "compatibility-evaluations/**/*.json",
     "compatibility-manifests/**/*.json",
     "instruction-classifications-v1/**/*.json",
+    "operation-profiles-v1/**/*.json",
     "core.cjs",
     "core.esm.mjs",
     "core.d.ts",
-    "index.cjs",
-    "index.esm.js",
-    "index.esm.mjs",
-    "index.cjs.d.ts",
-    "index.esm.d.ts",
     "legacy-web3.cjs",
     "legacy-web3.esm.mjs",
     "legacy-web3.d.ts",
@@ -78,8 +76,13 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@solana/web3.js": "1.98.4"
+  },
+  "peerDependenciesMeta": {
+    "@solana/web3.js": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=22.22.0"
@@ -87,6 +90,7 @@
   "devDependencies": {
     "@kamino-finance/klend-sdk": "9.1.5",
     "@solana/kit": "2.3.0",
+    "@solana/web3.js": "1.98.4",
     "@types/node": "20.19.39",
     "esbuild": "0.25.12",
     "typescript": "5.9.3",

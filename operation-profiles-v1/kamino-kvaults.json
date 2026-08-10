@@ -1,0 +1,98 @@
+{
+  "$schema": "./schema-v1.json",
+  "schema_version": 1,
+  "config_revision": 1,
+  "integration": "kamino-kvaults",
+  "operations": [
+    {
+      "id": "kvault.classic-deposit-with-ata",
+      "operation": "deposit",
+      "official_emitter": "official Associated Token CreateIdempotent plus @kamino-finance/klend-sdk generated deposit",
+      "bounded_binding": "@glamsystems/kamino-adapter/instructions deposit",
+      "setup": {
+        "outcome": "operationBoundPassthrough",
+        "position": 0,
+        "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+        "instruction": "CreateIdempotent",
+        "exact_data": [1],
+        "accounts": [
+          { "index": 0, "role": 3, "binding": "ata_payer" },
+          {
+            "index": 1,
+            "role": 1,
+            "binding": "derived_associated_token_account"
+          },
+          { "index": 2, "role": 0, "binding": "glam_vault" },
+          { "index": 3, "role": 0, "binding": "protocol_token_mint" },
+          {
+            "index": 4,
+            "role": 0,
+            "account": "11111111111111111111111111111111"
+          },
+          {
+            "index": 5,
+            "role": 0,
+            "binding": "protocol_token_program"
+          }
+        ]
+      },
+      "protocol": {
+        "start_position": 1,
+        "source_instruction": "deposit",
+        "minimum_count": 1,
+        "maximum_count": 1,
+        "owner_account_index": 0,
+        "token_account_index": 7,
+        "token_mint_index": 5,
+        "token_program_index": 10,
+        "forbidden_mint_account_indices": [3],
+        "forbidden_mints": ["So11111111111111111111111111111111111111112"]
+      }
+    },
+    {
+      "id": "kvault.classic-withdraw-with-ata",
+      "operation": "withdraw",
+      "official_emitter": "official Associated Token CreateIdempotent plus @kamino-finance/klend-sdk generated withdraw",
+      "bounded_binding": "@glamsystems/kamino-adapter/instructions withdraw",
+      "setup": {
+        "outcome": "operationBoundPassthrough",
+        "position": 0,
+        "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+        "instruction": "CreateIdempotent",
+        "exact_data": [1],
+        "accounts": [
+          { "index": 0, "role": 3, "binding": "ata_payer" },
+          {
+            "index": 1,
+            "role": 1,
+            "binding": "derived_associated_token_account"
+          },
+          { "index": 2, "role": 0, "binding": "glam_vault" },
+          { "index": 3, "role": 0, "binding": "protocol_token_mint" },
+          {
+            "index": 4,
+            "role": 0,
+            "account": "11111111111111111111111111111111"
+          },
+          {
+            "index": 5,
+            "role": 0,
+            "binding": "protocol_token_program"
+          }
+        ]
+      },
+      "protocol": {
+        "start_position": 1,
+        "source_instruction": "withdraw",
+        "minimum_count": 1,
+        "maximum_count": 25,
+        "owner_account_index": 0,
+        "token_account_index": 5,
+        "token_mint_index": 6,
+        "token_program_index": 9,
+        "forbidden_mint_account_indices": [6],
+        "forbidden_mints": ["So11111111111111111111111111111111111111112"]
+      }
+    }
+  ]
+}

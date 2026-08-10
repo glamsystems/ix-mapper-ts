@@ -1,4 +1,4 @@
-import { copyFile, cp, readFile, writeFile } from "node:fs/promises";
+import { cp, readFile, writeFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 import { build } from "esbuild";
@@ -19,10 +19,7 @@ function runTsc() {
 async function copyDeclarations() {
   await cp(".build/types/src", "src", { recursive: true });
 
-  const entryDeclaration = 'export * from "./src/index";\n';
-  await writeFile("index.cjs.d.ts", entryDeclaration);
-  await writeFile("index.esm.d.ts", entryDeclaration);
-  await writeFile("legacy-web3.d.ts", entryDeclaration);
+  await writeFile("legacy-web3.d.ts", 'export * from "./src/index";\n');
   await writeFile("core.d.ts", 'export * from "./src/core";\n');
 }
 
@@ -94,9 +91,7 @@ async function assertNeutralDeclarations() {
 }
 
 execFileSync(process.execPath, ["scripts/clean.mjs"], { stdio: "inherit" });
-const [, , , , coreCjs, coreEsm] = await Promise.all([
-  bundle("src/index.ts", "cjs", "index.cjs"),
-  bundle("src/index.ts", "esm", "index.esm.mjs"),
+const [, , coreCjs, coreEsm] = await Promise.all([
   bundle("src/index.ts", "cjs", "legacy-web3.cjs"),
   bundle("src/index.ts", "esm", "legacy-web3.esm.mjs"),
   bundle("src/core.ts", "cjs", "core.cjs", "neutral"),
@@ -106,7 +101,6 @@ assertNeutralBundle(coreCjs, "core.cjs");
 assertNeutralBundle(coreEsm, "core.esm.mjs");
 await assertNeutralOutput("core.cjs");
 await assertNeutralOutput("core.esm.mjs");
-await copyFile("index.esm.mjs", "index.esm.js");
 runTsc();
 await copyDeclarations();
 await assertNeutralDeclarations();

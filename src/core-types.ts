@@ -182,6 +182,17 @@ export interface NeutralInstructionInput {
 /** Runtime address validation supplied by a client binding. */
 export interface NeutralMapperEnvironment {
   normalizeAddress(address: string): string;
+  /**
+   * Optional client-binding primitive used by operation profiles that must
+   * prove an associated token address. The neutral mapper supplies all four
+   * inputs; the binding only performs the deterministic PDA derivation.
+   */
+  deriveAssociatedTokenAddress?(input: {
+    readonly ownerAddress: string;
+    readonly mintAddress: string;
+    readonly tokenProgramAddress: string;
+    readonly associatedTokenProgramAddress: string;
+  }): Promise<string>;
 }
 
 /**
@@ -201,6 +212,63 @@ export interface MapInstructionOptions {
   staging?: boolean;
 }
 
+export type KaminoKvaultOperationName = "deposit" | "withdraw";
+
+/** Complete, ordered helper emission for one supported KVault operation. */
+export interface MapKaminoKvaultOperationInput {
+  readonly operation: KaminoKvaultOperationName;
+  readonly instructions: readonly NeutralInstructionInput[];
+  /** Payer/signing account used by the native ATA setup instruction. */
+  readonly ataPayerAddress: string;
+}
+
+export type OperationSetupBinding =
+  | "ata_payer"
+  | "derived_associated_token_account"
+  | "glam_vault"
+  | "protocol_token_mint"
+  | "protocol_token_program";
+
+export interface OperationProfileSetupAccount {
+  readonly index: number;
+  readonly role: SolanaAccountRole;
+  readonly account?: string;
+  readonly binding?: OperationSetupBinding;
+}
+
+export interface OperationProfileConfig {
+  readonly $schema?: string;
+  readonly schema_version: 1;
+  readonly config_revision: number;
+  readonly integration: "kamino-kvaults";
+  readonly operations: readonly {
+    readonly id: string;
+    readonly operation: KaminoKvaultOperationName;
+    readonly official_emitter: string;
+    readonly bounded_binding: string;
+    readonly setup: {
+      readonly outcome: "operationBoundPassthrough";
+      readonly position: 0;
+      readonly program_id: string;
+      readonly instruction: string;
+      readonly exact_data: readonly number[];
+      readonly accounts: readonly OperationProfileSetupAccount[];
+    };
+    readonly protocol: {
+      readonly start_position: 1;
+      readonly source_instruction: "deposit" | "withdraw";
+      readonly minimum_count: number;
+      readonly maximum_count: number;
+      readonly owner_account_index: number;
+      readonly token_account_index: number;
+      readonly token_mint_index: number;
+      readonly token_program_index: number;
+      readonly forbidden_mint_account_indices: readonly number[];
+      readonly forbidden_mints: readonly string[];
+    };
+  }[];
+}
+
 export type UnsupportedInstructionReason =
   | "unsupported-program"
   | "unsupported-instruction"
@@ -210,7 +278,9 @@ export type UnsupportedInstructionReason =
   | "account-meta"
   | "account-address"
   | "remaining-accounts"
-  | "destination-invariant";
+  | "destination-invariant"
+  | "operation-shape"
+  | "operation-binding";
 
 export interface NeutralMappedInstructionResult {
   kind: "mapped";
@@ -235,6 +305,25 @@ export type NeutralMapInstructionResult =
   | NeutralMappedInstructionResult
   | NeutralSafePassthroughInstructionResult
   | UnsupportedInstructionResult;
+
+export interface NeutralMappedOperationResult {
+  kind: "mappedOperation";
+  operation: KaminoKvaultOperationName;
+  instructions: readonly (
+    | NeutralMappedInstructionResult
+    | NeutralSafePassthroughInstructionResult
+  )[];
+}
+
+export interface UnsupportedOperationResult
+  extends UnsupportedInstructionResult {
+  /** Index in the presented operation, or null for an operation-wide failure. */
+  instructionIndex: number | null;
+}
+
+export type NeutralMapOperationResult =
+  | NeutralMappedOperationResult
+  | UnsupportedOperationResult;
 
 /** Backward-compatible aliases for the original structural Kit input types. */
 export type SolanaKitAccountRole = SolanaAccountRole;

@@ -16,9 +16,15 @@ const packageManifest = JSON.parse(
 const packageLock = JSON.parse(
   await readFile(path.join(packageRoot, "package-lock.json"), "utf8"),
 );
-const manifestSchema = JSON.parse(
+const manifestSchemaV1 = JSON.parse(
   await readFile(
     path.join(packageRoot, "compatibility-manifests/schema-v1.json"),
+    "utf8",
+  ),
+);
+const manifestSchemaV2 = JSON.parse(
+  await readFile(
+    path.join(packageRoot, "compatibility-manifests/schema-v2.json"),
     "utf8",
   ),
 );
@@ -31,6 +37,12 @@ const compatibilityEvaluationSchema = JSON.parse(
 const instructionClassificationSchema = JSON.parse(
   await readFile(
     path.join(packageRoot, "instruction-classifications-v1/schema-v1.json"),
+    "utf8",
+  ),
+);
+const operationProfileSchema = JSON.parse(
+  await readFile(
+    path.join(packageRoot, "operation-profiles-v1/schema-v1.json"),
     "utf8",
   ),
 );
@@ -832,6 +844,166 @@ async function verifyInstructionClassifications(
   };
 }
 
+async function verifyOperationProfiles(
+  label,
+  manifest,
+  config,
+  verifiedArtifacts,
+) {
+  const declaration = manifest.operation_profile;
+  invariant(
+    Object.hasOwn(verifiedArtifacts, declaration.artifact),
+    `${label} operation profile artifact reference is missing`,
+  );
+  invariant(
+    verifiedArtifacts.operation_profile_schema,
+    `${label} operation profile schema artifact is missing`,
+  );
+  const bundledSchema = JSON.parse(
+    await readFile(verifiedArtifacts.operation_profile_schema, "utf8"),
+  );
+  invariant(
+    JSON.stringify(bundledSchema) === JSON.stringify(operationProfileSchema),
+    `${label} operation profile schema artifact does not match the verifier schema`,
+  );
+  const profileConfig = JSON.parse(
+    await readFile(verifiedArtifacts[declaration.artifact], "utf8"),
+  );
+  validateJsonSchema(
+    profileConfig,
+    operationProfileSchema,
+    operationProfileSchema,
+    `${label}:operation-profile`,
+  );
+  invariant(
+    profileConfig.$schema === "./schema-v1.json" &&
+      profileConfig.schema_version === declaration.schema_version &&
+      profileConfig.config_revision === declaration.config_revision &&
+      profileConfig.integration === manifest.integration,
+    `${label} operation profile schema, revision, or integration drift`,
+  );
+
+  const declaredIds = assertUniqueStrings(
+    declaration.operation_ids,
+    `${label} operation profile ids`,
+  );
+  const passthroughIds = assertUniqueStrings(
+    declaration.operation_bound_passthrough_ids,
+    `${label} operation-bound passthrough ids`,
+  );
+  invariant(
+    declaredIds.size === profileConfig.operations.length &&
+      passthroughIds.size === profileConfig.operations.length,
+    `${label} manifest does not exhaustively reference operation profiles`,
+  );
+
+  const expected = {
+    deposit: {
+      id: "kvault.classic-deposit-with-ata",
+      count: [1, 1],
+      source: "deposit",
+      indices: [0, 7, 5, 10],
+      forbidden: [3],
+    },
+    withdraw: {
+      id: "kvault.classic-withdraw-with-ata",
+      count: [1, 25],
+      source: "withdraw",
+      indices: [0, 5, 6, 9],
+      forbidden: [6],
+    },
+  };
+  const profileKeys = new Set();
+  for (const profile of profileConfig.operations) {
+    invariant(
+      declaredIds.has(profile.id) && passthroughIds.has(profile.id),
+      `${label}:${profile.id} is not declared by the manifest`,
+    );
+    const profileKey = `${profile.id}:${profile.operation}:${profile.setup.position}`;
+    invariant(
+      !profileKeys.has(profileKey),
+      `${label}:${profile.id} duplicates an operation/profile position`,
+    );
+    profileKeys.add(profileKey);
+
+    const oracle = expected[profile.operation];
+    invariant(
+      oracle &&
+        profile.id === oracle.id &&
+        profile.protocol.source_instruction === oracle.source &&
+        profile.protocol.minimum_count === oracle.count[0] &&
+        profile.protocol.maximum_count === oracle.count[1] &&
+        equalBytes(
+          [
+            profile.protocol.owner_account_index,
+            profile.protocol.token_account_index,
+            profile.protocol.token_mint_index,
+            profile.protocol.token_program_index,
+          ],
+          oracle.indices,
+        ) &&
+        equalBytes(
+          profile.protocol.forbidden_mint_account_indices,
+          oracle.forbidden,
+        ) &&
+        equalBytes(profile.protocol.forbidden_mints, [
+          "So11111111111111111111111111111111111111112",
+        ]),
+      `${label}:${profile.id} KVault sequence grammar drift`,
+    );
+    const mapping = config.instructions.find(
+      ({ src_ix_name }) => src_ix_name === profile.protocol.source_instruction,
+    );
+    invariant(mapping, `${label}:${profile.id} source mapping is missing`);
+    const indices = [
+      profile.protocol.owner_account_index,
+      profile.protocol.token_account_index,
+      profile.protocol.token_mint_index,
+      profile.protocol.token_program_index,
+      ...profile.protocol.forbidden_mint_account_indices,
+    ];
+    invariant(
+      indices.every(
+        (index) =>
+          Number.isInteger(index) &&
+          index >= 0 &&
+          index < mapping.strict.fixed_accounts.length,
+      ) &&
+        mapping.strict.fixed_accounts[profile.protocol.owner_account_index]
+          .dynamic_account === "glam_vault",
+      `${label}:${profile.id} source binding index drift`,
+    );
+
+    const setup = profile.setup;
+    const expectedSetup = [
+      { role: 3, binding: "ata_payer" },
+      { role: 1, binding: "derived_associated_token_account" },
+      { role: 0, binding: "glam_vault" },
+      { role: 0, binding: "protocol_token_mint" },
+      { role: 0, account: "11111111111111111111111111111111" },
+      { role: 0, binding: "protocol_token_program" },
+    ];
+    invariant(
+      setup.outcome === "operationBoundPassthrough" &&
+        setup.position === 0 &&
+        setup.program_id === "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL" &&
+        setup.instruction === "CreateIdempotent" &&
+        equalBytes(setup.exact_data, [1]) &&
+        setup.accounts.length === expectedSetup.length &&
+        setup.accounts.every(
+          (account, index) =>
+            account.index === index &&
+            account.role === expectedSetup[index].role &&
+            account.binding === expectedSetup[index].binding &&
+            account.account === expectedSetup[index].account,
+        ),
+      `${label}:${profile.id} operation-bound ATA contract drift`,
+    );
+  }
+
+  return { operationProfiles: profileConfig.operations.length };
+}
+
 function verifySafePassthroughPolicyContract() {
   const fixtureRule = {
     id: "contract.exact-native",
@@ -895,18 +1067,20 @@ function verifySafePassthroughPolicyContract() {
   );
 }
 
-async function verifyManifest(fileName) {
+async function verifyManifest(manifestVersion, fileName) {
   const manifestPath = path.join(
     packageRoot,
-    "compatibility-manifests/v1",
+    `compatibility-manifests/v${String(manifestVersion)}`,
     fileName,
   );
   const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+  const manifestSchema =
+    manifestVersion === 2 ? manifestSchemaV2 : manifestSchemaV1;
   validateJsonSchema(manifest, manifestSchema, manifestSchema, fileName);
   const label = `${manifest.integration}:${manifest.variant}`;
 
   invariant(
-    manifest.manifest_version === 1 &&
+    manifest.manifest_version === manifestVersion &&
       Number.isInteger(manifest.manifest_revision) &&
       manifest.manifest_revision >= 1,
     `${label} manifest version or revision`,
@@ -917,7 +1091,8 @@ async function verifyManifest(fileName) {
   );
   invariant(
     manifest.mapper.package === packageManifest.name &&
-      manifest.mapper.version === packageManifest.version &&
+      (manifestVersion === 1 ||
+        manifest.mapper.version === packageManifest.version) &&
       isExactVersion(manifest.mapper.version) &&
       manifest.mapper.config_schema_version === 2 &&
       Number.isInteger(manifest.mapper.config_revision) &&
@@ -1039,6 +1214,9 @@ async function verifyManifest(fileName) {
     "farms_stake_schema",
     "farms_unstake_schema",
     "farms_withdraw_unstaked_deposits_schema",
+    ...(manifestVersion === 2
+      ? ["operation_profile_schema", "operation_profile_config"]
+      : []),
   ]) {
     invariant(
       verifiedArtifacts[requiredArtifact],
@@ -1151,6 +1329,15 @@ async function verifyManifest(fileName) {
     config,
     verifiedArtifacts,
   );
+  const operationSummary =
+    manifestVersion === 2
+      ? await verifyOperationProfiles(
+          label,
+          manifest,
+          config,
+          verifiedArtifacts,
+        )
+      : { operationProfiles: 0 };
 
   verifyMaturityRuntimeGates(label, manifest);
 
@@ -1159,11 +1346,14 @@ async function verifyManifest(fileName) {
     variant: manifest.variant,
     status: manifest.status,
     manifestRevision: manifest.manifest_revision,
+    manifestVersion,
+    active: manifestVersion === 2,
     sdkTarballVerified,
     artifacts: Object.keys(verifiedArtifacts).length,
     mappings: manifest.supported_mappings.length,
     classifications: classificationSummary.classifications,
     safePassthrough: classificationSummary.safePassthrough,
+    operationProfiles: operationSummary.operationProfiles,
   };
 }
 
@@ -1313,18 +1503,29 @@ async function verifyEvaluation(fileName) {
   };
 }
 
-const manifestFiles = (
-  await readdir(path.join(packageRoot, "compatibility-manifests/v1"))
-)
-  .filter((fileName) => fileName.endsWith(".json"))
-  .sort();
+const manifestFiles = [];
+for (const manifestVersion of [1, 2]) {
+  const files = (
+    await readdir(
+      path.join(
+        packageRoot,
+        `compatibility-manifests/v${String(manifestVersion)}`,
+      ),
+    )
+  )
+    .filter((fileName) => fileName.endsWith(".json"))
+    .sort();
+  manifestFiles.push(
+    ...files.map((fileName) => ({ fileName, manifestVersion })),
+  );
+}
 invariant(manifestFiles.length > 0, "No compatibility manifests found");
 verifySafePassthroughPolicyContract();
 verifyMaturityPolicyContract();
 
 const verified = [];
-for (const fileName of manifestFiles) {
-  verified.push(await verifyManifest(fileName));
+for (const { fileName, manifestVersion } of manifestFiles) {
+  verified.push(await verifyManifest(manifestVersion, fileName));
 }
 
 const evaluationFiles = (
@@ -1339,7 +1540,9 @@ for (const fileName of evaluationFiles) {
 
 if (!packageManifest.version.includes("-")) {
   invariant(
-    verified.every(({ status }) => status !== "proof-only"),
+    verified
+      .filter(({ active }) => active)
+      .every(({ status }) => status !== "proof-only"),
     `Stable ${packageManifest.version} cannot ship proof-only compatibility manifests`,
   );
 }

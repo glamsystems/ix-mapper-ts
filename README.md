@@ -22,12 +22,11 @@ its compatibility manifests are `proof-only`.
 
 ## Neutral, Kit-compatible API
 
-The target package root is the first-class neutral entrypoint, with `/core` as
-an explicit equivalent subpath. The current proof artifact still uses `/core`
-while its root remains the legacy compatibility alias; the root transition is
-completed and packed-consumer-tested before public release. The neutral API
-has no Kit, Anchor, or web3.js runtime dependency. Official SDK instructions
-shaped like Kit instructions pass directly into it.
+The package root is the first-class neutral entrypoint, with `/core` as an
+explicit equivalent subpath. The `0.3.0-test.1` packed-consumer gate proves
+that a neutral install has no Kit, Anchor, or web3.js runtime dependency and
+does not install the optional web3.js peer. Official SDK instructions shaped
+like Kit instructions pass directly into it.
 
 ```typescript
 import { address } from "@solana/kit";
@@ -76,7 +75,9 @@ program, discriminator, exact data constraint, account count, ordered roles,
 account identities, emitter, condition, and rationale. Unknown or changed
 instructions fail closed.
 
-The current `0.3.0-test.0` Kamino proof has no approved passthrough rules.
+The current `0.3.0-test.1` Kamino proof has no globally approved passthrough
+rules. Its two operation-bound ATA approvals are invisible to the standalone
+instruction mapper.
 
 ## Kamino proof scope
 
@@ -91,11 +92,17 @@ proxy instructions complete separate program-size, audit, staging,
 deployment, mapping, and artifact gates. Their source presence never changes
 the current proof manifest from `unsupported`.
 
-The high-level KVault helpers are not yet supported end to end. They always emit
-ATA creation and can conditionally emit memo, farm, WSOL, close-account, and
-alternative KVault instructions. The versioned classification profile records
-each known branch; callers must not pass any of them through merely because the
-native protocol calls one permissionless.
+The versioned complete-operation profile recognizes only `[exact ATA,
+deposit]` and `[exact ATA, withdraw...]`. It binds the setup payer, canonical
+ATA, GLAM-vault owner, mint, token program, ordering, and classic mapped
+instructions, and it returns no partial output on failure. Standalone ATA is
+still unsupported. The raw matcher proves the presented sequence, while the
+bounded adapter owns SDK provenance and must construct and map without
+exposing a spliceable helper list.
+
+The helpers can also emit memo, farm, WSOL, close-account, and alternative
+KVault instructions. Those branches remain unsupported; protocol-level
+permissionlessness does not allow callers to strip or pass them through.
 
 The manifest also pins the Farms SDK default program ID. A custom
 `KaminoVaultClient.farmsProgramId` is outside this proof profile and fails
@@ -108,6 +115,7 @@ Published packages include:
 ```text
 mapping-configs-v2*/
 instruction-classifications-v1/
+operation-profiles-v1/
 artifacts/
 compatibility-manifests/
 ```
@@ -138,12 +146,11 @@ Existing consumers may import:
 import { mapInstruction, mapInstructions, mapToGlamIx } from "@glamsystems/ix-mapper/legacy-web3";
 ```
 
-The current proof package root remains a compatibility alias only until the
-neutral-root release transition. `mapInstruction` and `mapInstructions`
-convert web3.js values at the explicit legacy boundary and delegate to the
-neutral strict core. web3.js becomes an optional peer used only by consumers
-of this subpath. `mapToGlamIx` retains nullable v1 behavior only for legacy
-consumers and must not be used for new integrations.
+`mapInstruction` and `mapInstructions` convert web3.js values at the explicit
+legacy boundary and delegate to the neutral strict core. web3.js is an
+optional peer used only by consumers of this subpath. `mapToGlamIx` retains
+nullable v1 behavior only for legacy consumers and must not be used for new
+integrations.
 
 Legacy nullable results never authorize native passthrough. `fixSignerAccounts`
 also remains compatibility-only because mechanical signer replacement can
