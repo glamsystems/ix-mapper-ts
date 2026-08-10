@@ -136,7 +136,7 @@
     },
     "operation_profile_schema": {
       "bundled_path": "operation-profiles-v2/schema-v2.json",
-      "sha256": "cbdb504d6c42e9ebedcbfb0755450b5f8335e06cd1f87740ea5068ff5dc5c572"
+      "sha256": "216c1abbea814a95a372dbf2605bf1651675b67a6325f67641820e8d3e1d0649"
     },
     "operation_profile_config": {
       "bundled_path": "operation-profiles-v2/kamino-lending-repay.json",

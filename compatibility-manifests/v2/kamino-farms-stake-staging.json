@@ -67,7 +67,7 @@
     "mapper_config": { "bundled_path": "mapping-configs-v2-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json", "sha256": "eb35de2db54fa0ee4cba07e414bb6109eced0422ac9fe3d189c56c94597e80a8" },
     "instruction_classification_schema": { "bundled_path": "instruction-classifications-v1/schema-v1.json", "sha256": "a9045f2f060e0048bd500d5f6ca8351b6399a8cb207f2268d3ea2d25e7ec03cf" },
     "instruction_classification_config": { "bundled_path": "instruction-classifications-v1/kamino-farms-stake.json", "sha256": "bacbaad6075c5af74fe472b1d8105a45d0919a056e643e78f43763d9311586e3" },
-    "operation_profile_schema": { "bundled_path": "operation-profiles-v2/schema-v2.json", "sha256": "cbdb504d6c42e9ebedcbfb0755450b5f8335e06cd1f87740ea5068ff5dc5c572" },
+    "operation_profile_schema": { "bundled_path": "operation-profiles-v2/schema-v2.json", "sha256": "216c1abbea814a95a372dbf2605bf1651675b67a6325f67641820e8d3e1d0649" },
     "operation_profile_config": { "bundled_path": "operation-profiles-v2/kamino-farms-stake.json", "sha256": "42539ad18fdf45e93fd3f40cc12efc06a9d59a231a3784f0bc23cd7dea702127" }
   },
   "supported_mappings": [

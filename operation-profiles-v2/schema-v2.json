@@ -186,12 +186,13 @@
     "jupiter_external_profile": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["profile", "market", "lending_program", "liquidity_program", "asset_token_program", "f_token_program", "associated_token_program", "system_program", "setup", "base_commit", "hardening_commit"],
+      "required": ["profile", "market", "lending_program", "liquidity_program", "reward_rate_model_program", "asset_token_program", "f_token_program", "associated_token_program", "system_program", "setup", "base_commit", "hardening_commit"],
       "properties": {
         "profile": { "const": "jupiter-earn-main-classic-spl-v1" },
         "market": { "const": "main" },
         "lending_program": { "const": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9" },
         "liquidity_program": { "const": "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC" },
+        "reward_rate_model_program": { "const": "jup7TthsMgcR9Y3L277b8Eo9uboVSmu1utkuXHNUKar" },
         "asset_token_program": { "const": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" },
         "f_token_program": { "const": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" },
         "associated_token_program": { "const": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL" },

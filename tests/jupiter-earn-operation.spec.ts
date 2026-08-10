@@ -22,6 +22,9 @@ import { validateStrictRemappingConfigs } from "../src/strict";
 
 const LENDING = new PublicKey("jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9");
 const LIQUIDITY = new PublicKey("jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC");
+const REWARD_RATE_MODEL = new PublicKey(
+  "jup7TthsMgcR9Y3L277b8Eo9uboVSmu1utkuXHNUKar",
+);
 const TOKEN = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
 const TOKEN_2022 = new PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
 const ASSOCIATED_TOKEN = new PublicKey(
@@ -79,6 +82,7 @@ const externalProfile: JupiterEarnExternalProfile = Object.freeze({
   market: "main",
   lendingProgramAddress: LENDING.toBase58(),
   liquidityProgramAddress: LIQUIDITY.toBase58(),
+  rewardRateModelProgramAddress: REWARD_RATE_MODEL.toBase58(),
   assetTokenProgramAddress: TOKEN.toBase58(),
   fTokenProgramAddress: TOKEN.toBase58(),
   associatedTokenProgramAddress: ASSOCIATED_TOKEN.toBase58(),
@@ -416,6 +420,63 @@ describe("proof-only Jupiter Earn bounded operations", () => {
         value.context,
       ),
     ).toMatchObject({ kind: "unsupported" });
+  });
+
+  it("rejects paired state and native-account mutations of derived identities", async () => {
+    for (const operation of [
+      "depositWithMinAmountOut",
+      "redeemWithMinAmountOut",
+    ] as const) {
+      for (const identity of [
+        "reserve",
+        "supply",
+        "rewards",
+        "vault",
+      ] as const) {
+        const value = fixture(operation);
+        const native = cloneInstruction(value.native);
+        const reviewed = structuredClone(
+          value.input.reviewedContext,
+        ) as unknown as {
+          lending: Record<string, string>;
+          tokenReserve: Record<string, string>;
+        };
+        const replacement = PublicKey.unique().toBase58();
+        const accountIndex =
+          identity === "reserve"
+            ? 7
+            : identity === "supply"
+              ? 8
+              : identity === "vault"
+                ? 10
+                : operation === "depositWithMinAmountOut"
+                  ? 13
+                  : 14;
+        (
+          native.accounts as { address: string; role: 0 | 1 | 2 | 3 }[]
+        )[accountIndex].address = replacement;
+        if (identity === "reserve") {
+          reviewed.lending.tokenReservesLiquidityAddress = replacement;
+          reviewed.tokenReserve.address = replacement;
+        } else if (identity === "supply") {
+          reviewed.lending.supplyPositionOnLiquidityAddress = replacement;
+        } else if (identity === "rewards") {
+          reviewed.lending.rewardsRateModelAddress = replacement;
+        } else {
+          reviewed.tokenReserve.vaultAddress = replacement;
+        }
+        expect(
+          await mapper.mapJupiterEarnOperationNeutral(
+            {
+              ...value.input,
+              instructions: [native],
+              reviewedContext: reviewed as never,
+            },
+            value.context,
+          ),
+        ).toMatchObject({ kind: "unsupported", reason: "operation-binding" });
+      }
+    }
   });
 
   it.each([

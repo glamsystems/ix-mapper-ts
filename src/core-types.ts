@@ -326,6 +326,7 @@ export interface JupiterEarnExternalProfile {
   readonly market: "main";
   readonly lendingProgramAddress: string;
   readonly liquidityProgramAddress: string;
+  readonly rewardRateModelProgramAddress: string;
   readonly assetTokenProgramAddress: string;
   readonly fTokenProgramAddress: string;
   readonly associatedTokenProgramAddress: string;

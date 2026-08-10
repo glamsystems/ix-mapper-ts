@@ -1198,7 +1198,7 @@ async function verifyOperationProfiles(
       native_idl:
         "ef547c925d93149437ffa7cd6be91f7bf3d97a95960c219227b0da91cadb9bd0",
       portable_binding:
-        "a440e2daad52f343686154e4ad4092f99a996a80e68f661cb1d87564bd470186",
+        "41c26c9f0fb079eea57bb35948c21553d90c6377f3bbcf3a58b88bddbf195b97",
       operation_vectors:
         "08503390a2f235cad434022ffbe4e38791c704eed0bfec2dca20030e30b159b0",
       portable_instructions:
@@ -1261,6 +1261,8 @@ async function verifyOperationProfiles(
             "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9" &&
           external.liquidity_program ===
             "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC" &&
+          external.reward_rate_model_program ===
+            "jup7TthsMgcR9Y3L277b8Eo9uboVSmu1utkuXHNUKar" &&
           external.asset_token_program ===
             "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" &&
           external.f_token_program ===
@@ -1324,6 +1326,8 @@ async function verifyOperationProfiles(
         provenance.programs.lending === manifest.native_protocol.program_id &&
         provenance.programs.liquidity ===
           "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC" &&
+        provenance.programs.reward_rate_model ===
+          "jup7TthsMgcR9Y3L277b8Eo9uboVSmu1utkuXHNUKar" &&
         provenance.setup === "none" &&
         provenance.operations.length === 2,
       `${label} portable binding provenance drift`,
@@ -1630,6 +1634,13 @@ async function verifyOperationProfileSchemaPolicyContract() {
     jupiterWithMarketDrift,
     "operation-profile-schema-contract:jupiter-market-drift",
   );
+  const jupiterWithRewardProgramDrift = structuredClone(jupiter);
+  jupiterWithRewardProgramDrift.operations[0].external_profile.reward_rate_model_program =
+    "11111111111111111111111111111111";
+  expectRejected(
+    jupiterWithRewardProgramDrift,
+    "operation-profile-schema-contract:jupiter-reward-program-drift",
+  );
   const jupiterWithStaleBoundDrift = structuredClone(jupiter);
   jupiterWithStaleBoundDrift.operations[0].maximum_snapshot_age_slots = 21;
   expectRejected(
@@ -1782,8 +1793,11 @@ async function verifyManifest(manifestVersion, fileName) {
   if (manifest.integration === "jupiter-earn") {
     const lendingBinding = programBindingsByName.get("jupiter-lending-main");
     const liquidityBinding = programBindingsByName.get("jupiter-liquidity");
+    const rewardsBinding = programBindingsByName.get(
+      "jupiter-lending-rewards",
+    );
     invariant(
-      programBindingsByName.size === 2 &&
+      programBindingsByName.size === 3 &&
         lendingBinding?.program_id ===
           "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9" &&
         lendingBinding.mode === "sdk-default-only" &&
@@ -1791,8 +1805,12 @@ async function verifyManifest(manifestVersion, fileName) {
         liquidityBinding?.program_id ===
           "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC" &&
         liquidityBinding.mode === "sdk-default-only" &&
-        liquidityBinding.constraint.includes("outside this profile"),
-      `${label} must pin the exact Jupiter Lending/Liquidity program profile`,
+        liquidityBinding.constraint.includes("outside this profile") &&
+        rewardsBinding?.program_id ===
+          "jup7TthsMgcR9Y3L277b8Eo9uboVSmu1utkuXHNUKar" &&
+        rewardsBinding.mode === "sdk-default-only" &&
+        rewardsBinding.constraint.includes("outside this profile"),
+      `${label} must pin the exact Jupiter Lending/Liquidity/rewards profile`,
     );
   }
 

@@ -36,7 +36,8 @@
   },
   "programs": {
     "lending": "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9",
-    "liquidity": "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC"
+    "liquidity": "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC",
+    "reward_rate_model": "jup7TthsMgcR9Y3L277b8Eo9uboVSmu1utkuXHNUKar"
   },
   "token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
   "associated_token_program": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",

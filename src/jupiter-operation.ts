@@ -33,6 +33,7 @@ interface JupiterProfileBinding {
   readonly market: "main";
   readonly lending_program: string;
   readonly liquidity_program: string;
+  readonly reward_rate_model_program: string;
   readonly asset_token_program: string;
   readonly f_token_program: string;
   readonly associated_token_program: string;
@@ -85,6 +86,8 @@ interface NormalizedJupiterContext extends JupiterEarnReviewedContext {}
 
 const LENDING_PROGRAM = "jup3YeL8QhtSx1e253b2FDvsMNC87fDrgQZivbrndc9";
 const LIQUIDITY_PROGRAM = "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC";
+const REWARD_RATE_MODEL_PROGRAM =
+  "jup7TthsMgcR9Y3L277b8Eo9uboVSmu1utkuXHNUKar";
 const TOKEN_PROGRAM = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 const ASSOCIATED_TOKEN_PROGRAM =
   "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
@@ -171,6 +174,7 @@ function normalizeExternalProfile(
       "market",
       "lendingProgramAddress",
       "liquidityProgramAddress",
+      "rewardRateModelProgramAddress",
       "assetTokenProgramAddress",
       "fTokenProgramAddress",
       "associatedTokenProgramAddress",
@@ -192,6 +196,11 @@ function normalizeExternalProfile(
     liquidityProgramAddress: normalizeAddress(
       value.liquidityProgramAddress,
       "Jupiter Liquidity program",
+      environment,
+    ),
+    rewardRateModelProgramAddress: normalizeAddress(
+      value.rewardRateModelProgramAddress,
+      "Jupiter reward-rate-model program",
       environment,
     ),
     assetTokenProgramAddress: normalizeAddress(
@@ -223,6 +232,7 @@ function normalizeExternalProfile(
     normalized.market !== "main" ||
     normalized.lendingProgramAddress !== LENDING_PROGRAM ||
     normalized.liquidityProgramAddress !== LIQUIDITY_PROGRAM ||
+    normalized.rewardRateModelProgramAddress !== REWARD_RATE_MODEL_PROGRAM ||
     normalized.assetTokenProgramAddress !== TOKEN_PROGRAM ||
     normalized.fTokenProgramAddress !== TOKEN_PROGRAM ||
     normalized.associatedTokenProgramAddress !== ASSOCIATED_TOKEN_PROGRAM ||
@@ -365,6 +375,7 @@ function exactProfileBinding(value: JupiterProfileBinding): boolean {
     value.market === "main" &&
     value.lending_program === LENDING_PROGRAM &&
     value.liquidity_program === LIQUIDITY_PROGRAM &&
+    value.reward_rate_model_program === REWARD_RATE_MODEL_PROGRAM &&
     value.asset_token_program === TOKEN_PROGRAM &&
     value.f_token_program === TOKEN_PROGRAM &&
     value.associated_token_program === ASSOCIATED_TOKEN_PROGRAM &&
@@ -372,7 +383,7 @@ function exactProfileBinding(value: JupiterProfileBinding): boolean {
     value.setup === "none" &&
     value.base_commit === BASE_COMMIT &&
     value.hardening_commit === HARDENING_COMMIT &&
-    Object.keys(value).length === 11
+    Object.keys(value).length === 12
   );
 }
 
@@ -456,7 +467,7 @@ function validateJupiterOperationProfileConfig(
     native_idl:
       "ef547c925d93149437ffa7cd6be91f7bf3d97a95960c219227b0da91cadb9bd0",
     portable_binding:
-      "a440e2daad52f343686154e4ad4092f99a996a80e68f661cb1d87564bd470186",
+      "41c26c9f0fb079eea57bb35948c21553d90c6377f3bbcf3a58b88bddbf195b97",
     operation_vectors:
       "08503390a2f235cad434022ffbe4e38791c704eed0bfec2dca20030e30b159b0",
     portable_instructions:
@@ -716,6 +727,10 @@ async function mapJupiterEarnOperationWithConfigs(
   let liquidity: string;
   let rateModel: string;
   let claimAccount: string;
+  let liquidityReserve: string;
+  let supplyPosition: string;
+  let rewardsRateModel: string;
+  let reserveVault: string;
   try {
     const derived = await Promise.all([
       environment.deriveAssociatedTokenAddress({
@@ -783,11 +798,11 @@ async function mapJupiterEarnOperationWithConfigs(
     );
   }
 
-  // The claim PDA uses the Lending admin as its owner. It cannot be included in
-  // the parallel derivation above until the admin result is known.
+  // These identities depend on PDAs derived above. They cannot be included in
+  // the first parallel derivation without trusting caller-provided addresses.
   try {
-    claimAccount = normalizeAddress(
-      await environment.deriveProgramAddress({
+    const derived = await Promise.all([
+      environment.deriveProgramAddress({
         programAddress: LIQUIDITY_PROGRAM,
         seeds: [
           { kind: "utf8", value: "user_claim" },
@@ -795,14 +810,53 @@ async function mapJupiterEarnOperationWithConfigs(
           { kind: "address", value: reviewed.lending.mintAddress },
         ],
       }),
-      "derived Jupiter claim account",
-      environment,
+      environment.deriveProgramAddress({
+        programAddress: LIQUIDITY_PROGRAM,
+        seeds: [
+          { kind: "utf8", value: "reserve" },
+          { kind: "address", value: reviewed.lending.mintAddress },
+        ],
+      }),
+      environment.deriveProgramAddress({
+        programAddress: LIQUIDITY_PROGRAM,
+        seeds: [
+          { kind: "utf8", value: "user_supply_position" },
+          { kind: "address", value: reviewed.lending.mintAddress },
+          { kind: "address", value: lendingMarket },
+        ],
+      }),
+      environment.deriveProgramAddress({
+        programAddress: REWARD_RATE_MODEL_PROGRAM,
+        seeds: [
+          { kind: "utf8", value: "lending_rewards_rate_model" },
+          { kind: "address", value: reviewed.lending.mintAddress },
+        ],
+      }),
+      environment.deriveAssociatedTokenAddress({
+        ownerAddress: liquidity,
+        mintAddress: reviewed.lending.mintAddress,
+        tokenProgramAddress: TOKEN_PROGRAM,
+        associatedTokenProgramAddress: ASSOCIATED_TOKEN_PROGRAM,
+      }),
+    ]);
+    [
+      claimAccount,
+      liquidityReserve,
+      supplyPosition,
+      rewardsRateModel,
+      reserveVault,
+    ] = derived.map((address) =>
+      normalizeAddress(
+        address,
+        "derived Jupiter dependent address",
+        environment,
+      ),
     );
   } catch (error) {
     const message = error instanceof Error ? error.message : "unknown error";
     return unsupported(
       "operation-binding",
-      `Jupiter Earn claim derivation failed: ${message}`,
+      `Jupiter Earn dependent derivation failed: ${message}`,
       null,
     );
   }
@@ -810,8 +864,11 @@ async function mapJupiterEarnOperationWithConfigs(
   if (
     reviewed.lending.fTokenMintAddress !== fTokenMint ||
     reviewed.lending.address !== lendingMarket ||
-    reviewed.tokenReserve.address !==
-      reviewed.lending.tokenReservesLiquidityAddress ||
+    reviewed.tokenReserve.address !== liquidityReserve ||
+    reviewed.lending.tokenReservesLiquidityAddress !== liquidityReserve ||
+    reviewed.lending.supplyPositionOnLiquidityAddress !== supplyPosition ||
+    reviewed.lending.rewardsRateModelAddress !== rewardsRateModel ||
+    reviewed.tokenReserve.vaultAddress !== reserveVault ||
     reviewed.tokenReserve.mintAddress !== reviewed.lending.mintAddress
   ) {
     return unsupported(
