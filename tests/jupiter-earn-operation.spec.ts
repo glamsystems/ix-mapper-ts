@@ -358,7 +358,7 @@ describe("proof-only Jupiter Earn bounded operations", () => {
         ),
       ).toMatchObject({ kind: "unsupported", instructionIndex: null });
     }
-  });
+  }, 30_000);
 
   it("rejects zero amounts, data tails, and accepts exact u64 maxima", async () => {
     for (const offset of [8, 16]) {

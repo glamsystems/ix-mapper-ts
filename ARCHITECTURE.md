@@ -60,7 +60,7 @@ It converts web3.js values at the edge and delegates strict decisions to the
 neutral core. web3.js is an optional peer installed only by consumers of that
 entrypoint. The dependency direction must never reverse.
 
-The `0.3.0-test.1` proof switches the package root to the neutral API and keeps
+The `0.3.0-test.2` proof switches the package root to the neutral API and keeps
 the legacy facade only at `/legacy-web3`. web3.js is an optional peer and a
 packed-consumer gate proves that a root/core-only install neither installs nor
 bundles it. Legacy byte/account parity remains an independent release gate.

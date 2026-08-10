@@ -1,7 +1,7 @@
 {
   "$schema": "../schema-v2.json",
   "manifest_version": 2,
-  "manifest_revision": 1,
+  "manifest_revision": 2,
   "status": "proof-only",
   "integration": "kamino-farms-stake",
   "cluster": "mainnet-beta",
@@ -38,7 +38,7 @@
     }
   },
   "proxy": { "crate": "ext_kamino", "version": "1.0.1", "program_id": "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq" },
-  "mapper": { "package": "@glamsystems/ix-mapper", "version": "0.3.0-test.1", "config_schema_version": 2, "config_revision": 1 },
+  "mapper": { "package": "@glamsystems/ix-mapper", "version": "0.3.0-test.2", "config_schema_version": 2, "config_revision": 1 },
   "instruction_classification": {
     "artifact": "instruction_classification_config",
     "schema_version": 1,

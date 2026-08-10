@@ -23,7 +23,7 @@ its compatibility manifests are `proof-only`.
 ## Neutral, Kit-compatible API
 
 The package root is the first-class neutral entrypoint, with `/core` as an
-explicit equivalent subpath. The `0.3.0-test.1` packed-consumer gate proves
+explicit equivalent subpath. The `0.3.0-test.2` packed-consumer gate proves
 that a neutral install has no Kit, Anchor, or web3.js runtime dependency and
 does not install the optional web3.js peer. Official SDK instructions shaped
 like Kit instructions pass directly into it.
@@ -75,7 +75,7 @@ program, discriminator, exact data constraint, account count, ordered roles,
 account identities, emitter, condition, and rationale. Unknown or changed
 instructions fail closed.
 
-The current `0.3.0-test.1` Kamino proof has no globally approved passthrough
+The current `0.3.0-test.2` Kamino proof has no globally approved passthrough
 rules. Its two operation-bound ATA approvals are invisible to the standalone
 instruction mapper.
 
@@ -232,7 +232,7 @@ change an instruction's economic meaning.
 
 ### Migration from the legacy package root
 
-`0.3.0-test.1` deliberately makes the package root neutral. New consumers use
+`0.3.0-test.2` deliberately makes the package root neutral. New consumers use
 the root or `/core`; an existing web3.js consumer must change its import to
 `@glamsystems/ix-mapper/legacy-web3` and install the exact optional web3.js
 peer. The packed-consumer gate covers root/core and legacy CJS/ESM imports,

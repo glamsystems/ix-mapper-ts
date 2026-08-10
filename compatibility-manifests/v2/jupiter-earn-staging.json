@@ -1,7 +1,7 @@
 {
   "$schema": "../schema-v2.json",
   "manifest_version": 2,
-  "manifest_revision": 1,
+  "manifest_revision": 2,
   "status": "proof-only",
   "integration": "jupiter-earn",
   "cluster": "mainnet-beta",
@@ -25,7 +25,7 @@
     }
   },
   "proxy": { "crate": "ext_jupiter", "version": "0.1.0", "program_id": "gstgJbGqoE3p1SdFA2dET9tcaCzNqGcdD8wpbGctnU9" },
-  "mapper": { "package": "@glamsystems/ix-mapper", "version": "0.3.0-test.1", "config_schema_version": 2, "config_revision": 1 },
+  "mapper": { "package": "@glamsystems/ix-mapper", "version": "0.3.0-test.2", "config_schema_version": 2, "config_revision": 1 },
   "instruction_classification": { "artifact": "instruction_classification_config", "schema_version": 1, "config_revision": 1, "mapped_rule_ids": ["jupiter-earn.deposit-with-min-out", "jupiter-earn.redeem-with-min-out"], "safe_passthrough_rule_ids": [], "unsupported_rule_ids": ["jupiter-earn.unbounded-deposit", "jupiter-earn.mint-variants", "jupiter-earn.withdraw-variants", "jupiter-earn.unbounded-redeem", "jupiter-earn.ata-setup", "jupiter-earn.token-2022", "jupiter-earn.wrapped-sol", "jupiter-earn.ethena", "jupiter-earn.alternate-program", "jupiter-earn.remaining-or-extra"] },
   "operation_profile": { "artifact": "operation_profile_config", "schema_version": 2, "config_revision": 1, "operation_ids": ["jupiter-earn.main-classic-spl-deposit-with-min-out", "jupiter-earn.main-classic-spl-redeem-with-min-out"], "operation_bound_passthrough_ids": [] },
   "artifacts": {

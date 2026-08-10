@@ -1,7 +1,7 @@
 {
   "$schema": "../schema-v2.json",
   "manifest_version": 2,
-  "manifest_revision": 1,
+  "manifest_revision": 2,
   "status": "proof-only",
   "integration": "kamino-lending-repay",
   "cluster": "mainnet-beta",
@@ -56,7 +56,7 @@
   },
   "mapper": {
     "package": "@glamsystems/ix-mapper",
-    "version": "0.3.0-test.1",
+    "version": "0.3.0-test.2",
     "config_schema_version": 2,
     "config_revision": 1
   },
