@@ -79,11 +79,15 @@ try {
     "package/operation-profiles-v1/kamino-kvaults.json",
     "package/operation-profiles-v2/schema-v2.json",
     "package/operation-profiles-v2/kamino-lending-repay.json",
+    "package/operation-profiles-v2/kamino-farms-stake.json",
+    "package/artifacts/kamino-farms/1.6.5/native-farms.json",
     "package/compatibility-manifests/schema-v2.json",
     "package/compatibility-manifests/v2/kamino-kvaults-production.json",
     "package/compatibility-manifests/v2/kamino-kvaults-staging.json",
     "package/compatibility-manifests/v2/kamino-lending-repay-production.json",
     "package/compatibility-manifests/v2/kamino-lending-repay-staging.json",
+    "package/compatibility-manifests/v2/kamino-farms-stake-production.json",
+    "package/compatibility-manifests/v2/kamino-farms-stake-staging.json",
   ]) {
     if (!members.includes(required)) {
       throw new Error(`Packed mapper artifact is missing ${required}`);
@@ -129,7 +133,10 @@ try {
       `const profile = await import("@glamsystems/ix-mapper/operation-profiles-v1/kamino-kvaults.json", { with: { type: "json" } });\n` +
       `if (profile.default.operations.length !== 2) throw new Error("operation profile export drift");\n` +
       `const klend = await import("@glamsystems/ix-mapper/operation-profiles-v2/kamino-lending-repay.json", { with: { type: "json" } });\n` +
-      `if (klend.default.operations.length !== 1 || klend.default.schema_version !== 2) throw new Error("Klend operation profile export drift");\n`,
+      `if (klend.default.operations.length !== 1 || klend.default.schema_version !== 2) throw new Error("Klend operation profile export drift");\n` +
+      `const farms = await import("@glamsystems/ix-mapper/operation-profiles-v2/kamino-farms-stake.json", { with: { type: "json" } });\n` +
+      `if (farms.default.operations.length !== 2 || farms.default.schema_version !== 2) throw new Error("Farms operation profile export drift");\n` +
+      `const mapper = rootMapper({ normalizeAddress: value => value }); if (typeof mapper.mapKaminoFarmsStakeOperationNeutral !== "function") throw new Error("Farms mapper export missing");\n`,
   );
   run(process.execPath, ["probe.mjs"], consumerRoot);
   run(
@@ -219,7 +226,7 @@ try {
         web3Installed: false,
         legacyMissingPeerFailure: true,
         legacyWithPinnedPeer: pinnedWeb3Manifest.version,
-        operationProfiles: 3,
+        operationProfiles: 5,
       },
       null,
       2,

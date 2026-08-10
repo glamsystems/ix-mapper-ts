@@ -171,7 +171,7 @@
       "src_ix_name": "unstake",
       "src_discriminator": [90, 95, 107, 42, 205, 124, 50, 225],
       "dst_ix_name": "farms_unstake",
-      "dst_discriminator": [3, 234, 110, 39, 12, 147, 175, 185],
+      "dst_discriminator": [180, 131, 50, 144, 26, 242, 175, 242],
       "dynamic_accounts": [
         {
           "name": "glam_state",

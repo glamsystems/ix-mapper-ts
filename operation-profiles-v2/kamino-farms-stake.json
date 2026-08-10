@@ -1,0 +1,100 @@
+{
+  "$schema": "./schema-v2.json",
+  "schema_version": 2,
+  "config_revision": 1,
+  "integration": "kamino-farms-stake",
+  "official_sdk_tuple": {
+    "package": "@kamino-finance/farms-sdk",
+    "version": "3.2.26",
+    "native_idl_version": "1.6.5",
+    "npm_integrity": "sha512-G6aziMz0ounatUEGlkiul14ERPXZD/RtzG21b72E/PKVBiFhKP/4fmpolHJjcgJWF4V4i+ITSXevi9oQ0EkLCA==",
+    "tarball_sha256": "21155adcc0d05a12f68e203547c983373adbe29bbbb098b249e9eaf4a75633bb",
+    "solana_kit_version": "2.3.0",
+    "source_hashes": {
+      "farms_client": "7b1cd629d3727c0d97b5b69f669aaf3503e0f09ecf4188470aed3a2a82c62026",
+      "operations": "7fcb2ec4b6ce3107b63f7b5d79e28eceb2ddec86b5488d17f6c663d9620d20a3",
+      "pda_helpers": "30554409cb42f0dd31d898110ee0711f0ccb879f888231713c85cd0983b2c79d",
+      "initialize_user_builder": "12a413b5064a274c21fb04fd71460110b5c66faa750779ac1cfabf6ca7325f10",
+      "stake_builder": "78a10d19eeb3c0bc071db902918368342a0cfcab5fd2451cabbaef3b87338342"
+    }
+  },
+  "operations": [
+    {
+      "id": "farms.existing-user-classic-spl-stake",
+      "operation": "stake",
+      "official_emitter": "Farms.stakeIx",
+      "bounded_binding": "pinned decoded farm state plus immutable official helper output",
+      "user_state": "existing",
+      "atomic": true,
+      "maximum_snapshot_age_slots": 20,
+      "amount": "positive-finite-u64",
+      "farms_program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "associated_token_program": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      "scope_prices": "none-program-sentinel",
+      "sequence": [
+        {
+          "position": 0,
+          "outcome": "mapped",
+          "source_instruction": "stake",
+          "account_bindings": [
+            { "index": 0, "role": 2, "binding": "glam_vault" },
+            { "index": 1, "role": 1, "binding": "derived_user_state_pda" },
+            { "index": 2, "role": 1, "binding": "farm_state" },
+            { "index": 3, "role": 1, "binding": "derived_farm_vault_pda" },
+            { "index": 4, "role": 1, "binding": "derived_source_ata" },
+            { "index": 5, "role": 0, "binding": "stake_mint" },
+            { "index": 6, "role": 0, "binding": "farms_program_optional_sentinel" },
+            { "index": 7, "role": 0, "binding": "classic_spl_token_program" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "farms.first-stake-classic-spl",
+      "operation": "initializeAndStake",
+      "official_emitter": "Farms.createNewUserIx + Farms.stakeIx",
+      "bounded_binding": "pinned decoded farm state plus immutable official helper output",
+      "user_state": "absent",
+      "atomic": true,
+      "maximum_snapshot_age_slots": 20,
+      "amount": "positive-finite-u64",
+      "farms_program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "associated_token_program": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      "scope_prices": "none-program-sentinel",
+      "sequence": [
+        {
+          "position": 0,
+          "outcome": "mapped",
+          "source_instruction": "initialize_user",
+          "account_bindings": [
+            { "index": 0, "role": 2, "binding": "glam_vault" },
+            { "index": 1, "role": 3, "binding": "glam_vault" },
+            { "index": 2, "role": 0, "binding": "glam_vault" },
+            { "index": 3, "role": 0, "binding": "glam_vault" },
+            { "index": 4, "role": 1, "binding": "derived_user_state_pda" },
+            { "index": 5, "role": 1, "binding": "farm_state" },
+            { "index": 6, "role": 0, "binding": "system_program" },
+            { "index": 7, "role": 0, "binding": "rent_sysvar" }
+          ]
+        },
+        {
+          "position": 1,
+          "outcome": "mapped",
+          "source_instruction": "stake",
+          "account_bindings": [
+            { "index": 0, "role": 2, "binding": "glam_vault" },
+            { "index": 1, "role": 1, "binding": "derived_user_state_pda" },
+            { "index": 2, "role": 1, "binding": "farm_state" },
+            { "index": 3, "role": 1, "binding": "derived_farm_vault_pda" },
+            { "index": 4, "role": 1, "binding": "derived_source_ata" },
+            { "index": 5, "role": 0, "binding": "stake_mint" },
+            { "index": 6, "role": 0, "binding": "farms_program_optional_sentinel" },
+            { "index": 7, "role": 0, "binding": "classic_spl_token_program" }
+          ]
+        }
+      ]
+    }
+  ]
+}

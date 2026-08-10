@@ -18,6 +18,9 @@ describe("ix-mapper", () => {
   const LOOPSCALE_PROGRAM_ID = new PublicKey(
     "1oopBoJG58DgkUVKkEzKgyG9dvRmpgeEm1AVjoHkF78",
   );
+  const FARMS_PROGRAM_ID = new PublicKey(
+    "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+  );
 
   // Production proxy program IDs
   const EXT_SPL_PROGRAM_ID = new PublicKey(
@@ -71,6 +74,48 @@ describe("ix-mapper", () => {
   }
 
   describe("mapToGlamIx (production)", () => {
+    describe("Kamino Farms - Unstake", () => {
+      it.each([false, true])(
+        "maps native unstake only to the proxy farms_unstake discriminator (staging=%s)",
+        (staging) => {
+        const amount = Buffer.alloc(16);
+        amount.writeBigUInt64LE(123n);
+        const sourceInstruction = new TransactionInstruction({
+          programId: FARMS_PROGRAM_ID,
+          keys: [
+            { pubkey: getVaultPda(glamState), isSigner: true, isWritable: true },
+            { pubkey: PublicKey.unique(), isSigner: false, isWritable: true },
+            { pubkey: PublicKey.unique(), isSigner: false, isWritable: true },
+            { pubkey: FARMS_PROGRAM_ID, isSigner: false, isWritable: false },
+          ],
+          data: Buffer.from([
+            90, 95, 107, 42, 205, 124, 50, 225,
+            ...amount,
+          ]),
+        });
+
+        const result = mapToGlamIx(
+          sourceInstruction,
+          glamState,
+          glamSigner,
+          staging,
+        );
+
+        expect(result).not.toBeNull();
+        expect(result!.programId).toEqual(
+          staging ? STAGING_EXT_KAMINO_PROGRAM_ID : EXT_KAMINO_PROGRAM_ID,
+        );
+        expect(Array.from(result!.data.subarray(0, 8))).toEqual([
+          180, 131, 50, 144, 26, 242, 175, 242,
+        ]);
+        expect(Array.from(result!.data.subarray(0, 8))).not.toEqual([
+          3, 234, 110, 39, 12, 147, 175, 185,
+        ]);
+        expect(result!.data.subarray(8)).toEqual(amount);
+        },
+      );
+    });
+
     describe("System Program - Transfer", () => {
       it("should map a system transfer instruction to GLAM instruction", () => {
         // System transfer discriminator: [2, 0, 0, 0]

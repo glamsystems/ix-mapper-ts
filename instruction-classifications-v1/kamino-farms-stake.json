@@ -1,0 +1,121 @@
+{
+  "$schema": "./schema-v1.json",
+  "schema_version": 1,
+  "config_revision": 1,
+  "integration": "kamino-farms-stake",
+  "rules": [
+    {
+      "id": "farms.initialize-user",
+      "outcome": "mapped",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "initialize_user",
+      "phase": "setup",
+      "emitted_by": ["Farms.createNewUserIx", "farms operations.initializeUser"],
+      "condition": "first stake only; authority, payer, owner, and delegatee are the GLAM vault and user state is the exact Farms PDA",
+      "discriminator": [111, 17, 185, 250, 60, 122, 38, 254],
+      "mapping_ref": { "config_schema_version": 2, "config_revision": 1, "source_instruction": "initialize_user" }
+    },
+    {
+      "id": "farms.stake",
+      "outcome": "mapped",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "stake",
+      "phase": "protocol",
+      "emitted_by": ["Farms.stakeIx", "farms operations.stake"],
+      "condition": "positive finite classic-SPL stake into a non-delegated farm with no Scope account and exact PDA/ATA/state bindings",
+      "discriminator": [206, 176, 202, 18, 200, 209, 179, 108],
+      "mapping_ref": { "config_schema_version": 2, "config_revision": 1, "source_instruction": "stake" }
+    },
+    {
+      "id": "farms.unstake",
+      "outcome": "unsupported",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "unstake",
+      "phase": "cleanup",
+      "emitted_by": ["Farms.unstakeIx"],
+      "condition": "any unstake request",
+      "discriminator": [90, 95, 107, 42, 205, 124, 50, 225],
+      "reason": "The first proof is stake-only; legacy unstake remains outside the strict operation runtime."
+    },
+    {
+      "id": "farms.withdraw",
+      "outcome": "unsupported",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "withdraw_unstaked_deposits/withdraw_from_farm_vault",
+      "phase": "cleanup",
+      "emitted_by": ["Farms.withdrawUnstakedDepositIx"],
+      "condition": "any withdrawal request",
+      "reason": "Withdrawal and cooldown behavior require a separate reviewed profile."
+    },
+    {
+      "id": "farms.harvest",
+      "outcome": "unsupported",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "harvest_reward",
+      "phase": "cleanup",
+      "emitted_by": ["Farms.harvestRewardIx"],
+      "condition": "any reward harvest",
+      "reason": "Reward discovery, token programs, and destination accounts are not reviewed by the stake profile."
+    },
+    {
+      "id": "farms.ata-setup",
+      "outcome": "unsupported",
+      "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      "instruction": "Create/CreateIdempotent",
+      "phase": "setup",
+      "emitted_by": ["caller setup"],
+      "condition": "the source ATA does not already exist",
+      "reason": "The profile requires an existing canonical GLAM-vault ATA and accepts no setup instructions."
+    },
+    {
+      "id": "farms.system-token-setup",
+      "outcome": "unsupported",
+      "program_id": "11111111111111111111111111111111",
+      "instruction": "standalone system/token setup",
+      "phase": "setup",
+      "emitted_by": ["caller setup"],
+      "condition": "any setup instruction exists outside initialize_user",
+      "reason": "No standalone system or token setup instruction is part of either atomic stake profile."
+    },
+    {
+      "id": "farms.delegated-or-obligation",
+      "outcome": "unsupported",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "delegated/obligation-farm stake",
+      "phase": "protocol",
+      "emitted_by": ["Farms.stakeIx", "Klend farm helpers"],
+      "condition": "decoded farm state is delegated or caller identifies an obligation-farm path",
+      "reason": "The first profile accepts only a direct, non-delegated user farm."
+    },
+    {
+      "id": "farms.token-2022",
+      "outcome": "unsupported",
+      "program_id": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+      "instruction": "Token-2022 stake path",
+      "phase": "setup",
+      "emitted_by": ["caller setup", "Farms.stakeIx"],
+      "condition": "stake mint uses Token-2022",
+      "reason": "The first profile pins classic SPL Token."
+    },
+    {
+      "id": "farms.scope",
+      "outcome": "unsupported",
+      "program_id": "HFn8GnPADiny6XqUoWE8uRPPxb29ikn4yTuPa9MF2fWJ",
+      "instruction": "Scope account or refresh",
+      "phase": "setup",
+      "emitted_by": ["caller setup", "Farms.stakeIx"],
+      "condition": "farm state has a non-default Scope prices account or any Scope helper is emitted",
+      "reason": "The first profile requires the exact Farms-program optional-account sentinel and no Scope emission."
+    },
+    {
+      "id": "farms.remaining-or-extra",
+      "outcome": "unsupported",
+      "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "instruction": "remaining/reordered/extra output",
+      "phase": "protocol",
+      "emitted_by": ["operation caller"],
+      "condition": "any instruction or account exists outside the exact selected profile",
+      "reason": "The atomic operation matcher rejects every extra, missing, duplicated, or reordered instruction and every remaining account."
+    }
+  ]
+}

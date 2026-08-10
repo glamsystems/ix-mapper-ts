@@ -1,0 +1,94 @@
+{
+  "$schema": "../schema-v2.json",
+  "manifest_version": 2,
+  "manifest_revision": 1,
+  "status": "proof-only",
+  "integration": "kamino-farms-stake",
+  "cluster": "mainnet-beta",
+  "variant": "staging",
+  "native_protocol": {
+    "name": "Kamino Farms",
+    "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+    "official_sdk": {
+      "package": "@kamino-finance/farms-sdk",
+      "version": "3.2.26",
+      "npm_integrity": "sha512-G6aziMz0ounatUEGlkiul14ERPXZD/RtzG21b72E/PKVBiFhKP/4fmpolHJjcgJWF4V4i+ITSXevi9oQ0EkLCA==",
+      "tarball_sha256": "21155adcc0d05a12f68e203547c983373adbe29bbbb098b249e9eaf4a75633bb",
+      "solana_kit": { "package": "@solana/kit", "version": "2.3.0", "npm_integrity": "sha512-sb6PgwoW2LjE5oTFu4lhlS/cGt/NB3YrShEyx7JgWFWysfgLdJnhwWThgwy/4HjNsmtMrQGWVls0yVBHcMvlMQ==" },
+      "verified_compatibility_packages": {},
+      "program_bindings": [
+        { "name": "kamino-farms", "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr", "mode": "sdk-default-only", "constraint": "Farms.createNewUserIx and Farms.stakeIx must use the official SDK default program; any override is outside this profile." }
+      ],
+      "resolved_compatibility_dependencies": {
+        "@kamino-finance/kliquidity-sdk": "8.5.10",
+        "@kamino-finance/scope-sdk": "9.1.0",
+        "@solana-program/address-lookup-table": "0.7.0",
+        "@solana-program/compute-budget": "0.8.0",
+        "@solana-program/system": "0.7.0",
+        "@solana-program/token": "0.5.1",
+        "@solana-program/token-2022": "0.4.2",
+        "@solana/compat": "2.3.0",
+        "@solana/kit": "2.3.0",
+        "@solana/sysvars": "2.3.0",
+        "@solana/web3.js": "1.98.4",
+        "bn.js": "5.2.3",
+        "decimal.js": "10.6.0",
+        "exponential-backoff": "3.1.3"
+      }
+    }
+  },
+  "proxy": { "crate": "ext_kamino", "version": "1.0.1", "program_id": "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq" },
+  "mapper": { "package": "@glamsystems/ix-mapper", "version": "0.3.0-test.1", "config_schema_version": 2, "config_revision": 1 },
+  "instruction_classification": {
+    "artifact": "instruction_classification_config",
+    "schema_version": 1,
+    "config_revision": 1,
+    "mapped_rule_ids": ["farms.initialize-user", "farms.stake"],
+    "safe_passthrough_rule_ids": [],
+    "unsupported_rule_ids": ["farms.unstake", "farms.withdraw", "farms.harvest", "farms.ata-setup", "farms.system-token-setup", "farms.delegated-or-obligation", "farms.token-2022", "farms.scope", "farms.remaining-or-extra"]
+  },
+  "operation_profile": {
+    "artifact": "operation_profile_config",
+    "schema_version": 2,
+    "config_revision": 1,
+    "operation_ids": ["farms.existing-user-classic-spl-stake", "farms.first-stake-classic-spl"],
+    "operation_bound_passthrough_ids": []
+  },
+  "artifacts": {
+    "native_idl": { "bundled_path": "artifacts/kamino-farms/1.6.5/native-farms.json", "sha256": "d8ac1c6584e5f5c523c8883a8990583a955ac8c2ebc8290f95ae116905f18c2c" },
+    "farms_client_source": { "package_path": "@kamino-finance/farms-sdk/dist/Farms.js", "sha256": "7b1cd629d3727c0d97b5b69f669aaf3503e0f09ecf4188470aed3a2a82c62026" },
+    "farms_operations_source": { "package_path": "@kamino-finance/farms-sdk/dist/utils/operations.js", "sha256": "7fcb2ec4b6ce3107b63f7b5d79e28eceb2ddec86b5488d17f6c663d9620d20a3" },
+    "farms_pda_helpers_source": { "package_path": "@kamino-finance/farms-sdk/dist/utils/utils.js", "sha256": "30554409cb42f0dd31d898110ee0711f0ccb879f888231713c85cd0983b2c79d" },
+    "farms_program_source": { "package_path": "@kamino-finance/farms-sdk/dist/@codegen/farms/programs/farms.js", "sha256": "13b4831ca0ac88838088652d086fcabb0c52d8d47ac0a7b8868545e99e44d7ef" },
+    "farms_initialize_user_schema": { "package_path": "@kamino-finance/farms-sdk/dist/@codegen/farms/instructions/initializeUser.js", "sha256": "12a413b5064a274c21fb04fd71460110b5c66faa750779ac1cfabf6ca7325f10" },
+    "farms_stake_schema": { "package_path": "@kamino-finance/farms-sdk/dist/@codegen/farms/instructions/stake.js", "sha256": "78a10d19eeb3c0bc071db902918368342a0cfcab5fd2451cabbaef3b87338342" },
+    "farms_unstake_schema": { "package_path": "@kamino-finance/farms-sdk/dist/@codegen/farms/instructions/unstake.js", "sha256": "3cce781b7094dde4dec16e10435649f8de8e712981bc7fea942c195fb8b037c5" },
+    "proxy_idl": { "bundled_path": "artifacts/ext-kamino/1.0.1/staging.json", "sha256": "9e15e79b11cbe8bf12f166d84e61018af1c0d66cef4626bbd1a8e904a9b7d685" },
+    "mapper_config": { "bundled_path": "mapping-configs-v2-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json", "sha256": "eb35de2db54fa0ee4cba07e414bb6109eced0422ac9fe3d189c56c94597e80a8" },
+    "instruction_classification_schema": { "bundled_path": "instruction-classifications-v1/schema-v1.json", "sha256": "a9045f2f060e0048bd500d5f6ca8351b6399a8cb207f2268d3ea2d25e7ec03cf" },
+    "instruction_classification_config": { "bundled_path": "instruction-classifications-v1/kamino-farms-stake.json", "sha256": "bacbaad6075c5af74fe472b1d8105a45d0919a056e643e78f43763d9311586e3" },
+    "operation_profile_schema": { "bundled_path": "operation-profiles-v2/schema-v2.json", "sha256": "110d02c8a09a4c673c24c2f08935156e74b1c243e70ec1b1e6df260f195a1110" },
+    "operation_profile_config": { "bundled_path": "operation-profiles-v2/kamino-farms-stake.json", "sha256": "42539ad18fdf45e93fd3f40cc12efc06a9d59a231a3784f0bc23cd7dea702127" }
+  },
+  "supported_mappings": [
+    { "source_instruction": "initialize_user", "source_discriminator": [111, 17, 185, 250, 60, 122, 38, 254], "source_data_length": 8, "source_fixed_accounts": 8, "destination_instruction": "farms_initialize_user", "destination_discriminator": [188, 148, 82, 37, 44, 46, 162, 34], "destination_fixed_accounts": 10, "remaining_accounts": "none; allowed only as position zero of the atomic first-stake operation" },
+    { "source_instruction": "stake", "source_discriminator": [206, 176, 202, 18, 200, 209, 179, 108], "source_data_length": 16, "source_fixed_accounts": 8, "destination_instruction": "farms_stake", "destination_discriminator": [224, 105, 208, 179, 98, 200, 213, 238], "destination_fixed_accounts": 14, "remaining_accounts": "none; exact direct-user state/PDA/ATA bindings are required by the atomic operation profile" }
+  ],
+  "explicitly_unsupported": [
+    { "classification_rule_id": "farms.unstake", "instruction": "unstake", "discriminator": [90, 95, 107, 42, 205, 124, 50, 225], "reason": "The first proof is stake-only; legacy unstake remains outside the strict operation runtime." },
+    { "classification_rule_id": "farms.withdraw", "instruction": "withdraw_unstaked_deposits/withdraw_from_farm_vault", "reason": "Withdrawal and cooldown behavior require a separate reviewed profile." },
+    { "classification_rule_id": "farms.harvest", "instruction": "harvest_reward", "reason": "Reward discovery, token programs, and destination accounts are not reviewed by the stake profile." },
+    { "classification_rule_id": "farms.ata-setup", "instruction": "Create/CreateIdempotent", "reason": "The profile requires an existing canonical GLAM-vault ATA and accepts no setup instructions." },
+    { "classification_rule_id": "farms.system-token-setup", "instruction": "standalone system/token setup", "reason": "No standalone system or token setup instruction is part of either atomic stake profile." },
+    { "classification_rule_id": "farms.delegated-or-obligation", "instruction": "delegated/obligation-farm stake", "reason": "The first profile accepts only a direct, non-delegated user farm." },
+    { "classification_rule_id": "farms.token-2022", "instruction": "Token-2022 stake path", "reason": "The first profile pins classic SPL Token." },
+    { "classification_rule_id": "farms.scope", "instruction": "Scope account or refresh", "reason": "The first profile requires the exact Farms-program optional-account sentinel and no Scope emission." },
+    { "classification_rule_id": "farms.remaining-or-extra", "instruction": "remaining/reordered/extra output", "reason": "The atomic operation matcher rejects every extra, missing, duplicated, or reordered instruction and every remaining account." }
+  ],
+  "runtime_validation": { "verified_on": "2026-08-10", "node_golden_fixtures": true, "next_client_build": false, "expo_hermes_bundle": false, "dependency_peer_graph": false },
+  "known_blockers": [
+    "This proof directly differentially tests Farms.createNewUserIx and Farms.stakeIx in Node, but no app convenience API or transaction submission is included.",
+    "The official Farms SDK root still carries web3.js and a broad dependency graph; Next and Expo/Hermes gates are not green.",
+    "This proof is stake-only; unstake, withdrawal, harvest, delegated/obligation farms, Scope, Token-2022, and account setup remain unsupported."
+  ]
+}

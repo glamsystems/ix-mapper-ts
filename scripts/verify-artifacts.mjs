@@ -85,6 +85,32 @@ function isExactVersion(value) {
   );
 }
 
+async function resolveDependencyFromPackage(packageDirectory, dependency) {
+  const packageRequire = createRequire(path.join(packageDirectory, "package.json"));
+  let directory = path.dirname(packageRequire.resolve(dependency));
+  while (directory.startsWith(packageRoot)) {
+    try {
+      const manifestPath = path.join(directory, "package.json");
+      const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+      if (manifest.name === dependency) {
+        return {
+          directory,
+          lockKey: path.relative(packageRoot, directory).split(path.sep).join("/"),
+          manifest,
+        };
+      }
+    } catch (error) {
+      if (error?.code !== "ENOENT") throw error;
+    }
+    const parent = path.dirname(directory);
+    if (parent === directory) break;
+    directory = parent;
+  }
+  throw new Error(
+    `Unable to resolve ${dependency} from ${path.relative(packageRoot, packageDirectory)}`,
+  );
+}
+
 function extractTarEntry(tarball, entryPath) {
   const archive = gunzipSync(tarball);
   let offset = 0;
@@ -930,7 +956,7 @@ async function verifyOperationProfiles(
   );
   invariant(
     declaredIds.size === profileConfig.operations.length &&
-      passthroughIds.size === profileConfig.operations.length,
+      [...passthroughIds].every((id) => declaredIds.has(id)),
     `${label} manifest does not exhaustively reference operation profiles`,
   );
 
@@ -1041,6 +1067,108 @@ async function verifyOperationProfiles(
       `${label} Klend operation mapping/account binding drift`,
     );
     return { operationProfiles: 1 };
+  }
+
+  if (manifest.integration === "kamino-farms-stake") {
+    invariant(
+      declaration.schema_version === 2 &&
+        profileConfig.operations.length === 2 &&
+        passthroughIds.size === 0,
+      `${label} Farms stake requires two mapped-only schema-v2 profiles`,
+    );
+    const expectedSourceHashes = {
+      farms_client:
+        "7b1cd629d3727c0d97b5b69f669aaf3503e0f09ecf4188470aed3a2a82c62026",
+      operations:
+        "7fcb2ec4b6ce3107b63f7b5d79e28eceb2ddec86b5488d17f6c663d9620d20a3",
+      pda_helpers:
+        "30554409cb42f0dd31d898110ee0711f0ccb879f888231713c85cd0983b2c79d",
+      initialize_user_builder:
+        "12a413b5064a274c21fb04fd71460110b5c66faa750779ac1cfabf6ca7325f10",
+      stake_builder:
+        "78a10d19eeb3c0bc071db902918368342a0cfcab5fd2451cabbaef3b87338342",
+    };
+    const tuple = profileConfig.official_sdk_tuple;
+    invariant(
+      tuple.package === "@kamino-finance/farms-sdk" &&
+        tuple.version === "3.2.26" &&
+        tuple.native_idl_version === "1.6.5" &&
+        tuple.version === manifest.native_protocol.official_sdk.version &&
+        tuple.solana_kit_version === "2.3.0" &&
+        tuple.tarball_sha256 ===
+          "21155adcc0d05a12f68e203547c983373adbe29bbbb098b249e9eaf4a75633bb" &&
+        JSON.stringify(tuple.source_hashes) ===
+          JSON.stringify(expectedSourceHashes),
+      `${label} Farms official SDK/IDL source tuple drift`,
+    );
+    const expected = {
+      stake: {
+        id: "farms.existing-user-classic-spl-stake",
+        emitter: "Farms.stakeIx",
+        userState: "existing",
+        sequence: ["stake"],
+      },
+      initializeAndStake: {
+        id: "farms.first-stake-classic-spl",
+        emitter: "Farms.createNewUserIx + Farms.stakeIx",
+        userState: "absent",
+        sequence: ["initialize_user", "stake"],
+      },
+    };
+    for (const profile of profileConfig.operations) {
+      const shape = expected[profile.operation];
+      invariant(
+        shape &&
+          declaredIds.has(profile.id) &&
+          profile.id === shape.id &&
+          profile.official_emitter === shape.emitter &&
+          profile.user_state === shape.userState &&
+          profile.atomic === true &&
+          profile.maximum_snapshot_age_slots === 20 &&
+          profile.amount === "positive-finite-u64" &&
+          profile.farms_program ===
+            "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr" &&
+          profile.token_program ===
+            "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" &&
+          profile.associated_token_program ===
+            "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL" &&
+          profile.scope_prices === "none-program-sentinel" &&
+          equalBytes(
+            profile.sequence.map(({ source_instruction }) =>
+              source_instruction,
+            ),
+            shape.sequence,
+          ) &&
+          profile.sequence.every(
+            (step, index) =>
+              step.position === index &&
+              step.outcome === "mapped" &&
+              step.account_bindings.length === 8,
+          ),
+        `${label}:${profile.id} Farms operation grammar drift`,
+      );
+      for (const step of profile.sequence) {
+        const mapping = config.instructions.find(
+          ({ src_ix_name }) => src_ix_name === step.source_instruction,
+        );
+        invariant(
+          mapping &&
+            mapping.strict.remaining_accounts.kind === "none" &&
+            mapping.strict.fixed_accounts.length ===
+              step.account_bindings.length &&
+            mapping.strict.fixed_accounts.every(
+              (account, index) =>
+                account.index === index &&
+                account.writable ===
+                  ((step.account_bindings[index].role & 1) !== 0) &&
+                account.signer ===
+                  ((step.account_bindings[index].role & 2) !== 0),
+            ),
+          `${label}:${profile.id}:${step.source_instruction} mapping/account binding drift`,
+        );
+      }
+    }
+    return { operationProfiles: 2 };
   }
 
   invariant(
@@ -1156,6 +1284,94 @@ async function verifyOperationProfiles(
   return { operationProfiles: profileConfig.operations.length };
 }
 
+async function verifyOperationProfileSchemaPolicyContract() {
+  const klend = JSON.parse(
+    await readFile(
+      path.join(
+        packageRoot,
+        "operation-profiles-v2/kamino-lending-repay.json",
+      ),
+      "utf8",
+    ),
+  );
+  const farms = JSON.parse(
+    await readFile(
+      path.join(packageRoot, "operation-profiles-v2/kamino-farms-stake.json"),
+      "utf8",
+    ),
+  );
+  validateJsonSchema(
+    klend,
+    operationProfileSchemaV2,
+    operationProfileSchemaV2,
+    "operation-profile-schema-contract:klend",
+  );
+  validateJsonSchema(
+    farms,
+    operationProfileSchemaV2,
+    operationProfileSchemaV2,
+    "operation-profile-schema-contract:farms",
+  );
+
+  const expectRejected = (value, label) => {
+    let rejected = false;
+    try {
+      validateJsonSchema(
+        value,
+        operationProfileSchemaV2,
+        operationProfileSchemaV2,
+        label,
+      );
+    } catch {
+      rejected = true;
+    }
+    invariant(rejected, `${label} must fail the published schema`);
+  };
+
+  const klendWithFarmsTuple = structuredClone(klend);
+  klendWithFarmsTuple.official_sdk_tuple = structuredClone(
+    farms.official_sdk_tuple,
+  );
+  expectRejected(
+    klendWithFarmsTuple,
+    "operation-profile-schema-contract:klend-cross-tuple",
+  );
+
+  const farmsWithKlendTuple = structuredClone(farms);
+  farmsWithKlendTuple.official_sdk_tuple = structuredClone(
+    klend.official_sdk_tuple,
+  );
+  expectRejected(
+    farmsWithKlendTuple,
+    "operation-profile-schema-contract:farms-cross-tuple",
+  );
+
+  const klendWithFarmsOperation = structuredClone(klend);
+  klendWithFarmsOperation.operations.push(
+    structuredClone(farms.operations[0]),
+  );
+  expectRejected(
+    klendWithFarmsOperation,
+    "operation-profile-schema-contract:klend-mixed-operation",
+  );
+
+  const farmsWithKlendOperation = structuredClone(farms);
+  farmsWithKlendOperation.operations.push(
+    structuredClone(klend.operations[0]),
+  );
+  expectRejected(
+    farmsWithKlendOperation,
+    "operation-profile-schema-contract:farms-mixed-operation",
+  );
+
+  const farmsWithStaleBoundDrift = structuredClone(farms);
+  farmsWithStaleBoundDrift.operations[0].maximum_snapshot_age_slots = 21;
+  expectRejected(
+    farmsWithStaleBoundDrift,
+    "operation-profile-schema-contract:farms-snapshot-bound-drift",
+  );
+}
+
 function verifySafePassthroughPolicyContract() {
   const fixtureRule = {
     id: "contract.exact-native",
@@ -1266,6 +1482,14 @@ async function verifyManifest(manifestVersion, fileName) {
     `${label} SDK npm integrity mismatch`,
   );
   const sdkTarballVerified = await verifySdkTarball(label, sdk, sdkLock);
+  const sdkPackageDirectory = path.join(
+    packageRoot,
+    "node_modules",
+    ...sdk.package.split("/"),
+  );
+  const sdkPackageManifest = JSON.parse(
+    await readFile(path.join(sdkPackageDirectory, "package.json"), "utf8"),
+  );
 
   const programBindingsByName = new Map();
   for (const binding of sdk.program_bindings) {
@@ -1277,7 +1501,11 @@ async function verifyManifest(manifestVersion, fileName) {
   }
   const farmsProgramBinding = programBindingsByName.get("kamino-farms");
   invariant(
-    !["kamino-kvaults", "kamino-lending-repay"].includes(
+    ![
+      "kamino-kvaults",
+      "kamino-lending-repay",
+      "kamino-farms-stake",
+    ].includes(
       manifest.integration,
     ) ||
       (farmsProgramBinding?.mode === "sdk-default-only" &&
@@ -1318,8 +1546,40 @@ async function verifyManifest(manifestVersion, fileName) {
     );
   }
 
+  if (manifest.integration === "kamino-farms-stake") {
+    const officialDependencies = Object.keys(
+      sdkPackageManifest.dependencies ?? {},
+    ).sort();
+    const declaredDependencies = Object.keys(
+      sdk.resolved_compatibility_dependencies,
+    ).sort();
+    invariant(
+      JSON.stringify(declaredDependencies) ===
+        JSON.stringify(officialDependencies),
+      `${label} resolved dependencies do not exhaust the official Farms package`,
+    );
+    for (const dependency of officialDependencies) {
+      const resolved = await resolveDependencyFromPackage(
+        sdkPackageDirectory,
+        dependency,
+      );
+      const version = sdk.resolved_compatibility_dependencies[dependency];
+      const dependencyLock = packageLock.packages?.[resolved.lockKey];
+      invariant(
+        isExactVersion(version) &&
+          resolved.manifest.version === version &&
+          dependencyLock?.version === version &&
+          typeof dependencyLock.integrity === "string" &&
+          dependencyLock.integrity.length > 0,
+        `${label} Farms-resolved ${dependency} is not pinned at ${resolved.lockKey}`,
+      );
+    }
+  }
+
   for (const [dependency, version] of Object.entries(
-    sdk.resolved_compatibility_dependencies,
+    manifest.integration === "kamino-farms-stake"
+      ? {}
+      : sdk.resolved_compatibility_dependencies,
   )) {
     invariant(
       isExactVersion(version),
@@ -1376,7 +1636,17 @@ async function verifyManifest(manifestVersion, fileName) {
             "high_level_action_helper_source",
             "farms_program_source",
           ]
-        : [];
+        : manifest.integration === "kamino-farms-stake"
+          ? [
+              "farms_client_source",
+              "farms_operations_source",
+              "farms_pda_helpers_source",
+              "farms_program_source",
+              "farms_initialize_user_schema",
+              "farms_stake_schema",
+              "farms_unstake_schema",
+            ]
+          : [];
   for (const requiredArtifact of [
     "native_idl",
     "proxy_idl",
@@ -1439,6 +1709,13 @@ async function verifyManifest(manifestVersion, fileName) {
   const nativeIdl = JSON.parse(
     await readFile(verifiedArtifacts.native_idl, "utf8"),
   );
+  if (manifest.integration === "kamino-farms-stake") {
+    invariant(
+      nativeIdl.metadata?.version === "1.6.5" &&
+        nativeIdl.address === manifest.native_protocol.program_id,
+      `${label} Farms native IDL version/program drift`,
+    );
+  }
 
   invariant(
     manifest.supported_mappings.length === config.instructions.length,
@@ -1694,6 +1971,7 @@ for (const manifestVersion of [1, 2]) {
 invariant(manifestFiles.length > 0, "No compatibility manifests found");
 verifySafePassthroughPolicyContract();
 verifyMaturityPolicyContract();
+await verifyOperationProfileSchemaPolicyContract();
 
 const verified = [];
 for (const { fileName, manifestVersion } of manifestFiles) {

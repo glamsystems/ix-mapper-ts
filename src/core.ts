@@ -2,10 +2,14 @@ import StrictKvauGMspProgramConfig from "../mapping-configs-v2/KvauGMspG5k6rtzrq
 import StrictStagingKvauGMspProgramConfig from "../mapping-configs-v2-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
 import StrictKlendProgramConfig from "../mapping-configs-v2/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
 import StrictStagingKlendProgramConfig from "../mapping-configs-v2-staging/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
+import StrictFarmsProgramConfig from "../mapping-configs-v2/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
+import StrictStagingFarmsProgramConfig from "../mapping-configs-v2-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
 import KaminoKvauInstructionClassifications from "../instruction-classifications-v1/kamino-kvaults.json";
 import KaminoLendingRepayClassifications from "../instruction-classifications-v1/kamino-lending-repay.json";
+import KaminoFarmsStakeClassifications from "../instruction-classifications-v1/kamino-farms-stake.json";
 import KaminoKvauOperationProfiles from "../operation-profiles-v1/kamino-kvaults.json";
 import KaminoLendingRepayOperationProfiles from "../operation-profiles-v2/kamino-lending-repay.json";
+import KaminoFarmsStakeOperationProfiles from "../operation-profiles-v2/kamino-farms-stake.json";
 
 import type {
   InstructionClassificationConfig,
@@ -33,6 +37,11 @@ import {
   validateKlendOperationProfileConfig,
   type KlendOperationProfileConfig,
 } from "./klend-operation";
+import {
+  mapKaminoFarmsStakeOperationWithConfigs,
+  validateFarmsOperationProfileConfig,
+  type FarmsOperationProfileConfig,
+} from "./farms-operation";
 
 function unsupported(message: string): NeutralMapInstructionResult {
   return { kind: "unsupported", reason: "invalid-instruction", message };
@@ -130,6 +139,39 @@ function createNeutralMapper(environment: NeutralMapperEnvironment) {
     productionKlend,
     environment,
   );
+  // Farms stake is also operation-only: initialize_user and stake are usable
+  // only after the complete selected sequence and decoded-state bindings pass.
+  const productionFarms: StrictRemappingConfigs =
+    validateStrictRemappingConfigs(
+      {
+        [StrictFarmsProgramConfig.program_id]:
+          StrictFarmsProgramConfig as StrictRemappingConfig,
+      },
+      environment,
+    );
+  const stagingFarms: StrictRemappingConfigs = validateStrictRemappingConfigs(
+    {
+      [StrictStagingFarmsProgramConfig.program_id]:
+        StrictStagingFarmsProgramConfig as StrictRemappingConfig,
+    },
+    environment,
+  );
+  const productionFarmsClassifications =
+    validateInstructionClassificationConfig(
+      KaminoFarmsStakeClassifications as InstructionClassificationConfig,
+      productionFarms,
+      environment,
+    );
+  const stagingFarmsClassifications = validateInstructionClassificationConfig(
+    KaminoFarmsStakeClassifications as InstructionClassificationConfig,
+    stagingFarms,
+    environment,
+  );
+  const farmsOperationProfiles = validateFarmsOperationProfileConfig(
+    KaminoFarmsStakeOperationProfiles as FarmsOperationProfileConfig,
+    productionFarms,
+    environment,
+  );
 
   function mapInstructionNeutral(
     instruction: NeutralInstructionInput,
@@ -199,11 +241,30 @@ function createNeutralMapper(environment: NeutralMapperEnvironment) {
     );
   }
 
+  async function mapKaminoFarmsStakeOperationNeutral(
+    input: import("./core-types").MapKaminoFarmsStakeOperationInput,
+    context: NeutralMappingContext,
+    options?: MapInstructionOptions,
+  ): Promise<import("./core-types").NeutralMapOperationResult> {
+    const useStaging = parseStaging(options);
+    return mapKaminoFarmsStakeOperationWithConfigs(
+      input,
+      context,
+      useStaging ? stagingFarms : productionFarms,
+      useStaging
+        ? stagingFarmsClassifications
+        : productionFarmsClassifications,
+      farmsOperationProfiles,
+      environment,
+    );
+  }
+
   return {
     mapInstructionNeutral,
     mapInstructionsNeutral,
     mapKaminoKvaultOperationNeutral,
     mapKaminoLendingRepayOperationNeutral,
+    mapKaminoFarmsStakeOperationNeutral,
   } as const;
 }
 

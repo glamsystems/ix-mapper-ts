@@ -147,6 +147,25 @@ unknown emission fail the whole operation before a mapped result is returned.
 The two refresh instructions are operation-bound native output and remain
 unsupported through the standalone mapper.
 
+The first Kamino Farms profile is a separate schema-v2, operation-only
+boundary over `@kamino-finance/farms-sdk@3.2.26` and native IDL `1.6.5`. It
+accepts only the official helper outputs `[stake]` for an existing user state
+or `[initialize_user, stake]` for a first stake. Both paths are atomic and map
+only after an at-most-20-slot-old decoded farm snapshot is bound to the GLAM
+vault, classic SPL mint/program, existing canonical source ATA, exact user and
+farm-vault PDAs, non-delegated/direct-user branch, and the Farms-program
+optional-account sentinel for `scope_prices=None`. No instruction is globally
+passed through. Unstake, withdrawal, harvest, standalone setup, delegated or
+obligation farms, Token-2022, Scope, remaining accounts, and any extra or
+reordered helper output remain unsupported.
+
+`initialize_user` repeats the authority identity as authority, payer, owner,
+and delegatee with different source roles. Schema v2 permits this only through
+explicit forward `allowed_duplicate_privilege_pairs` that each reference an
+existing `same_as` constraint. Every occurrence still has an exact role, the
+duplicates are dropped rather than copied by this mapping, and undeclared or
+destination privilege conflicts remain rejected.
+
 ## Versioned evidence
 
 Compatibility is one exact tuple, not a range:
@@ -235,6 +254,12 @@ generated builders and ordering-source hash are byte/account-equivalent to the
 baseline, but it is not accepted by the active runtime or manifests. The
 published SDK runtime graph still fails the declared Next/Expo/Hermes gates.
 Profile evidence is not a support claim.
+
+The Kamino Farms stake manifests also remain `proof-only`. Node evidence calls
+`Farms.createNewUserIx`/`Farms.stakeIx` and differentially checks their output
+against the pinned generated builders, but the official package root still
+has a broad web3.js-bearing dependency graph and has not passed the Next or
+Expo/Hermes gates. No app convenience API or submission proof is claimed.
 
 Proof-only manifests are confined to prerelease package versions and the npm
 `test` dist-tag. They remain absent from default public discovery and cannot be

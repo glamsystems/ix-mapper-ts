@@ -340,6 +340,7 @@ function validateStrictInstructionConfig(
     "data_length",
     "fixed_accounts",
     "remaining_accounts",
+    "allowed_duplicate_privilege_pairs",
   ]);
   if (
     !Array.isArray(strict.fixed_accounts) ||
@@ -364,6 +365,40 @@ function validateStrictInstructionConfig(
       );
     }
     validateIdentityConstraint(config, instruction, constraint, environment);
+  });
+  const duplicatePairs = strict.allowed_duplicate_privilege_pairs ?? [];
+  if (!Array.isArray(duplicatePairs)) {
+    throw configError(
+      config,
+      instruction.src_ix_name,
+      "allowed_duplicate_privilege_pairs must be an array",
+    );
+  }
+  const seenDuplicatePairs = new Set<string>();
+  duplicatePairs.forEach((pair) => {
+    assertKnownKeys(
+      config,
+      instruction.src_ix_name,
+      "allowed duplicate privilege pair",
+      pair,
+      ["index", "same_as"],
+    );
+    const key = `${String(pair.index)}:${String(pair.same_as)}`;
+    if (
+      !Number.isInteger(pair.index) ||
+      !Number.isInteger(pair.same_as) ||
+      pair.index <= pair.same_as ||
+      pair.index >= strict.fixed_accounts.length ||
+      strict.fixed_accounts[pair.index].same_as !== pair.same_as ||
+      seenDuplicatePairs.has(key)
+    ) {
+      throw configError(
+        config,
+        instruction.src_ix_name,
+        `allowed duplicate privilege pair ${key} is not an exact same_as constraint`,
+      );
+    }
+    seenDuplicatePairs.add(key);
   });
 
   instruction.program_id_placeholder_indices?.forEach((index) => {
@@ -1057,18 +1092,30 @@ function isInstructionShape(
 
 function conflictingDuplicatePrivileges(
   instruction: Pick<NeutralInstruction, "programAddress" | "accounts">,
+  allowedPairs: readonly { readonly index: number; readonly same_as: number }[] = [],
 ): string | undefined {
-  const seen = new Map<string, { role: number; position: string }>();
-  seen.set(instruction.programAddress, { role: 0, position: "program ID" });
+  const seen = new Map<string, { role: number; position: string; index: number }>();
+  seen.set(instruction.programAddress, { role: 0, position: "program ID", index: -1 });
+  const allowed = new Set(
+    allowedPairs.map(({ index, same_as }) => `${String(index)}:${String(same_as)}`),
+  );
 
   for (let index = 0; index < instruction.accounts.length; index += 1) {
     const meta = instruction.accounts[index];
     const previous = seen.get(meta.address);
-    if (previous && previous.role !== meta.role) {
+    if (
+      previous &&
+      previous.role !== meta.role &&
+      !allowed.has(`${String(index)}:${String(previous.index)}`)
+    ) {
       return `account ${index} duplicates ${previous.position} with different signer or writable privileges`;
     }
     if (!previous) {
-      seen.set(meta.address, { role: meta.role, position: `account ${index}` });
+      seen.set(meta.address, {
+        role: meta.role,
+        position: `account ${index}`,
+        index,
+      });
     }
   }
   return undefined;
@@ -1648,7 +1695,10 @@ function mapInstructionWithConfigs(
       );
     }
 
-    const privilegeConflict = conflictingDuplicatePrivileges(source);
+    const privilegeConflict = conflictingDuplicatePrivileges(
+      source,
+      instruction.strict.allowed_duplicate_privilege_pairs,
+    );
     if (privilegeConflict) {
       return unsupported(
         "account-meta",

@@ -74,6 +74,14 @@ export interface StrictInstructionMetadata {
   data_length: number;
   fixed_accounts: StrictAccountConstraint[];
   remaining_accounts: StrictRemainingAccounts;
+  /** Explicit source-only exceptions for official builders that repeat one
+   * identity with distinct account roles. The mapper still validates both
+   * exact roles and the same_as relationship, and never copies the duplicate
+   * into the destination unless separately mapped. */
+  allowed_duplicate_privilege_pairs?: {
+    index: number;
+    same_as: number;
+  }[];
 }
 
 export interface StrictInstruction extends Instruction {
@@ -193,6 +201,14 @@ export interface NeutralMapperEnvironment {
     readonly tokenProgramAddress: string;
     readonly associatedTokenProgramAddress: string;
   }): Promise<string>;
+  /** Narrow deterministic PDA primitive used by state-bound operation profiles. */
+  deriveProgramAddress?(input: {
+    readonly programAddress: string;
+    readonly seeds: readonly (
+      | { readonly kind: "utf8"; readonly value: string }
+      | { readonly kind: "address"; readonly value: string }
+    )[];
+  }): Promise<string>;
 }
 
 /**
@@ -214,8 +230,10 @@ export interface MapInstructionOptions {
 
 export type KaminoKvaultOperationName = "deposit" | "withdraw";
 export type KaminoLendingOperationName = "repayObligationLiquidityV2";
+export type KaminoFarmsOperationName = "stake" | "initializeAndStake";
 /** Active runtime tuple. Kamino 10 remains evaluation-only. */
 export type KaminoLendingSdkVersion = "9.1.5";
+export type KaminoFarmsSdkVersion = "3.2.26";
 
 /** Complete, ordered helper emission for one supported KVault operation. */
 export interface MapKaminoKvaultOperationInput {
@@ -270,6 +288,32 @@ export interface MapKaminoLendingRepayOperationInput {
   readonly officialSdkVersion: KaminoLendingSdkVersion;
   readonly instructions: readonly NeutralInstructionInput[];
   readonly reviewedContext: KaminoLendingRepayContext;
+}
+
+/** Reviewed direct-user Farms state used to bind one immutable stake corpus. */
+export interface KaminoFarmsStakeContext {
+  readonly stateObservationSlot: bigint;
+  readonly currentSlot: bigint;
+  readonly userStateExists: boolean;
+  readonly sourceAtaExists: true;
+  readonly isFarmDelegated: false;
+  readonly isObligationFarm: false;
+  readonly farmStateAddress: string;
+  readonly stakeMintAddress: string;
+  readonly farmVaultAddress: string;
+  readonly userStateAddress: string;
+  readonly userSourceAtaAddress: string;
+  readonly farmTokenProgramAddress: string;
+  /** Decoded FarmState.scopePrices; the first profile requires default(). */
+  readonly farmScopePricesAddress: string;
+}
+
+/** Exact output of the pinned Farms SDK helper for one reviewed stake path. */
+export interface MapKaminoFarmsStakeOperationInput {
+  readonly operation: KaminoFarmsOperationName;
+  readonly officialSdkVersion: KaminoFarmsSdkVersion;
+  readonly instructions: readonly NeutralInstructionInput[];
+  readonly reviewedContext: KaminoFarmsStakeContext;
 }
 
 export type OperationSetupBinding =
@@ -358,7 +402,10 @@ export type NeutralMapInstructionResult =
 
 export interface NeutralMappedOperationResult {
   kind: "mappedOperation";
-  operation: KaminoKvaultOperationName | KaminoLendingOperationName;
+  operation:
+    | KaminoKvaultOperationName
+    | KaminoLendingOperationName
+    | KaminoFarmsOperationName;
   instructions: readonly (
     | NeutralMappedInstructionResult
     | NeutralSafePassthroughInstructionResult

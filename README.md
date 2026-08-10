@@ -127,6 +127,22 @@ Token-2022, WSOL, repay-all, setup/compute/LUT helpers, fixed-term paths, and
 any extra emission remain unsupported. This is a proof-only matcher profile,
 not the still-missing portable bounded binding or complete convenience API.
 
+### Kamino Farms stake proof
+
+The schema-v2 Farms profile pins `@kamino-finance/farms-sdk@3.2.26` and native
+IDL `1.6.5`. It calls the official `Farms.createNewUserIx` and `Farms.stakeIx`
+helpers and recognizes only atomic `[stake]` and `[initialize_user, stake]`
+output. It binds the exact direct-user/non-delegated farm snapshot, GLAM-vault
+owner, user-state and farm-vault PDAs, existing canonical classic-SPL source
+ATA, mint/program, and `scope_prices=None` program sentinel before returning
+mapped output.
+
+No Farms instruction is globally passed through. Unstake, withdrawal,
+harvest, ATA/system/token setup, delegated or obligation farms, Token-2022,
+Scope, remaining accounts, and extra/reordered output fail the complete
+operation. Production and staging manifests are proof-only; Next and
+Expo/Hermes compatibility and a product convenience API remain open.
+
 ## Versioned compatibility evidence
 
 Published packages include:

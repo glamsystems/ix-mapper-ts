@@ -94,6 +94,7 @@
     "node": ">=22.22.0"
   },
   "devDependencies": {
+    "@kamino-finance/farms-sdk": "3.2.26",
     "@kamino-finance/klend-sdk": "9.1.5",
     "@solana/kit": "2.3.0",
     "@solana/web3.js": "1.98.4",

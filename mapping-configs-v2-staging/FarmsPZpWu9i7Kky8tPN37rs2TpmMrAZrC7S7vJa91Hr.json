@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "config_revision": 1,
+  "program_id": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+  "proxy_program_id": "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq",
+  "instructions": [
+    {
+      "src_ix_name": "initialize_user",
+      "src_discriminator": [111, 17, 185, 250, 60, 122, 38, 254],
+      "dst_ix_name": "farms_initialize_user",
+      "dst_discriminator": [188, 148, 82, 37, 44, 46, 162, 34],
+      "dynamic_accounts": [
+        { "name": "glam_state", "index": 0, "writable": true, "signer": false },
+        { "name": "glam_vault", "index": 1, "writable": true, "signer": false },
+        { "name": "glam_signer", "index": 2, "writable": true, "signer": true },
+        { "name": "integration_authority", "index": 3, "writable": false, "signer": false }
+      ],
+      "static_accounts": [
+        { "account": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr", "index": 4, "writable": false, "signer": false },
+        { "account": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz", "index": 5, "writable": false, "signer": false },
+        { "account": "11111111111111111111111111111111", "index": 6, "writable": false, "signer": false },
+        { "account": "SysvarRent111111111111111111111111111111111", "index": 9, "writable": false, "signer": false }
+      ],
+      "index_map": [-1, -1, -1, -1, 7, 8, -1, -1],
+      "strict": {
+        "data_length": 8,
+        "allowed_duplicate_privilege_pairs": [
+          { "index": 1, "same_as": 0 },
+          { "index": 2, "same_as": 0 },
+          { "index": 3, "same_as": 0 }
+        ],
+        "fixed_accounts": [
+          { "index": 0, "writable": false, "signer": true, "dynamic_account": "glam_vault" },
+          { "index": 1, "writable": true, "signer": true, "same_as": 0 },
+          { "index": 2, "writable": false, "signer": false, "same_as": 0 },
+          { "index": 3, "writable": false, "signer": false, "same_as": 0 },
+          { "index": 4, "writable": true, "signer": false },
+          { "index": 5, "writable": true, "signer": false },
+          { "index": 6, "writable": false, "signer": false, "account": "11111111111111111111111111111111" },
+          { "index": 7, "writable": false, "signer": false, "account": "SysvarRent111111111111111111111111111111111" }
+        ],
+        "remaining_accounts": { "kind": "none" }
+      }
+    },
+    {
+      "src_ix_name": "stake",
+      "src_discriminator": [206, 176, 202, 18, 200, 209, 179, 108],
+      "dst_ix_name": "farms_stake",
+      "dst_discriminator": [224, 105, 208, 179, 98, 200, 213, 238],
+      "dynamic_accounts": [
+        { "name": "glam_state", "index": 0, "writable": true, "signer": false },
+        { "name": "glam_vault", "index": 1, "writable": true, "signer": false },
+        { "name": "glam_signer", "index": 2, "writable": true, "signer": true },
+        { "name": "integration_authority", "index": 3, "writable": false, "signer": false }
+      ],
+      "static_accounts": [
+        { "account": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr", "index": 4, "writable": false, "signer": false },
+        { "account": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz", "index": 5, "writable": false, "signer": false },
+        { "account": "11111111111111111111111111111111", "index": 6, "writable": false, "signer": false }
+      ],
+      "index_map": [-1, 7, 8, 9, 10, 11, 12, 13],
+      "program_id_placeholder_indices": [6],
+      "strict": {
+        "data_length": 16,
+        "fixed_accounts": [
+          { "index": 0, "writable": false, "signer": true, "dynamic_account": "glam_vault" },
+          { "index": 1, "writable": true, "signer": false },
+          { "index": 2, "writable": true, "signer": false },
+          { "index": 3, "writable": true, "signer": false },
+          { "index": 4, "writable": true, "signer": false },
+          { "index": 5, "writable": false, "signer": false },
+          { "index": 6, "writable": false, "signer": false, "account": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr" },
+          { "index": 7, "writable": false, "signer": false, "account": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" }
+        ],
+        "remaining_accounts": { "kind": "none" }
+      }
+    }
+  ]
+}

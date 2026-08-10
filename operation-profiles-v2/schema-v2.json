@@ -16,14 +16,39 @@
     "$schema": { "type": "string", "minLength": 1 },
     "schema_version": { "const": 2 },
     "config_revision": { "type": "integer", "minimum": 1 },
-    "integration": { "const": "kamino-lending-repay" },
-    "official_sdk_tuple": { "$ref": "#/$defs/sdk_tuple" },
+    "integration": { "enum": ["kamino-lending-repay", "kamino-farms-stake"] },
+    "official_sdk_tuple": { "type": "object" },
     "operations": {
       "type": "array",
-      "minItems": 1,
-      "items": { "$ref": "#/$defs/operation" }
+      "minItems": 1
     }
   },
+  "oneOf": [
+    {
+      "required": ["integration", "official_sdk_tuple", "operations"],
+      "properties": {
+        "integration": { "const": "kamino-lending-repay" },
+        "official_sdk_tuple": { "$ref": "#/$defs/sdk_tuple" },
+        "operations": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/operation" }
+        }
+      }
+    },
+    {
+      "required": ["integration", "official_sdk_tuple", "operations"],
+      "properties": {
+        "integration": { "const": "kamino-farms-stake" },
+        "official_sdk_tuple": { "$ref": "#/$defs/farms_sdk_tuple" },
+        "operations": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/farms_operation" }
+        }
+      }
+    }
+  ],
   "$defs": {
     "public_key": {
       "type": "string",
@@ -70,6 +95,31 @@
             "refresh_obligation_builder": { "$ref": "#/$defs/sha256" },
             "repay_v2_builder": { "$ref": "#/$defs/sha256" },
             "high_level_action_helper": { "$ref": "#/$defs/sha256" }
+          }
+        }
+      }
+    },
+    "farms_sdk_tuple": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package", "version", "native_idl_version", "npm_integrity", "tarball_sha256", "solana_kit_version", "source_hashes"],
+      "properties": {
+        "package": { "const": "@kamino-finance/farms-sdk" },
+        "version": { "const": "3.2.26" },
+        "native_idl_version": { "const": "1.6.5" },
+        "npm_integrity": { "type": "string", "minLength": 1 },
+        "tarball_sha256": { "$ref": "#/$defs/sha256" },
+        "solana_kit_version": { "const": "2.3.0" },
+        "source_hashes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["farms_client", "operations", "pda_helpers", "initialize_user_builder", "stake_builder"],
+          "properties": {
+            "farms_client": { "$ref": "#/$defs/sha256" },
+            "operations": { "$ref": "#/$defs/sha256" },
+            "pda_helpers": { "$ref": "#/$defs/sha256" },
+            "initialize_user_builder": { "$ref": "#/$defs/sha256" },
+            "stake_builder": { "$ref": "#/$defs/sha256" }
           }
         }
       }
@@ -258,6 +308,46 @@
             "refresh_reserves": { "$ref": "#/$defs/refresh_reserves" },
             "refresh_obligation": { "$ref": "#/$defs/refresh_obligation" },
             "protocol": { "$ref": "#/$defs/mapped_protocol" }
+          }
+        }
+      }
+    },
+    "farms_operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "operation", "official_emitter", "bounded_binding", "user_state", "atomic", "maximum_snapshot_age_slots", "amount", "farms_program", "token_program", "associated_token_program", "scope_prices", "sequence"],
+      "properties": {
+        "id": { "enum": ["farms.existing-user-classic-spl-stake", "farms.first-stake-classic-spl"] },
+        "operation": { "enum": ["stake", "initializeAndStake"] },
+        "official_emitter": { "type": "string", "minLength": 1 },
+        "bounded_binding": { "const": "pinned decoded farm state plus immutable official helper output" },
+        "user_state": { "enum": ["existing", "absent"] },
+        "atomic": { "const": true },
+        "maximum_snapshot_age_slots": { "const": 20 },
+        "amount": { "const": "positive-finite-u64" },
+        "farms_program": { "const": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr" },
+        "token_program": { "const": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" },
+        "associated_token_program": { "const": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL" },
+        "scope_prices": { "const": "none-program-sentinel" },
+        "sequence": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["position", "outcome", "source_instruction", "account_bindings"],
+            "properties": {
+              "position": { "type": "integer", "minimum": 0, "maximum": 1 },
+              "outcome": { "const": "mapped" },
+              "source_instruction": { "enum": ["initialize_user", "stake"] },
+              "account_bindings": {
+                "type": "array",
+                "minItems": 8,
+                "maxItems": 8,
+                "items": { "$ref": "#/$defs/account_binding" }
+              }
+            }
           }
         }
       }
