@@ -108,6 +108,25 @@ The manifest also pins the Farms SDK default program ID. A custom
 `KaminoVaultClient.farmsProgramId` is outside this proof profile and fails
 closed.
 
+### Klend repay proof
+
+The schema-v2 Klend profile recognizes only an existing-obligation,
+classic-SPL, positive finite `repayObligationLiquidityV2` operation. It binds
+the generated-builder sequence `refreshReserve(s) -> refreshObligation ->
+repay-v2` to a caller-supplied, at-most-20-slot-old decoded state snapshot and
+requires an existing canonical GLAM-vault source ATA. It maps only the final repay and
+returns no partial output. Refreshes are native only inside this exact
+operation and remain unsupported through `mapInstructionNeutral`.
+
+Only the pinned 9.1.5 tuple is accepted by the active proof runtime/manifests.
+The 10.0.0 official SDK remains a separate compatibility evaluation whose
+relevant generated builders and pinned high-level ordering source are
+differentially checked for exact equivalence. The profile does not claim to
+invoke `KaminoAction.buildRepayTxns`. Scope, Farms, referrer, elevation,
+Token-2022, WSOL, repay-all, setup/compute/LUT helpers, fixed-term paths, and
+any extra emission remain unsupported. This is a proof-only matcher profile,
+not the still-missing portable bounded binding or complete convenience API.
+
 ## Versioned compatibility evidence
 
 Published packages include:
@@ -116,6 +135,7 @@ Published packages include:
 mapping-configs-v2*/
 instruction-classifications-v1/
 operation-profiles-v1/
+operation-profiles-v2/
 artifacts/
 compatibility-manifests/
 ```

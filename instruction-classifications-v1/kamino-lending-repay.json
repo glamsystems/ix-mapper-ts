@@ -1,0 +1,187 @@
+{
+  "$schema": "./schema-v1.json",
+  "schema_version": 1,
+  "config_revision": 1,
+  "integration": "kamino-lending-repay",
+  "rules": [
+    {
+      "id": "klend.repay-obligation-liquidity-v2",
+      "outcome": "mapped",
+      "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+      "instruction": "repay_obligation_liquidity_v2",
+      "phase": "protocol",
+      "emitted_by": [
+        "KaminoAction.buildRepayTxns",
+        "@kamino-finance/klend-sdk generated repayObligationLiquidityV2"
+      ],
+      "condition": "existing obligation, finite amount, classic SPL Token, no farm accounts, no referrer, no elevation group, and no remaining accounts",
+      "discriminator": [116, 174, 213, 76, 180, 53, 210, 144],
+      "mapping_ref": {
+        "config_schema_version": 2,
+        "config_revision": 1,
+        "source_instruction": "repay_obligation_liquidity_v2"
+      }
+    },
+    {
+      "id": "klend.repay.refresh-reserve-operation-bound",
+      "outcome": "unsupported",
+      "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+      "instruction": "refreshReserve",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "per-active-reserve refresh emitted before the obligation refresh",
+      "discriminator": [2, 218, 138, 235, 79, 201, 25, 102],
+      "reason": "Allowed only inside the exact repay operation profile with state-bound reserve, market, oracle, order, and dedup identities; never as standalone passthrough."
+    },
+    {
+      "id": "klend.repay.refresh-obligation-operation-bound",
+      "outcome": "unsupported",
+      "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+      "instruction": "refreshObligation",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "emitted after every reserve refresh and before the mapped repay",
+      "discriminator": [33, 132, 147, 228, 151, 192, 72, 89],
+      "reason": "Allowed only inside the exact repay operation profile with lending-market, obligation, deposit-reserve, and borrow-reserve identities bound in order."
+    },
+    {
+      "id": "klend.repay-all",
+      "outcome": "unsupported",
+      "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+      "instruction": "repayObligationLiquidityV2(u64::MAX)",
+      "phase": "protocol",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "liquidityAmount is the repay-all sentinel",
+      "discriminator": [116, 174, 213, 76, 180, 53, 210, 144],
+      "reason": "The first bounded profile supports only positive finite repayment amounts."
+    },
+    {
+      "id": "klend.repay.compute-budget",
+      "outcome": "unsupported",
+      "program_id": "ComputeBudget111111111111111111111111111111",
+      "instruction": "SetComputeUnitLimit/SetComputeUnitPrice",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "extraComputeBudget or priority-fee helpers are enabled",
+      "reason": "The first bounded profile requires extraComputeBudget=0 and accepts no compute helper emission."
+    },
+    {
+      "id": "klend.repay.create-source-ata",
+      "outcome": "unsupported",
+      "program_id": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      "instruction": "CreateIdempotent",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "includeAtaIxs is enabled or the source token account is absent",
+      "discriminator": [1],
+      "reason": "The first bounded profile requires includeAtaIxs=false and independently derives the existing canonical GLAM-vault source ATA."
+    },
+    {
+      "id": "klend.repay.init-obligation-or-metadata",
+      "outcome": "unsupported",
+      "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+      "instruction": "initObligation/initUserMetadata",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "the obligation or user metadata does not already exist",
+      "reason": "The first bounded profile requires an existing obligation and emits no initialization or lookup-table helpers."
+    },
+    {
+      "id": "klend.repay.init-obligation-farm",
+      "outcome": "unsupported",
+      "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+      "instruction": "initObligationFarmsForReserve",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "the repay reserve has a debt farm whose obligation farm user state is absent",
+      "discriminator": [136, 63, 15, 186, 211, 152, 168, 164],
+      "reason": "The first bounded profile requires both repay-v2 farm option accounts to be None and no Klend-to-Farms setup CPI."
+    },
+    {
+      "id": "klend.repay.refresh-obligation-farm",
+      "outcome": "unsupported",
+      "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+      "instruction": "refreshObligationFarmsForReserve",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "the existing obligation has any active collateral or debt farm",
+      "discriminator": [140, 144, 253, 21, 10, 74, 248, 3],
+      "reason": "The first bounded profile emits no Klend farm refresh CPI before or after repayment."
+    },
+    {
+      "id": "klend.repay.scope-refresh",
+      "outcome": "unsupported",
+      "program_id": "HFn8GnPADiny6XqUoWE8uRPPxb29ikn4yTuPa9MF2fWJ",
+      "instruction": "Scope price refresh",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "scopeRefreshConfig emits any instruction or a selected reserve uses a Scope feed",
+      "reason": "The first bounded profile permits no Scope helper and requires every reserve scopePrices option to be None."
+    },
+    {
+      "id": "klend.repay.request-elevation",
+      "outcome": "unsupported",
+      "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+      "instruction": "requestElevationGroup",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "requestElevationGroup is enabled or the obligation requires an elevation transition",
+      "discriminator": [36, 119, 251, 129, 34, 240, 7, 147],
+      "reason": "The first bounded profile requires requestElevationGroup=false and no elevation helper emission."
+    },
+    {
+      "id": "klend.repay.referrer-tail",
+      "outcome": "unsupported",
+      "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+      "instruction": "refreshObligation referrer remaining accounts",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "a referrer is present and token-state accounts follow the borrow reserves",
+      "discriminator": [33, 132, 147, 228, 151, 192, 72, 89],
+      "reason": "The operation profile fixes refreshObligation remaining accounts to deposits followed by borrows with no referrer tail."
+    },
+    {
+      "id": "klend.repay.token-2022",
+      "outcome": "unsupported",
+      "program_id": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+      "instruction": "Token-2022 repay path",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "the selected reserve liquidity mint uses Token-2022",
+      "reason": "The first bounded profile pins the classic SPL Token program."
+    },
+    {
+      "id": "klend.repay.wsol-transfer",
+      "outcome": "unsupported",
+      "program_id": "11111111111111111111111111111111",
+      "instruction": "TransferSol",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "the repay reserve liquidity mint is wrapped SOL",
+      "discriminator": [2, 0, 0, 0],
+      "reason": "The first bounded profile rejects wrapped SOL and signer-bearing native transfers."
+    },
+    {
+      "id": "klend.repay.wsol-sync",
+      "outcome": "unsupported",
+      "program_id": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "instruction": "SyncNative",
+      "phase": "setup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "the repay reserve liquidity mint is wrapped SOL",
+      "discriminator": [17],
+      "reason": "The first bounded profile rejects wrapped SOL and accepts no native-token setup."
+    },
+    {
+      "id": "klend.repay.wsol-close",
+      "outcome": "unsupported",
+      "program_id": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "instruction": "CloseAccount",
+      "phase": "cleanup",
+      "emitted_by": ["KaminoAction.buildRepayTxns"],
+      "condition": "the repay reserve liquidity mint is wrapped SOL",
+      "discriminator": [9],
+      "reason": "The first bounded profile rejects wrapped SOL and accepts no signer-bearing account close."
+    }
+  ]
+}

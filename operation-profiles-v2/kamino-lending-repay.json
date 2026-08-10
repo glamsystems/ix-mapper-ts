@@ -1,0 +1,126 @@
+{
+  "$schema": "./schema-v2.json",
+  "schema_version": 2,
+  "config_revision": 1,
+  "integration": "kamino-lending-repay",
+  "official_sdk_tuple": {
+    "package": "@kamino-finance/klend-sdk",
+    "version": "9.1.5",
+    "npm_integrity": "sha512-sZKmAwcCnEqenwHh349hcC2m213vvMWgfB0ZoRf0BDIjepDXMxigypm4etP9n8ctDcu4S8K8l+AeCtNKiUAmkQ==",
+    "tarball_sha256": "7c3da5b8f44930dc5d5fa0f44e91fa153fd08b51177238d879b2678a9332447e",
+    "solana_kit_version": "2.3.0",
+    "source_hashes": {
+      "refresh_reserve_builder": "3a939f974db7db7f5a117af538574fab5ac3d6e68261468e8e8b3da70a3ddce4",
+      "refresh_obligation_builder": "e0d5fdc1aca1c7b021748ff01d4e8f66aab51c6d7443053ba2e4fa2d7f95549b",
+      "repay_v2_builder": "e6667c7e1b6d1ff4b441aaa664c59c8b2a48b582ccfcabbda4c9bc66bb327450",
+      "high_level_action_helper": "7d777cb44935360f1f67659394b6b4193ddeb41c5a5945aeff5aee798d964da5"
+    }
+  },
+  "operations": [
+    {
+      "id": "klend.existing-obligation-classic-spl-repay-v2",
+      "operation": "repayObligationLiquidityV2",
+      "builder_authority": "@kamino-finance/klend-sdk generated builders",
+      "ordering_evidence": "pinned KaminoAction.buildRepayTxns source",
+      "bounded_binding": "official decoded Kamino market/obligation/reserve snapshot plus immutable helper output",
+      "maximum_active_reserves": 20,
+      "maximum_snapshot_age_slots": 20,
+      "amount": "positive-finite-u64",
+      "token_program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "associated_token_program": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+      "farms_program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "forbidden_liquidity_mints": [
+        "So11111111111111111111111111111111111111112"
+      ],
+      "forbidden_helpers": [
+        "associated-token-account",
+        "compute-budget",
+        "elevation-group",
+        "farms",
+        "fixed-term",
+        "initialization",
+        "lookup-table",
+        "referrer",
+        "repay-all",
+        "scope-refresh",
+        "token-2022",
+        "wrapped-sol"
+      ],
+      "sequence": {
+        "refresh_reserves": {
+          "outcome": "operationBoundPassthrough",
+          "position_start": 0,
+          "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+          "instruction": "refreshReserve",
+          "exact_data": [2, 218, 138, 235, 79, 201, 25, 102],
+          "accounts": [
+            { "index": 0, "role": 1, "binding": "reserve" },
+            { "index": 1, "role": 0, "binding": "lending_market" },
+            { "index": 2, "role": 0, "binding": "pyth_or_program_placeholder" },
+            {
+              "index": 3,
+              "role": 0,
+              "binding": "switchboard_price_or_program_placeholder"
+            },
+            {
+              "index": 4,
+              "role": 0,
+              "binding": "switchboard_twap_or_program_placeholder"
+            },
+            { "index": 5, "role": 0, "binding": "program_placeholder_no_scope" }
+          ],
+          "ordering": "deposits-then-borrows-deduplicated-target-last"
+        },
+        "refresh_obligation": {
+          "outcome": "operationBoundPassthrough",
+          "position": "after-refresh-reserves",
+          "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+          "instruction": "refreshObligation",
+          "exact_data": [33, 132, 147, 228, 151, 192, 72, 89],
+          "fixed_accounts": [
+            { "index": 0, "role": 0, "binding": "lending_market" },
+            { "index": 1, "role": 1, "binding": "obligation" }
+          ],
+          "remaining_accounts": {
+            "role": 1,
+            "binding": "deposit_reserves_then_borrow_reserves",
+            "referrer_tail": "forbidden"
+          }
+        },
+        "protocol": {
+          "outcome": "mapped",
+          "position": "final",
+          "source_instruction": "repay_obligation_liquidity_v2",
+          "mapping_ref": { "config_schema_version": 2, "config_revision": 1 },
+          "account_bindings": [
+            { "index": 0, "role": 2, "binding": "glam_vault" },
+            { "index": 1, "role": 1, "binding": "obligation" },
+            { "index": 2, "role": 0, "binding": "lending_market" },
+            { "index": 3, "role": 1, "binding": "repay_reserve" },
+            { "index": 4, "role": 0, "binding": "reserve_liquidity_mint" },
+            {
+              "index": 5,
+              "role": 1,
+              "binding": "reserve_destination_liquidity"
+            },
+            { "index": 6, "role": 1, "binding": "user_source_liquidity" },
+            { "index": 7, "role": 0, "binding": "classic_spl_token_program" },
+            { "index": 8, "role": 0, "binding": "instructions_sysvar" },
+            {
+              "index": 9,
+              "role": 0,
+              "binding": "program_placeholder_no_obligation_farm"
+            },
+            {
+              "index": 10,
+              "role": 0,
+              "binding": "program_placeholder_no_reserve_farm"
+            },
+            { "index": 11, "role": 0, "binding": "lending_market_authority" },
+            { "index": 12, "role": 0, "binding": "farms_program" }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -8,6 +8,8 @@ export const ids = Object.freeze({
   system: "11111111111111111111111111111111",
   ata: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
   memo: "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+  farms: "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+  instructionsSysvar: "Sysvar1nstructions1111111111111111111111111",
 });
 
 const key = () => new PublicKey(PublicKey.unique()).toBase58();

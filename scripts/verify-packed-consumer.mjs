@@ -19,14 +19,22 @@ const temporaryRoot = await mkdtemp(
   path.join(tmpdir(), "ix-mapper-packed-consumer-"),
 );
 
+function childEnvironment() {
+  const env = {
+    ...process.env,
+    NPM_CONFIG_CACHE: path.join(temporaryRoot, "npm-cache"),
+  };
+  for (const key of Object.keys(env)) {
+    if (key.toLowerCase() === "npm_config_dry_run") delete env[key];
+  }
+  return env;
+}
+
 function run(command, args, cwd) {
   return execFileSync(command, args, {
     cwd,
     encoding: "utf8",
-    env: {
-      ...process.env,
-      NPM_CONFIG_CACHE: path.join(temporaryRoot, "npm-cache"),
-    },
+    env: childEnvironment(),
     stdio: ["ignore", "pipe", "pipe"],
   });
 }
@@ -35,10 +43,7 @@ function probe(command, args, cwd) {
   return spawnSync(command, args, {
     cwd,
     encoding: "utf8",
-    env: {
-      ...process.env,
-      NPM_CONFIG_CACHE: path.join(temporaryRoot, "npm-cache"),
-    },
+    env: childEnvironment(),
   });
 }
 
@@ -72,9 +77,13 @@ try {
     "package/legacy-web3.d.ts",
     "package/operation-profiles-v1/schema-v1.json",
     "package/operation-profiles-v1/kamino-kvaults.json",
+    "package/operation-profiles-v2/schema-v2.json",
+    "package/operation-profiles-v2/kamino-lending-repay.json",
     "package/compatibility-manifests/schema-v2.json",
     "package/compatibility-manifests/v2/kamino-kvaults-production.json",
     "package/compatibility-manifests/v2/kamino-kvaults-staging.json",
+    "package/compatibility-manifests/v2/kamino-lending-repay-production.json",
+    "package/compatibility-manifests/v2/kamino-lending-repay-staging.json",
   ]) {
     if (!members.includes(required)) {
       throw new Error(`Packed mapper artifact is missing ${required}`);
@@ -118,7 +127,9 @@ try {
       `const require = createRequire(import.meta.url);\n` +
       `try { require.resolve("@solana/web3.js"); throw new Error("neutral install contains web3.js"); } catch (error) { if (error?.code !== "MODULE_NOT_FOUND") throw error; }\n` +
       `const profile = await import("@glamsystems/ix-mapper/operation-profiles-v1/kamino-kvaults.json", { with: { type: "json" } });\n` +
-      `if (profile.default.operations.length !== 2) throw new Error("operation profile export drift");\n`,
+      `if (profile.default.operations.length !== 2) throw new Error("operation profile export drift");\n` +
+      `const klend = await import("@glamsystems/ix-mapper/operation-profiles-v2/kamino-lending-repay.json", { with: { type: "json" } });\n` +
+      `if (klend.default.operations.length !== 1 || klend.default.schema_version !== 2) throw new Error("Klend operation profile export drift");\n`,
   );
   run(process.execPath, ["probe.mjs"], consumerRoot);
   run(
@@ -208,7 +219,7 @@ try {
         web3Installed: false,
         legacyMissingPeerFailure: true,
         legacyWithPinnedPeer: pinnedWeb3Manifest.version,
-        operationProfiles: 2,
+        operationProfiles: 3,
       },
       null,
       2,

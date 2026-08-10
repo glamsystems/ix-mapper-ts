@@ -90,6 +90,7 @@ try {
     "legacy-web3.d.ts",
     "compatibility-manifests/schema-v2.json",
     "operation-profiles-v1/schema-v1.json",
+    "operation-profiles-v2/schema-v2.json",
   ]) {
     if (!members.has(`package/${required}`)) {
       throw new Error(`Required publication member is missing: ${required}`);

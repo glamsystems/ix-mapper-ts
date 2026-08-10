@@ -213,6 +213,9 @@ export interface MapInstructionOptions {
 }
 
 export type KaminoKvaultOperationName = "deposit" | "withdraw";
+export type KaminoLendingOperationName = "repayObligationLiquidityV2";
+/** Active runtime tuple. Kamino 10 remains evaluation-only. */
+export type KaminoLendingSdkVersion = "9.1.5";
 
 /** Complete, ordered helper emission for one supported KVault operation. */
 export interface MapKaminoKvaultOperationInput {
@@ -220,6 +223,53 @@ export interface MapKaminoKvaultOperationInput {
   readonly instructions: readonly NeutralInstructionInput[];
   /** Payer/signing account used by the native ATA setup instruction. */
   readonly ataPayerAddress: string;
+}
+
+/** Oracle identities decoded from one reviewed Kamino reserve account. */
+export interface KaminoLendingReserveRefreshBinding {
+  readonly reserveAddress: string;
+  readonly pythOracleAddress: string | null;
+  readonly switchboardPriceOracleAddress: string | null;
+  readonly switchboardTwapOracleAddress: string | null;
+  /** The first profile deliberately excludes Scope-priced reserves. */
+  readonly scopePricesAddress: null;
+}
+
+/**
+ * Reviewed state relationships supplied by the official SDK/bounded binding.
+ *
+ * The neutral mapper never fetches or decodes protocol state. It binds the
+ * immutable instruction list to this caller-owned snapshot before returning
+ * any mapped result.
+ */
+export interface KaminoLendingRepayContext {
+  /** Slot attached to the decoded account snapshot. */
+  readonly stateObservationSlot: bigint;
+  /** Slot observed immediately before building the immutable operation. */
+  readonly currentSlot: bigint;
+  readonly elevationGroup: 0;
+  readonly hasActiveFarms: false;
+  readonly hasFixedTermDebt: false;
+  readonly referrerAddress: null;
+  readonly sourceAtaExists: true;
+  readonly lendingMarketAddress: string;
+  readonly obligationAddress: string;
+  readonly repayReserveAddress: string;
+  readonly reserveLiquidityMintAddress: string;
+  readonly reserveDestinationLiquidityAddress: string;
+  readonly userSourceLiquidityAddress: string;
+  readonly lendingMarketAuthorityAddress: string;
+  readonly depositReserveAddresses: readonly string[];
+  readonly borrowReserveAddresses: readonly string[];
+  readonly reserveRefreshBindings: readonly KaminoLendingReserveRefreshBinding[];
+}
+
+/** Complete official-helper emission for the first bounded Klend operation. */
+export interface MapKaminoLendingRepayOperationInput {
+  readonly operation: KaminoLendingOperationName;
+  readonly officialSdkVersion: KaminoLendingSdkVersion;
+  readonly instructions: readonly NeutralInstructionInput[];
+  readonly reviewedContext: KaminoLendingRepayContext;
 }
 
 export type OperationSetupBinding =
@@ -308,7 +358,7 @@ export type NeutralMapInstructionResult =
 
 export interface NeutralMappedOperationResult {
   kind: "mappedOperation";
-  operation: KaminoKvaultOperationName;
+  operation: KaminoKvaultOperationName | KaminoLendingOperationName;
   instructions: readonly (
     | NeutralMappedInstructionResult
     | NeutralSafePassthroughInstructionResult

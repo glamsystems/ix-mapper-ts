@@ -1,7 +1,11 @@
 import StrictKvauGMspProgramConfig from "../mapping-configs-v2/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
 import StrictStagingKvauGMspProgramConfig from "../mapping-configs-v2-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
+import StrictKlendProgramConfig from "../mapping-configs-v2/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
+import StrictStagingKlendProgramConfig from "../mapping-configs-v2-staging/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
 import KaminoKvauInstructionClassifications from "../instruction-classifications-v1/kamino-kvaults.json";
+import KaminoLendingRepayClassifications from "../instruction-classifications-v1/kamino-lending-repay.json";
 import KaminoKvauOperationProfiles from "../operation-profiles-v1/kamino-kvaults.json";
+import KaminoLendingRepayOperationProfiles from "../operation-profiles-v2/kamino-lending-repay.json";
 
 import type {
   InstructionClassificationConfig,
@@ -24,6 +28,11 @@ import {
   mapKaminoKvaultOperationWithConfigs,
   validateOperationProfileConfig,
 } from "./kvault-operation";
+import {
+  mapKaminoLendingRepayOperationWithConfigs,
+  validateKlendOperationProfileConfig,
+  type KlendOperationProfileConfig,
+} from "./klend-operation";
 
 function unsupported(message: string): NeutralMapInstructionResult {
   return { kind: "unsupported", reason: "invalid-instruction", message };
@@ -87,6 +96,40 @@ function createNeutralMapper(environment: NeutralMapperEnvironment) {
     production,
     environment,
   );
+  // Klend remains operation-only: these configs are deliberately excluded
+  // from mapInstructionNeutral so a repay cannot bypass its required refresh
+  // corpus and state bindings.
+  const productionKlend: StrictRemappingConfigs =
+    validateStrictRemappingConfigs(
+      {
+        [StrictKlendProgramConfig.program_id]:
+          StrictKlendProgramConfig as StrictRemappingConfig,
+      },
+      environment,
+    );
+  const stagingKlend: StrictRemappingConfigs = validateStrictRemappingConfigs(
+    {
+      [StrictStagingKlendProgramConfig.program_id]:
+        StrictStagingKlendProgramConfig as StrictRemappingConfig,
+    },
+    environment,
+  );
+  const productionKlendClassifications =
+    validateInstructionClassificationConfig(
+      KaminoLendingRepayClassifications as InstructionClassificationConfig,
+      productionKlend,
+      environment,
+    );
+  const stagingKlendClassifications = validateInstructionClassificationConfig(
+    KaminoLendingRepayClassifications as InstructionClassificationConfig,
+    stagingKlend,
+    environment,
+  );
+  const klendOperationProfiles = validateKlendOperationProfileConfig(
+    KaminoLendingRepayOperationProfiles as KlendOperationProfileConfig,
+    productionKlend,
+    environment,
+  );
 
   function mapInstructionNeutral(
     instruction: NeutralInstructionInput,
@@ -140,10 +183,27 @@ function createNeutralMapper(environment: NeutralMapperEnvironment) {
     );
   }
 
+  async function mapKaminoLendingRepayOperationNeutral(
+    input: import("./core-types").MapKaminoLendingRepayOperationInput,
+    context: NeutralMappingContext,
+    options?: MapInstructionOptions,
+  ): Promise<import("./core-types").NeutralMapOperationResult> {
+    const useStaging = parseStaging(options);
+    return mapKaminoLendingRepayOperationWithConfigs(
+      input,
+      context,
+      useStaging ? stagingKlend : productionKlend,
+      useStaging ? stagingKlendClassifications : productionKlendClassifications,
+      klendOperationProfiles,
+      environment,
+    );
+  }
+
   return {
     mapInstructionNeutral,
     mapInstructionsNeutral,
     mapKaminoKvaultOperationNeutral,
+    mapKaminoLendingRepayOperationNeutral,
   } as const;
 }
 

@@ -1,0 +1,111 @@
+{
+  "schema_version": 2,
+  "config_revision": 1,
+  "program_id": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+  "proxy_program_id": "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq",
+  "instructions": [
+    {
+      "src_ix_name": "repay_obligation_liquidity_v2",
+      "src_discriminator": [116, 174, 213, 76, 180, 53, 210, 144],
+      "dst_ix_name": "lending_repay_obligation_liquidity_v2",
+      "dst_discriminator": [79, 34, 126, 170, 174, 156, 174, 29],
+      "dynamic_accounts": [
+        {
+          "name": "glam_state",
+          "index": 0,
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "glam_vault",
+          "index": 1,
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "glam_signer",
+          "index": 2,
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "integration_authority",
+          "index": 3,
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "static_accounts": [
+        {
+          "account": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+          "index": 4,
+          "writable": false,
+          "signer": false
+        },
+        {
+          "account": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+          "index": 5,
+          "writable": false,
+          "signer": false
+        },
+        {
+          "account": "11111111111111111111111111111111",
+          "index": 6,
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "index_map": [-1, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+      "program_id_placeholder_indices": [9, 10],
+      "strict": {
+        "data_length": 16,
+        "fixed_accounts": [
+          {
+            "index": 0,
+            "writable": false,
+            "signer": true,
+            "dynamic_account": "glam_vault"
+          },
+          { "index": 1, "writable": true, "signer": false },
+          { "index": 2, "writable": false, "signer": false },
+          { "index": 3, "writable": true, "signer": false },
+          { "index": 4, "writable": false, "signer": false },
+          { "index": 5, "writable": true, "signer": false },
+          { "index": 6, "writable": true, "signer": false },
+          {
+            "index": 7,
+            "writable": false,
+            "signer": false,
+            "account": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          },
+          {
+            "index": 8,
+            "writable": false,
+            "signer": false,
+            "account": "Sysvar1nstructions1111111111111111111111111"
+          },
+          {
+            "index": 9,
+            "writable": false,
+            "signer": false,
+            "account": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD"
+          },
+          {
+            "index": 10,
+            "writable": false,
+            "signer": false,
+            "account": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD"
+          },
+          { "index": 11, "writable": false, "signer": false },
+          {
+            "index": 12,
+            "writable": false,
+            "signer": false,
+            "account": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr"
+          }
+        ],
+        "remaining_accounts": { "kind": "none" }
+      }
+    }
+  ]
+}

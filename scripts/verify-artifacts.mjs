@@ -40,9 +40,15 @@ const instructionClassificationSchema = JSON.parse(
     "utf8",
   ),
 );
-const operationProfileSchema = JSON.parse(
+const operationProfileSchemaV1 = JSON.parse(
   await readFile(
     path.join(packageRoot, "operation-profiles-v1/schema-v1.json"),
+    "utf8",
+  ),
+);
+const operationProfileSchemaV2 = JSON.parse(
+  await readFile(
+    path.join(packageRoot, "operation-profiles-v2/schema-v2.json"),
     "utf8",
   ),
 );
@@ -461,8 +467,10 @@ function flattenNativeAccounts(accounts, parents = []) {
     return [
       {
         name: [...parents, account.name].map(snakeCase).join("_"),
+        leafName: snakeCase(account.name),
         writable: account.isMut ?? account.writable ?? false,
         signer: account.isSigner ?? account.signer ?? false,
+        optional: account.isOptional ?? account.optional ?? false,
       },
     ];
   });
@@ -482,10 +490,16 @@ function verifyAccountLayouts(
 
   configured.strict.fixed_accounts.forEach((constraint, index) => {
     const nativeAccount = nativeAccounts[index];
+    const optionalPlaceholder =
+      configured.program_id_placeholder_indices?.includes(index) ?? false;
     invariant(
       constraint.index === index &&
-        constraint.writable === nativeAccount.writable &&
-        constraint.signer === nativeAccount.signer,
+        (optionalPlaceholder
+          ? nativeAccount.optional &&
+            constraint.writable === false &&
+            constraint.signer === false
+          : constraint.writable === nativeAccount.writable &&
+            constraint.signer === nativeAccount.signer),
       `${label}:${configured.src_ix_name} source account ${index} role/order drift`,
     );
   });
@@ -516,11 +530,15 @@ function verifyAccountLayouts(
   configured.index_map.forEach((destinationIndex, sourceIndex) => {
     if (destinationIndex === -1) return;
     const sourceAccount = nativeAccounts[sourceIndex];
+    const sourceConstraint = configured.strict.fixed_accounts[sourceIndex];
+    const optionalPlaceholder =
+      configured.program_id_placeholder_indices?.includes(sourceIndex) ?? false;
     expected[destinationIndex] = {
       kind: "mapped",
-      name: sourceAccount.name,
-      writable: sourceAccount.writable,
-      signer: sourceAccount.signer,
+      names: [sourceAccount.name, sourceAccount.leafName],
+      writable: sourceConstraint.writable,
+      signer: sourceConstraint.signer,
+      optionalPlaceholder,
     };
   });
 
@@ -532,8 +550,14 @@ function verifyAccountLayouts(
     const proxyAccount = proxyInstruction.accounts[index];
     const proxyWritable = proxyAccount.writable ?? false;
     const proxySigner = proxyAccount.signer ?? false;
+    const placeholderRoleAccepted =
+      account.optionalPlaceholder &&
+      (proxyAccount.optional ?? false) &&
+      account.writable === false &&
+      account.signer === false;
     invariant(
-      account.writable === proxyWritable && account.signer === proxySigner,
+      placeholderRoleAccepted ||
+        (account.writable === proxyWritable && account.signer === proxySigner),
       `${label}:${configured.dst_ix_name} destination account ${index} role drift`,
     );
     if (account.kind === "static") {
@@ -543,7 +567,9 @@ function verifyAccountLayouts(
       );
     } else {
       invariant(
-        snakeCase(proxyAccount.name) === account.name,
+        account.kind === "mapped"
+          ? account.names.includes(snakeCase(proxyAccount.name))
+          : snakeCase(proxyAccount.name) === account.name,
         `${label}:${configured.dst_ix_name} destination account ${index} order/identity drift`,
       );
     }
@@ -712,7 +738,7 @@ async function verifyInstructionClassifications(
     manifest.native_protocol.official_sdk.program_bindings.find(
       ({ name }) => name === "kamino-farms",
     );
-  if (farmsProgramBinding) {
+  if (manifest.integration === "kamino-kvault" && farmsProgramBinding) {
     const farmInstructions = new Set([
       "initializeUser",
       "stake",
@@ -851,6 +877,16 @@ async function verifyOperationProfiles(
   verifiedArtifacts,
 ) {
   const declaration = manifest.operation_profile;
+  const operationProfileSchema =
+    declaration.schema_version === 1
+      ? operationProfileSchemaV1
+      : declaration.schema_version === 2
+        ? operationProfileSchemaV2
+        : undefined;
+  invariant(
+    operationProfileSchema,
+    `${label} operation profile schema version`,
+  );
   invariant(
     Object.hasOwn(verifiedArtifacts, declaration.artifact),
     `${label} operation profile artifact reference is missing`,
@@ -876,7 +912,8 @@ async function verifyOperationProfiles(
     `${label}:operation-profile`,
   );
   invariant(
-    profileConfig.$schema === "./schema-v1.json" &&
+    profileConfig.$schema ===
+      `./schema-v${String(declaration.schema_version)}.json` &&
       profileConfig.schema_version === declaration.schema_version &&
       profileConfig.config_revision === declaration.config_revision &&
       profileConfig.integration === manifest.integration,
@@ -895,6 +932,121 @@ async function verifyOperationProfiles(
     declaredIds.size === profileConfig.operations.length &&
       passthroughIds.size === profileConfig.operations.length,
     `${label} manifest does not exhaustively reference operation profiles`,
+  );
+
+  if (manifest.integration === "kamino-lending-repay") {
+    invariant(
+      declaration.schema_version === 2 && profileConfig.operations.length === 1,
+      `${label} Klend repay requires one schema-v2 operation profile`,
+    );
+    const activeTuple = profileConfig.official_sdk_tuple;
+    const expectedSourceHashes = {
+      refresh_reserve_builder:
+        "3a939f974db7db7f5a117af538574fab5ac3d6e68261468e8e8b3da70a3ddce4",
+      refresh_obligation_builder:
+        "e0d5fdc1aca1c7b021748ff01d4e8f66aab51c6d7443053ba2e4fa2d7f95549b",
+      repay_v2_builder:
+        "e6667c7e1b6d1ff4b441aaa664c59c8b2a48b582ccfcabbda4c9bc66bb327450",
+      high_level_action_helper:
+        "7d777cb44935360f1f67659394b6b4193ddeb41c5a5945aeff5aee798d964da5",
+    };
+    invariant(
+      activeTuple.package === "@kamino-finance/klend-sdk" &&
+        activeTuple.version === "9.1.5" &&
+        activeTuple.version === manifest.native_protocol.official_sdk.version &&
+        activeTuple.solana_kit_version === "2.3.0" &&
+        JSON.stringify(activeTuple.source_hashes) ===
+          JSON.stringify(expectedSourceHashes),
+      `${label} Klend official SDK source tuple drift`,
+    );
+    const profile = profileConfig.operations[0];
+    invariant(
+      declaredIds.has(profile.id) &&
+        passthroughIds.has(profile.id) &&
+        profile.id === "klend.existing-obligation-classic-spl-repay-v2" &&
+        profile.operation === "repayObligationLiquidityV2" &&
+        profile.builder_authority ===
+          "@kamino-finance/klend-sdk generated builders" &&
+        profile.ordering_evidence ===
+          "pinned KaminoAction.buildRepayTxns source" &&
+        profile.maximum_snapshot_age_slots === 20 &&
+        profile.amount === "positive-finite-u64" &&
+        profile.token_program ===
+          "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" &&
+        profile.associated_token_program ===
+          "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL" &&
+        profile.farms_program ===
+          "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr" &&
+        equalBytes(profile.forbidden_liquidity_mints, [
+          "So11111111111111111111111111111111111111112",
+        ]) &&
+        equalBytes(profile.forbidden_helpers, [
+          "associated-token-account",
+          "compute-budget",
+          "elevation-group",
+          "farms",
+          "fixed-term",
+          "initialization",
+          "lookup-table",
+          "referrer",
+          "repay-all",
+          "scope-refresh",
+          "token-2022",
+          "wrapped-sol",
+        ]) &&
+        profile.sequence.refresh_reserves.outcome ===
+          "operationBoundPassthrough" &&
+        profile.sequence.refresh_reserves.ordering ===
+          "deposits-then-borrows-deduplicated-target-last" &&
+        equalBytes(
+          profile.sequence.refresh_reserves.exact_data,
+          [2, 218, 138, 235, 79, 201, 25, 102],
+        ) &&
+        profile.sequence.refresh_obligation.outcome ===
+          "operationBoundPassthrough" &&
+        profile.sequence.refresh_obligation.remaining_accounts.binding ===
+          "deposit_reserves_then_borrow_reserves" &&
+        profile.sequence.refresh_obligation.remaining_accounts.referrer_tail ===
+          "forbidden" &&
+        equalBytes(
+          profile.sequence.refresh_obligation.exact_data,
+          [33, 132, 147, 228, 151, 192, 72, 89],
+        ) &&
+        profile.sequence.protocol.outcome === "mapped" &&
+        profile.sequence.protocol.position === "final" &&
+        profile.sequence.protocol.source_instruction ===
+          "repay_obligation_liquidity_v2",
+      `${label} Klend operation grammar drift`,
+    );
+    const mapping = config.instructions.find(
+      ({ src_ix_name }) =>
+        src_ix_name === profile.sequence.protocol.source_instruction,
+    );
+    invariant(
+      mapping &&
+        config.instructions.length === 1 &&
+        mapping.strict.remaining_accounts.kind === "none" &&
+        mapping.strict.fixed_accounts.length ===
+          profile.sequence.protocol.account_bindings.length &&
+        mapping.strict.fixed_accounts.every(
+          (account, index) =>
+            account.index === index &&
+            account.writable ===
+              ((profile.sequence.protocol.account_bindings[index].role & 1) !==
+                0) &&
+            account.signer ===
+              ((profile.sequence.protocol.account_bindings[index].role & 2) !==
+                0),
+        ),
+      `${label} Klend operation mapping/account binding drift`,
+    );
+    return { operationProfiles: 1 };
+  }
+
+  invariant(
+    manifest.integration === "kamino-kvaults" &&
+      declaration.schema_version === 1,
+    `${label} has no reviewed operation-profile verifier`,
   );
 
   const expected = {
@@ -1125,7 +1277,9 @@ async function verifyManifest(manifestVersion, fileName) {
   }
   const farmsProgramBinding = programBindingsByName.get("kamino-farms");
   invariant(
-    manifest.integration !== "kamino-kvaults" ||
+    !["kamino-kvaults", "kamino-lending-repay"].includes(
+      manifest.integration,
+    ) ||
       (farmsProgramBinding?.mode === "sdk-default-only" &&
         typeof farmsProgramBinding.constraint === "string" &&
         farmsProgramBinding.constraint.includes("outside this profile")),
@@ -1200,20 +1354,36 @@ async function verifyManifest(manifestVersion, fileName) {
       artifact,
     );
   }
+  const integrationArtifacts =
+    manifest.integration === "kamino-kvaults"
+      ? [
+          "high_level_kvault_helper_source",
+          "high_level_ata_helper_source",
+          "high_level_farm_helper_source",
+          "farms_client_source",
+          "farms_operations_source",
+          "farms_program_source",
+          "farms_initialize_user_schema",
+          "farms_stake_schema",
+          "farms_unstake_schema",
+          "farms_withdraw_unstaked_deposits_schema",
+        ]
+      : manifest.integration === "kamino-lending-repay"
+        ? [
+            "native_refresh_reserve_schema",
+            "native_refresh_obligation_schema",
+            "native_repay_v2_schema",
+            "high_level_action_helper_source",
+            "farms_program_source",
+          ]
+        : [];
   for (const requiredArtifact of [
+    "native_idl",
+    "proxy_idl",
     "mapper_config",
     "instruction_classification_schema",
     "instruction_classification_config",
-    "high_level_kvault_helper_source",
-    "high_level_ata_helper_source",
-    "high_level_farm_helper_source",
-    "farms_client_source",
-    "farms_operations_source",
-    "farms_program_source",
-    "farms_initialize_user_schema",
-    "farms_stake_schema",
-    "farms_unstake_schema",
-    "farms_withdraw_unstaked_deposits_schema",
+    ...integrationArtifacts,
     ...(manifestVersion === 2
       ? ["operation_profile_schema", "operation_profile_config"]
       : []),
@@ -1312,7 +1482,9 @@ async function verifyManifest(manifestVersion, fileName) {
       `${label}:${supported.destination_instruction} proxy IDL drift`,
     );
     const nativeInstruction = nativeIdl.instructions.find(
-      ({ name }) => name === supported.source_instruction,
+      ({ name }) =>
+        name === supported.source_instruction ||
+        snakeCase(name) === supported.source_instruction,
     );
     invariant(nativeInstruction, `${label} native instruction missing`);
     verifyAccountLayouts(

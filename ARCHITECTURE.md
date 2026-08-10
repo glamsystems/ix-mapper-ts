@@ -123,6 +123,30 @@ must be omitted or equal the pinned address for withdraw. A client configured
 with any other Farms program is outside the compatibility profile and its
 instructions remain unsupported.
 
+The Klend repay profile is a separate schema-v2, operation-only boundary for
+one existing-obligation, classic-SPL, positive finite repay-v2 operation. Its
+instruction authority is the pinned generated `refreshReserve`,
+`refreshObligation`, and `repayObligationLiquidityV2` builders. The pinned
+`KaminoAction.buildRepayTxns` source is ordering evidence, not a claim that the
+high-level helper executes in the portable mapper. The profile accepts exactly
+the evidenced order: deduplicated reserve refreshes in deposit-then-borrow
+order with the target reserve last, one obligation refresh whose remaining
+accounts are deposits followed by borrows, then one mapped repay.
+
+The caller supplies a reviewed official-SDK decoded-state snapshot with its
+observation/current slots, obligation, market, active reserves, target reserve,
+mint, supply, authority, branch facts, and each reserve's oracle identities.
+The snapshot must be no more than 20 slots old and declare elevation group
+zero, no active farms, no fixed-term debt, no referrer, and an existing source
+ATA. The mapper independently derives and requires that classic-SPL canonical
+source ATA for the GLAM vault.
+It validates these relationships but does not fetch state or reproduce reserve
+selection. Scope, Farms, referrer, elevation-group, Token-2022, WSOL, repay-all,
+account setup, compute-budget, lookup-table, fixed-term, and every extra or
+unknown emission fail the whole operation before a mapped result is returned.
+The two refresh instructions are operation-bound native output and remain
+unsupported through the standalone mapper.
+
 ## Versioned evidence
 
 Compatibility is one exact tuple, not a range:
@@ -139,11 +163,12 @@ Compatibility is one exact tuple, not a range:
 The mapping configs define proxy transformations. The adjacent
 `instruction-classifications-v1/` profile inventories official-SDK protocol,
 setup, and cleanup emissions as `mapped`, `safePassthrough`, or `unsupported`.
-The adjacent `operation-profiles-v1/` artifact separately defines reviewed
-all-or-nothing sequences and operation-bound passthrough. Compatibility
-manifest v2 pins all three. Absence from either applicable runtime allowlist
-always means `unsupported`, even if a prose inventory entry calls an
-instruction permissionless.
+The adjacent `operation-profiles-v1/` and `operation-profiles-v2/` artifacts
+separately define reviewed all-or-nothing sequences and operation-bound
+passthrough. Compatibility manifest v2 pins the applicable profile schema and
+config. Absence from either applicable runtime allowlist always means
+`unsupported`, even if a prose inventory entry calls an instruction
+permissionless.
 
 Any official SDK, Kit, IDL, proxy, mapper, config, or manifest change invalidates
 the tuple until regenerated evidence and tests pass.
@@ -203,6 +228,13 @@ The Kamino KVault manifest remains `proof-only` until the bounded convenience
 API and client-runtime blockers are resolved. The operation profile does not
 promote memo, farms, WSOL, minimum-shares, available-withdraw, or close-account
 branches.
+
+The Klend repay manifests likewise remain `proof-only` and activate only the
+9.1.5 tuple. Kamino 10.0.0 remains a separate evaluation artifact whose
+generated builders and ordering-source hash are byte/account-equivalent to the
+baseline, but it is not accepted by the active runtime or manifests. The
+published SDK runtime graph still fails the declared Next/Expo/Hermes gates.
+Profile evidence is not a support claim.
 
 Proof-only manifests are confined to prerelease package versions and the npm
 `test` dist-tag. They remain absent from default public discovery and cannot be

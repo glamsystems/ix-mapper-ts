@@ -1,0 +1,67 @@
+{
+  "$schema": "../schema-v1.json",
+  "evaluation_version": 1,
+  "evaluation_revision": 1,
+  "status": "proof-only",
+  "integration": "kamino-lending-repay",
+  "official_sdk": {
+    "package": "@kamino-finance/klend-sdk",
+    "version": "10.0.0",
+    "npm_integrity": "sha512-U00zrm4jgZzctfGvRZw56kfZUmVXoKtiu9ZaP4CnZ0kg/QdxkyD5TTqJA/v8fThKWr0+uqlCJ6zV+F7QUZl/PA==",
+    "tarball_url": "https://registry.npmjs.org/@kamino-finance/klend-sdk/-/klend-sdk-10.0.0.tgz",
+    "tarball_sha256": "d375a891eb752b79ad889d1a65a515c8887c17a519548db4d0789aa92a19612d"
+  },
+  "baseline": {
+    "package": "@kamino-finance/klend-sdk",
+    "version": "9.1.5",
+    "manifest": "compatibility-manifests/v2/kamino-lending-repay-production.json"
+  },
+  "package_surface": {
+    "root_entrypoint": "dist/index.js",
+    "exports_map": false,
+    "side_effect_metadata": false,
+    "tarball_file_count": 3040
+  },
+  "artifact_comparison": {
+    "unchanged": {
+      "native_klend_idl": {
+        "package_path": "dist/idl/klend.json",
+        "baseline_sha256": "c3cdf56f19b178611de3878a30adc58b0eb80b8f7d4e8910c7d6ab6adfc1c6b6",
+        "candidate_sha256": "c3cdf56f19b178611de3878a30adc58b0eb80b8f7d4e8910c7d6ab6adfc1c6b6"
+      },
+      "refresh_reserve_builder": {
+        "package_path": "dist/@codegen/klend/instructions/refreshReserve.js",
+        "baseline_sha256": "3a939f974db7db7f5a117af538574fab5ac3d6e68261468e8e8b3da70a3ddce4",
+        "candidate_sha256": "3a939f974db7db7f5a117af538574fab5ac3d6e68261468e8e8b3da70a3ddce4"
+      },
+      "refresh_obligation_builder": {
+        "package_path": "dist/@codegen/klend/instructions/refreshObligation.js",
+        "baseline_sha256": "e0d5fdc1aca1c7b021748ff01d4e8f66aab51c6d7443053ba2e4fa2d7f95549b",
+        "candidate_sha256": "e0d5fdc1aca1c7b021748ff01d4e8f66aab51c6d7443053ba2e4fa2d7f95549b"
+      },
+      "repay_v2_builder": {
+        "package_path": "dist/@codegen/klend/instructions/repayObligationLiquidityV2.js",
+        "baseline_sha256": "e6667c7e1b6d1ff4b441aaa664c59c8b2a48b582ccfcabbda4c9bc66bb327450",
+        "candidate_sha256": "e6667c7e1b6d1ff4b441aaa664c59c8b2a48b582ccfcabbda4c9bc66bb327450"
+      },
+      "high_level_action_helper": {
+        "package_path": "dist/classes/action.js",
+        "baseline_sha256": "7d777cb44935360f1f67659394b6b4193ddeb41c5a5945aeff5aee798d964da5",
+        "candidate_sha256": "7d777cb44935360f1f67659394b6b4193ddeb41c5a5945aeff5aee798d964da5"
+      }
+    },
+    "changed": {}
+  },
+  "runtime_validation": {
+    "node": "pass",
+    "next_client": "fail",
+    "expo_metro": "fail",
+    "hermes": "fail"
+  },
+  "findings": [
+    "Kamino 9.1.5 and 10.0.0 have byte-identical Klend IDLs, refreshReserve, refreshObligation, repayObligationLiquidityV2 builders, and KaminoAction helper source.",
+    "The isolated immutable-tarball corpus proves byte/account equivalence for each generated instruction in the manually assembled bounded refresh-reserve, refresh-obligation, and finite classic-SPL repay-v2 sequence; it does not claim to invoke the high-level helper.",
+    "Kamino 10.0.0 remains a separate proof-only tuple because the eager package root and Kit 2/3 peer-major conflict still fail the public runtime gates."
+  ],
+  "next_action": "Keep 10.0.0 proof-only. Resolve the official package runtime and peer graph, then rerun the immutable corpus before creating an active 10.0.0 compatibility manifest."
+}

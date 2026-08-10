@@ -263,6 +263,134 @@ async function main() {
         );
       }
     }
+    const kit = requireFrom(root, "@solana/kit");
+    const loadKlend = (dir) => ({
+      refreshReserve: requireFrom(
+        dir,
+        dir === candidate
+          ? "./dist/@codegen/klend/instructions/refreshReserve"
+          : "@kamino-finance/klend-sdk/dist/@codegen/klend/instructions/refreshReserve",
+      ).refreshReserve,
+      refreshObligation: requireFrom(
+        dir,
+        dir === candidate
+          ? "./dist/@codegen/klend/instructions/refreshObligation"
+          : "@kamino-finance/klend-sdk/dist/@codegen/klend/instructions/refreshObligation",
+      ).refreshObligation,
+      repay: requireFrom(
+        dir,
+        dir === candidate
+          ? "./dist/@codegen/klend/instructions/repayObligationLiquidityV2"
+          : "@kamino-finance/klend-sdk/dist/@codegen/klend/instructions/repayObligationLiquidityV2",
+      ).repayObligationLiquidityV2,
+    });
+    const market = canonicalAddress(),
+      obligation = canonicalAddress(),
+      depositReserve = canonicalAddress(),
+      otherBorrowReserve = canonicalAddress(),
+      repayReserve = canonicalAddress(),
+      pyth = canonicalAddress(),
+      reserveMint = canonicalAddress(),
+      reserveSupply = canonicalAddress(),
+      userSource = canonicalAddress(),
+      marketAuthority = canonicalAddress();
+    function canonicalAddress() {
+      return new PublicKey(PublicKey.unique()).toBase58();
+    }
+    const buildKlend = (sdk) => [
+      sdk.refreshReserve(
+        {
+          reserve: depositReserve,
+          lendingMarket: market,
+          pythOracle: kit.some(pyth),
+          switchboardPriceOracle: kit.none(),
+          switchboardTwapOracle: kit.none(),
+          scopePrices: kit.none(),
+        },
+        [],
+        ids.klend,
+      ),
+      sdk.refreshReserve(
+        {
+          reserve: otherBorrowReserve,
+          lendingMarket: market,
+          pythOracle: kit.none(),
+          switchboardPriceOracle: kit.none(),
+          switchboardTwapOracle: kit.none(),
+          scopePrices: kit.none(),
+        },
+        [],
+        ids.klend,
+      ),
+      sdk.refreshReserve(
+        {
+          reserve: repayReserve,
+          lendingMarket: market,
+          pythOracle: kit.none(),
+          switchboardPriceOracle: kit.none(),
+          switchboardTwapOracle: kit.none(),
+          scopePrices: kit.none(),
+        },
+        [],
+        ids.klend,
+      ),
+      sdk.refreshObligation(
+        { lendingMarket: market, obligation },
+        [depositReserve, otherBorrowReserve, repayReserve].map((address) => ({
+          address,
+          role: 1,
+        })),
+        ids.klend,
+      ),
+      sdk.repay(
+        { liquidityAmount: new BN(123_456) },
+        {
+          repayAccounts: {
+            owner: { address: glamVault },
+            obligation,
+            lendingMarket: market,
+            repayReserve,
+            reserveLiquidityMint: reserveMint,
+            reserveDestinationLiquidity: reserveSupply,
+            userSourceLiquidity: userSource,
+            tokenProgram: ids.token,
+            instructionSysvarAccount: ids.instructionsSysvar,
+          },
+          farmsAccounts: {
+            obligationFarmUserState: kit.none(),
+            reserveFarmState: kit.none(),
+          },
+          lendingMarketAuthority: marketAuthority,
+          farmsProgram: ids.farms,
+        },
+        [],
+        ids.klend,
+      ),
+    ];
+    const baseKlend = buildKlend(loadKlend(root));
+    const candidateKlend = buildKlend(loadKlend(candidate));
+    assert.equal(baseKlend.length, 5, "bounded Klend helper corpus size");
+    for (let index = 0; index < baseKlend.length; index += 1) {
+      assert.deepEqual(
+        canonical(baseKlend[index]),
+        canonical(candidateKlend[index]),
+        `Klend repay corpus instruction ${String(index)}`,
+      );
+    }
+    const [baseAction, candidateAction] = await Promise.all([
+      readFile(
+        join(
+          root,
+          "node_modules/@kamino-finance/klend-sdk/dist/classes/action.js",
+        ),
+      ),
+      readFile(join(candidate, "dist/classes/action.js")),
+    ]);
+    assert.equal(
+      hash(baseAction),
+      hash(candidateAction),
+      "KaminoAction helper source must remain byte-identical",
+    );
     const mapper = requireFrom(root, "./core.cjs");
     const { createNeutralMapper } = mapper;
     const esmCore = await import(
@@ -274,6 +402,10 @@ async function main() {
       "packed neutral ESM import",
     );
     // Consume the actual npm tarball in a separate temporary package tree.
+    const packEnv = { ...process.env };
+    for (const key of Object.keys(packEnv)) {
+      if (key.toLowerCase() === "npm_config_dry_run") delete packEnv[key];
+    }
     const packed = JSON.parse(
       execFileSync(
         "npm",
@@ -282,7 +414,7 @@ async function main() {
           cwd: root,
           encoding: "utf8",
           env: {
-            ...process.env,
+            ...packEnv,
             NPM_CONFIG_CACHE: join(isolated, "npm-cache"),
           },
         },

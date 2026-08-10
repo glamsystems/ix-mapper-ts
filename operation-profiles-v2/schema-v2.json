@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://idl.glam.systems/schemas/operation-profile-v2.json",
+  "title": "GLAM state-bound complete-operation profile v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_version",
+    "config_revision",
+    "integration",
+    "official_sdk_tuple",
+    "operations"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "minLength": 1 },
+    "schema_version": { "const": 2 },
+    "config_revision": { "type": "integer", "minimum": 1 },
+    "integration": { "const": "kamino-lending-repay" },
+    "official_sdk_tuple": { "$ref": "#/$defs/sdk_tuple" },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/operation" }
+    }
+  },
+  "$defs": {
+    "public_key": {
+      "type": "string",
+      "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "byte_array": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 0, "maximum": 255 },
+      "minItems": 1,
+      "maxItems": 1232
+    },
+    "sdk_tuple": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "version",
+        "npm_integrity",
+        "tarball_sha256",
+        "solana_kit_version",
+        "source_hashes"
+      ],
+      "properties": {
+        "package": { "const": "@kamino-finance/klend-sdk" },
+        "version": { "const": "9.1.5" },
+        "npm_integrity": { "type": "string", "minLength": 1 },
+        "tarball_sha256": { "$ref": "#/$defs/sha256" },
+        "solana_kit_version": { "const": "2.3.0" },
+        "source_hashes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "refresh_reserve_builder",
+            "refresh_obligation_builder",
+            "repay_v2_builder",
+            "high_level_action_helper"
+          ],
+          "properties": {
+            "refresh_reserve_builder": { "$ref": "#/$defs/sha256" },
+            "refresh_obligation_builder": { "$ref": "#/$defs/sha256" },
+            "repay_v2_builder": { "$ref": "#/$defs/sha256" },
+            "high_level_action_helper": { "$ref": "#/$defs/sha256" }
+          }
+        }
+      }
+    },
+    "account_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["index", "role", "binding"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0 },
+        "role": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "binding": { "type": "string", "minLength": 1 }
+      }
+    },
+    "refresh_reserves": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outcome",
+        "position_start",
+        "program_id",
+        "instruction",
+        "exact_data",
+        "accounts",
+        "ordering"
+      ],
+      "properties": {
+        "outcome": { "const": "operationBoundPassthrough" },
+        "position_start": { "const": 0 },
+        "program_id": { "$ref": "#/$defs/public_key" },
+        "instruction": { "const": "refreshReserve" },
+        "exact_data": { "$ref": "#/$defs/byte_array" },
+        "accounts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/account_binding" }
+        },
+        "ordering": {
+          "const": "deposits-then-borrows-deduplicated-target-last"
+        }
+      }
+    },
+    "refresh_obligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outcome",
+        "position",
+        "program_id",
+        "instruction",
+        "exact_data",
+        "fixed_accounts",
+        "remaining_accounts"
+      ],
+      "properties": {
+        "outcome": { "const": "operationBoundPassthrough" },
+        "position": { "const": "after-refresh-reserves" },
+        "program_id": { "$ref": "#/$defs/public_key" },
+        "instruction": { "const": "refreshObligation" },
+        "exact_data": { "$ref": "#/$defs/byte_array" },
+        "fixed_accounts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/account_binding" }
+        },
+        "remaining_accounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["role", "binding", "referrer_tail"],
+          "properties": {
+            "role": { "const": 1 },
+            "binding": { "const": "deposit_reserves_then_borrow_reserves" },
+            "referrer_tail": { "const": "forbidden" }
+          }
+        }
+      }
+    },
+    "mapped_protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "outcome",
+        "position",
+        "source_instruction",
+        "mapping_ref",
+        "account_bindings"
+      ],
+      "properties": {
+        "outcome": { "const": "mapped" },
+        "position": { "const": "final" },
+        "source_instruction": { "const": "repay_obligation_liquidity_v2" },
+        "mapping_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["config_schema_version", "config_revision"],
+          "properties": {
+            "config_schema_version": { "const": 2 },
+            "config_revision": { "const": 1 }
+          }
+        },
+        "account_bindings": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/account_binding" }
+        }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "operation",
+        "builder_authority",
+        "ordering_evidence",
+        "bounded_binding",
+        "maximum_active_reserves",
+        "maximum_snapshot_age_slots",
+        "amount",
+        "token_program",
+        "associated_token_program",
+        "farms_program",
+        "forbidden_liquidity_mints",
+        "forbidden_helpers",
+        "sequence"
+      ],
+      "properties": {
+        "id": { "const": "klend.existing-obligation-classic-spl-repay-v2" },
+        "operation": { "const": "repayObligationLiquidityV2" },
+        "builder_authority": {
+          "const": "@kamino-finance/klend-sdk generated builders"
+        },
+        "ordering_evidence": {
+          "const": "pinned KaminoAction.buildRepayTxns source"
+        },
+        "bounded_binding": {
+          "const": "official decoded Kamino market/obligation/reserve snapshot plus immutable helper output"
+        },
+        "maximum_active_reserves": { "const": 20 },
+        "maximum_snapshot_age_slots": { "const": 20 },
+        "amount": { "const": "positive-finite-u64" },
+        "token_program": {
+          "const": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        "associated_token_program": {
+          "const": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        "farms_program": {
+          "const": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr"
+        },
+        "forbidden_liquidity_mints": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "const": "So11111111111111111111111111111111111111112"
+          }
+        },
+        "forbidden_helpers": {
+          "type": "array",
+          "minItems": 12,
+          "maxItems": 12,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "associated-token-account",
+              "compute-budget",
+              "elevation-group",
+              "farms",
+              "fixed-term",
+              "initialization",
+              "lookup-table",
+              "referrer",
+              "repay-all",
+              "scope-refresh",
+              "token-2022",
+              "wrapped-sol"
+            ]
+          }
+        },
+        "sequence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["refresh_reserves", "refresh_obligation", "protocol"],
+          "properties": {
+            "refresh_reserves": { "$ref": "#/$defs/refresh_reserves" },
+            "refresh_obligation": { "$ref": "#/$defs/refresh_obligation" },
+            "protocol": { "$ref": "#/$defs/mapped_protocol" }
+          }
+        }
+      }
+    }
+  }
+}
