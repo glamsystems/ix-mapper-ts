@@ -3,6 +3,7 @@ import { readFile, readdir } from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { gunzipSync } from "node:zlib";
 
 const require = createRequire(import.meta.url);
 const packageRoot = path.resolve(
@@ -21,6 +22,12 @@ const manifestSchema = JSON.parse(
     "utf8",
   ),
 );
+const compatibilityEvaluationSchema = JSON.parse(
+  await readFile(
+    path.join(packageRoot, "compatibility-evaluations/schema-v1.json"),
+    "utf8",
+  ),
+);
 const instructionClassificationSchema = JSON.parse(
   await readFile(
     path.join(packageRoot, "instruction-classifications-v1/schema-v1.json"),
@@ -29,6 +36,14 @@ const instructionClassificationSchema = JSON.parse(
 );
 const verifySdkTarballs = process.env.IX_MAPPER_VERIFY_SDK_TARBALLS === "1";
 const sdkTarballChecks = new Map();
+const maturityStates = Object.freeze([
+  "proof-only",
+  "preview",
+  "supported",
+  "withdraw-only",
+  "hold",
+  "deprecated",
+]);
 
 function invariant(condition, message) {
   if (!condition) {
@@ -52,6 +67,32 @@ function isExactVersion(value) {
   );
 }
 
+function extractTarEntry(tarball, entryPath) {
+  const archive = gunzipSync(tarball);
+  let offset = 0;
+  while (offset + 512 <= archive.length) {
+    const header = archive.subarray(offset, offset + 512);
+    if (header.every((byte) => byte === 0)) break;
+    const readString = (start, end) =>
+      header.subarray(start, end).toString("utf8").replace(/\0.*$/, "");
+    const name = readString(0, 100);
+    const prefix = readString(345, 500);
+    const fullName = prefix ? `${prefix}/${name}` : name;
+    const sizeText = readString(124, 136).trim();
+    const size = Number.parseInt(sizeText || "0", 8);
+    invariant(
+      Number.isSafeInteger(size),
+      `${entryPath} has an invalid tar size`,
+    );
+    const dataStart = offset + 512;
+    if (fullName === entryPath) {
+      return archive.subarray(dataStart, dataStart + size);
+    }
+    offset = dataStart + Math.ceil(size / 512) * 512;
+  }
+  throw new Error(`Tarball entry is missing: ${entryPath}`);
+}
+
 function assertUniqueStrings(values, label) {
   invariant(Array.isArray(values), `${label} must be an array`);
   const unique = new Set(values);
@@ -61,6 +102,66 @@ function assertUniqueStrings(values, label) {
   );
   invariant(unique.size === values.length, `${label} contains duplicates`);
   return unique;
+}
+
+function verifyMaturityRuntimeGates(label, manifest) {
+  if (manifest.status !== "preview" && manifest.status !== "supported") {
+    return;
+  }
+  const requiredRuntimeGates = [
+    "node_golden_fixtures",
+    "next_client_build",
+    "expo_hermes_bundle",
+    "dependency_peer_graph",
+  ];
+  invariant(
+    requiredRuntimeGates.every(
+      (gate) => manifest.runtime_validation[gate] === true,
+    ) && manifest.known_blockers.length === 0,
+    `${label} cannot be ${manifest.status} while a runtime gate is false`,
+  );
+}
+
+function verifyMaturityPolicyContract() {
+  const green = {
+    runtime_validation: {
+      node_golden_fixtures: true,
+      next_client_build: true,
+      expo_hermes_bundle: true,
+      dependency_peer_graph: true,
+    },
+    known_blockers: [],
+  };
+  verifyMaturityRuntimeGates("preview-green-fixture", {
+    ...green,
+    status: "preview",
+  });
+  verifyMaturityRuntimeGates("supported-green-fixture", {
+    ...green,
+    status: "supported",
+  });
+  verifyMaturityRuntimeGates("hold-red-fixture", {
+    status: "hold",
+    runtime_validation: {
+      ...green.runtime_validation,
+      expo_hermes_bundle: false,
+    },
+    known_blockers: ["held intentionally"],
+  });
+  let previewRejected = false;
+  try {
+    verifyMaturityRuntimeGates("preview-red-fixture", {
+      status: "preview",
+      runtime_validation: {
+        ...green.runtime_validation,
+        expo_hermes_bundle: false,
+      },
+      known_blockers: [],
+    });
+  } catch {
+    previewRejected = true;
+  }
+  invariant(previewRejected, "preview maturity must enforce runtime gates");
 }
 
 function discriminatorsOverlap(left, right) {
@@ -811,9 +912,7 @@ async function verifyManifest(fileName) {
     `${label} manifest version or revision`,
   );
   invariant(
-    ["proof-only", "supported", "deprecated", "withdraw-only"].includes(
-      manifest.status,
-    ),
+    maturityStates.includes(manifest.status),
     `${label} has an unknown status`,
   );
   invariant(
@@ -1053,20 +1152,7 @@ async function verifyManifest(fileName) {
     verifiedArtifacts,
   );
 
-  if (manifest.status === "supported") {
-    const requiredRuntimeGates = [
-      "node_golden_fixtures",
-      "next_client_build",
-      "expo_hermes_bundle",
-      "dependency_peer_graph",
-    ];
-    invariant(
-      requiredRuntimeGates.every(
-        (gate) => manifest.runtime_validation[gate] === true,
-      ) && manifest.known_blockers.length === 0,
-      `${label} cannot be supported while a runtime gate is false`,
-    );
-  }
+  verifyMaturityRuntimeGates(label, manifest);
 
   return {
     integration: manifest.integration,
@@ -1081,6 +1167,152 @@ async function verifyManifest(fileName) {
   };
 }
 
+async function verifyEvaluation(fileName) {
+  const evaluationPath = path.join(
+    packageRoot,
+    "compatibility-evaluations/v1",
+    fileName,
+  );
+  const evaluation = JSON.parse(await readFile(evaluationPath, "utf8"));
+  validateJsonSchema(
+    evaluation,
+    compatibilityEvaluationSchema,
+    compatibilityEvaluationSchema,
+    fileName,
+  );
+  const label = `${evaluation.integration}:${evaluation.official_sdk.version}`;
+  invariant(
+    isExactVersion(evaluation.official_sdk.version),
+    `${label} SDK version is not exact`,
+  );
+  invariant(
+    evaluation.official_sdk.package === evaluation.baseline.package &&
+      evaluation.official_sdk.version !== evaluation.baseline.version,
+    `${label} must be a separate version of the baseline package`,
+  );
+
+  const baselinePath = resolveBundledPath(evaluation.baseline.manifest);
+  const baseline = JSON.parse(await readFile(baselinePath, "utf8"));
+  invariant(
+    baseline.integration === evaluation.integration &&
+      baseline.native_protocol.official_sdk.package ===
+        evaluation.baseline.package &&
+      baseline.native_protocol.official_sdk.version ===
+        evaluation.baseline.version,
+    `${label} baseline manifest does not match the evaluation`,
+  );
+
+  for (const [name, comparison] of Object.entries(
+    evaluation.artifact_comparison.unchanged,
+  )) {
+    invariant(
+      comparison.package_path.startsWith("dist/") &&
+        !comparison.package_path.includes(".."),
+      `${label}:${name} has an unsafe package path`,
+    );
+    const baselineArtifactPath = require.resolve(
+      `${evaluation.baseline.package}/${comparison.package_path}`,
+    );
+    invariant(
+      (await sha256(baselineArtifactPath)) === comparison.baseline_sha256,
+      `${label}:${name} baseline artifact hash drift`,
+    );
+    invariant(
+      comparison.baseline_sha256 === comparison.candidate_sha256,
+      `${label}:${name} is declared unchanged but hashes differ`,
+    );
+  }
+  for (const [name, comparison] of Object.entries(
+    evaluation.artifact_comparison.changed,
+  )) {
+    invariant(
+      comparison.package_path.startsWith("dist/") &&
+        !comparison.package_path.includes(".."),
+      `${label}:${name} has an unsafe package path`,
+    );
+    const baselineArtifactPath = require.resolve(
+      `${evaluation.baseline.package}/${comparison.package_path}`,
+    );
+    invariant(
+      (await sha256(baselineArtifactPath)) === comparison.baseline_sha256,
+      `${label}:${name} baseline artifact hash drift`,
+    );
+    invariant(
+      comparison.baseline_sha256 !== comparison.candidate_sha256,
+      `${label}:${name} is declared changed but hashes match`,
+    );
+  }
+
+  const tarballUrl = new URL(evaluation.official_sdk.tarball_url);
+  invariant(
+    tarballUrl.protocol === "https:" &&
+      tarballUrl.hostname === "registry.npmjs.org",
+    `${label} tarball must be pinned to registry.npmjs.org over HTTPS`,
+  );
+
+  let sdkTarballVerified = false;
+  if (verifySdkTarballs) {
+    const response = await fetch(tarballUrl, { redirect: "error" });
+    invariant(
+      response.ok,
+      `${label} tarball download failed: ${response.status}`,
+    );
+    invariant(response.body, `${label} tarball response has no body`);
+    const sha256Hash = createHash("sha256");
+    const sha512Hash = createHash("sha512");
+    const chunks = [];
+    let downloadedBytes = 0;
+    for await (const chunk of response.body) {
+      downloadedBytes += chunk.byteLength;
+      invariant(
+        downloadedBytes <= 100 * 1024 * 1024,
+        `${label} tarball exceeds the 100 MiB evaluation limit`,
+      );
+      sha256Hash.update(chunk);
+      sha512Hash.update(chunk);
+      chunks.push(Buffer.from(chunk));
+    }
+    invariant(
+      sha256Hash.digest("hex") === evaluation.official_sdk.tarball_sha256,
+      `${label} tarball SHA-256 mismatch`,
+    );
+    invariant(
+      `sha512-${sha512Hash.digest("base64")}` ===
+        evaluation.official_sdk.npm_integrity,
+      `${label} tarball npm integrity mismatch`,
+    );
+    const tarball = Buffer.concat(chunks);
+    for (const [name, comparison] of Object.entries({
+      ...evaluation.artifact_comparison.unchanged,
+      ...evaluation.artifact_comparison.changed,
+    })) {
+      const candidate = extractTarEntry(
+        tarball,
+        `package/${comparison.package_path}`,
+      );
+      invariant(
+        createHash("sha256").update(candidate).digest("hex") ===
+          comparison.candidate_sha256,
+        `${label}:${name} candidate artifact hash drift`,
+      );
+    }
+    sdkTarballVerified = true;
+  }
+
+  return {
+    integration: evaluation.integration,
+    sdkVersion: evaluation.official_sdk.version,
+    status: evaluation.status,
+    evaluationRevision: evaluation.evaluation_revision,
+    sdkTarballVerified,
+    unchangedArtifacts: Object.keys(evaluation.artifact_comparison.unchanged)
+      .length,
+    changedArtifacts: Object.keys(evaluation.artifact_comparison.changed)
+      .length,
+    runtimeValidation: evaluation.runtime_validation,
+  };
+}
+
 const manifestFiles = (
   await readdir(path.join(packageRoot, "compatibility-manifests/v1"))
 )
@@ -1088,10 +1320,21 @@ const manifestFiles = (
   .sort();
 invariant(manifestFiles.length > 0, "No compatibility manifests found");
 verifySafePassthroughPolicyContract();
+verifyMaturityPolicyContract();
 
 const verified = [];
 for (const fileName of manifestFiles) {
   verified.push(await verifyManifest(fileName));
+}
+
+const evaluationFiles = (
+  await readdir(path.join(packageRoot, "compatibility-evaluations/v1"))
+)
+  .filter((fileName) => fileName.endsWith(".json"))
+  .sort();
+const evaluations = [];
+for (const fileName of evaluationFiles) {
+  evaluations.push(await verifyEvaluation(fileName));
 }
 
 if (!packageManifest.version.includes("-")) {
@@ -1101,4 +1344,4 @@ if (!packageManifest.version.includes("-")) {
   );
 }
 
-console.log(JSON.stringify({ verified }, null, 2));
+console.log(JSON.stringify({ verified, evaluations }, null, 2));

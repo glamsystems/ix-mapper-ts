@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://idl.glam.systems/schemas/integration-compatibility-evaluation-v1.json",
+  "title": "GLAM integration compatibility evaluation v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evaluation_version",
+    "evaluation_revision",
+    "status",
+    "integration",
+    "official_sdk",
+    "baseline",
+    "package_surface",
+    "artifact_comparison",
+    "runtime_validation",
+    "findings",
+    "next_action"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "evaluation_version": { "const": 1 },
+    "evaluation_revision": { "type": "integer", "minimum": 1 },
+    "status": { "const": "proof-only" },
+    "integration": { "type": "string", "minLength": 1 },
+    "official_sdk": { "$ref": "#/$defs/sdk" },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package", "version", "manifest"],
+      "properties": {
+        "package": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "manifest": { "type": "string", "minLength": 1 }
+      }
+    },
+    "package_surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root_entrypoint",
+        "exports_map",
+        "side_effect_metadata",
+        "tarball_file_count"
+      ],
+      "properties": {
+        "root_entrypoint": { "type": "string", "minLength": 1 },
+        "exports_map": { "type": "boolean" },
+        "side_effect_metadata": { "type": "boolean" },
+        "tarball_file_count": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "artifact_comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unchanged", "changed"],
+      "properties": {
+        "unchanged": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "$ref": "#/$defs/comparison" }
+        },
+        "changed": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/comparison" }
+        }
+      }
+    },
+    "runtime_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node", "next_client", "expo_metro", "hermes"],
+      "properties": {
+        "node": { "$ref": "#/$defs/gate" },
+        "next_client": { "$ref": "#/$defs/gate" },
+        "expo_metro": { "$ref": "#/$defs/gate" },
+        "hermes": { "$ref": "#/$defs/gate" }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "next_action": { "type": "string", "minLength": 1 }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "sdk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "version",
+        "npm_integrity",
+        "tarball_url",
+        "tarball_sha256"
+      ],
+      "properties": {
+        "package": { "type": "string", "minLength": 1 },
+        "version": { "type": "string", "minLength": 1 },
+        "npm_integrity": { "type": "string", "minLength": 1 },
+        "tarball_url": { "type": "string", "minLength": 1 },
+        "tarball_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package_path", "baseline_sha256", "candidate_sha256"],
+      "properties": {
+        "package_path": { "type": "string", "minLength": 1 },
+        "baseline_sha256": { "$ref": "#/$defs/sha256" },
+        "candidate_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "gate": { "enum": ["not-run", "pass", "fail"] }
+  }
+}

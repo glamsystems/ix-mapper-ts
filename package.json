@@ -23,6 +23,7 @@
       "require": "./legacy-web3.cjs"
     },
     "./artifacts/*": "./artifacts/*",
+    "./compatibility-evaluations/*": "./compatibility-evaluations/*",
     "./compatibility-manifests/*": "./compatibility-manifests/*",
     "./instruction-classifications-v1/*": "./instruction-classifications-v1/*",
     "./mapping-configs-v2/*": "./mapping-configs-v2/*",
@@ -56,6 +57,7 @@
     "LICENSE",
     "THIRD_PARTY_NOTICES.md",
     "artifacts/**/*.json",
+    "compatibility-evaluations/**/*.json",
     "compatibility-manifests/**/*.json",
     "instruction-classifications-v1/**/*.json",
     "core.cjs",

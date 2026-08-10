@@ -1,9 +1,11 @@
 # ix-mapper
 
-`ix-mapper` is GLAM's strict instruction boundary. External-protocol semantics
-stay in the protocol's official SDK; the mapper validates the SDK's native
-instructions and returns a mapped GLAM proxy instruction, an explicitly
-allowlisted native passthrough, or an unsupported result.
+`ix-mapper` is GLAM's strict instruction boundary. The pinned official SDK is
+the semantic/conformance authority. A named bounded portable operation binding
+is permitted only when that SDK cannot execute in a target runtime; its output
+must still match the SDK exactly and cross this mapper. The mapper returns a
+mapped GLAM proxy instruction, an explicitly allowlisted native passthrough, or
+an unsupported result.
 
 Read [ARCHITECTURE.md](./ARCHITECTURE.md) for the accepted SDK architecture and
 the normative permissionless-instruction policy.
@@ -112,6 +114,12 @@ npm run verify:artifacts
 Stable releases reject `proof-only` manifests. The initial Kamino manifests
 remain proof-only while the official SDK package graph fails the Next,
 Expo/Hermes, and dependency-peer gates.
+
+Deployment (`production` or `staging`) is separate from public maturity:
+`proof-only` is internal, `preview` is explicit opt-in with complete gates,
+`supported` is stable, and `withdraw-only`/`hold`/`deprecated` are explicit
+restricted states. Separately versioned SDK evaluations live under
+`compatibility-evaluations/`; they never overwrite an existing manifest.
 
 ## Legacy web3.js compatibility
 

@@ -1,0 +1,79 @@
+{
+  "$schema": "../schema-v1.json",
+  "evaluation_version": 1,
+  "evaluation_revision": 1,
+  "status": "proof-only",
+  "integration": "kamino-kvaults",
+  "official_sdk": {
+    "package": "@kamino-finance/klend-sdk",
+    "version": "10.0.0",
+    "npm_integrity": "sha512-U00zrm4jgZzctfGvRZw56kfZUmVXoKtiu9ZaP4CnZ0kg/QdxkyD5TTqJA/v8fThKWr0+uqlCJ6zV+F7QUZl/PA==",
+    "tarball_url": "https://registry.npmjs.org/@kamino-finance/klend-sdk/-/klend-sdk-10.0.0.tgz",
+    "tarball_sha256": "d375a891eb752b79ad889d1a65a515c8887c17a519548db4d0789aa92a19612d"
+  },
+  "baseline": {
+    "package": "@kamino-finance/klend-sdk",
+    "version": "9.1.5",
+    "manifest": "compatibility-manifests/v1/kamino-kvaults-production.json"
+  },
+  "package_surface": {
+    "root_entrypoint": "dist/index.js",
+    "exports_map": false,
+    "side_effect_metadata": false,
+    "tarball_file_count": 3040
+  },
+  "artifact_comparison": {
+    "unchanged": {
+      "native_kvault_idl": {
+        "package_path": "dist/idl/kvault.json",
+        "baseline_sha256": "50304595f4a113bd90cdbbc2e2231ebf22202c9f8777ca150bb5e26f3067739f",
+        "candidate_sha256": "50304595f4a113bd90cdbbc2e2231ebf22202c9f8777ca150bb5e26f3067739f"
+      },
+      "deposit_builder": {
+        "package_path": "dist/@codegen/kvault/instructions/deposit.js",
+        "baseline_sha256": "9af574647d40ccfde591181f933160ce0fd3ad8b5b0d7f85ce63b205dbbc175b",
+        "candidate_sha256": "9af574647d40ccfde591181f933160ce0fd3ad8b5b0d7f85ce63b205dbbc175b"
+      },
+      "deposit_with_min_shares_builder": {
+        "package_path": "dist/@codegen/kvault/instructions/depositWithMinSharesOut.js",
+        "baseline_sha256": "0b03adbf0e3d621f596d0bd5e8d02049e819095de0b7775155ce0dcc21a9a89c",
+        "candidate_sha256": "0b03adbf0e3d621f596d0bd5e8d02049e819095de0b7775155ce0dcc21a9a89c"
+      },
+      "withdraw_builder": {
+        "package_path": "dist/@codegen/kvault/instructions/withdraw.js",
+        "baseline_sha256": "d6083a2e3418bfae7e37ec6cfdb38af98512648f07e22520479801fe0a2488f4",
+        "candidate_sha256": "d6083a2e3418bfae7e37ec6cfdb38af98512648f07e22520479801fe0a2488f4"
+      },
+      "withdraw_from_available_builder": {
+        "package_path": "dist/@codegen/kvault/instructions/withdrawFromAvailable.js",
+        "baseline_sha256": "fa1748a2e75f1bc07057f724fd96f065ea393987abfdcbb80b0d216eb34bf2b1",
+        "candidate_sha256": "fa1748a2e75f1bc07057f724fd96f065ea393987abfdcbb80b0d216eb34bf2b1"
+      },
+      "ata_helper": {
+        "package_path": "dist/utils/ata.js",
+        "baseline_sha256": "07e04f9d1db21f9a23c3ea18d68523a678b694cfb65bb62496c37a533fe526c5",
+        "candidate_sha256": "07e04f9d1db21f9a23c3ea18d68523a678b694cfb65bb62496c37a533fe526c5"
+      }
+    },
+    "changed": {
+      "high_level_kvault_helper": {
+        "package_path": "dist/classes/vault.js",
+        "baseline_sha256": "cb9ce1338e1c5d6bad3628f04faaa1483b74c5c0493e837c19ee11c9e4833831",
+        "candidate_sha256": "14e855a989a7ca5b156f5d4515e72a9e93ece3fdc4b81de6f6db22f371056c83"
+      }
+    }
+  },
+  "runtime_validation": {
+    "node": "not-run",
+    "next_client": "not-run",
+    "expo_metro": "not-run",
+    "hermes": "not-run"
+  },
+  "findings": [
+    "Kamino 10.0.0 still publishes one dist/index.js root with no exports map or side-effect metadata.",
+    "The KVault IDL and four generated deposit/withdraw builders are byte-identical to 9.1.5.",
+    "The high-level vault helper changed, so helper emission/order parity must be rerun before promotion.",
+    "Kamino 10.0.0 still declares Kit ^2.3.0, Anchor ^0.28.0, zstddec, and the same broad eager dependency families as the 9.1.5 blocker."
+  ],
+  "next_action": "Install 10.0.0 in an isolated harness, run the complete KVault helper corpus and Node/Next/Expo/Hermes gates, then publish a separate immutable proof-only tuple without changing the 9.1.5 manifests."
+}

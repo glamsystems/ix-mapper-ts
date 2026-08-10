@@ -26,7 +26,14 @@
     "manifest_version": { "const": 1 },
     "manifest_revision": { "type": "integer", "minimum": 1 },
     "status": {
-      "enum": ["proof-only", "supported", "deprecated", "withdraw-only"]
+      "enum": [
+        "proof-only",
+        "preview",
+        "supported",
+        "withdraw-only",
+        "hold",
+        "deprecated"
+      ]
     },
     "integration": { "type": "string", "minLength": 1 },
     "cluster": { "enum": ["mainnet-beta", "devnet", "localnet"] },

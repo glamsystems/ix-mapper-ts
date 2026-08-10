@@ -22,16 +22,23 @@ For protocol integrations, the call path is:
 
 ```text
 application
-  -> official protocol SDK
+  -> official protocol SDK directly
+     or approved bounded operation binding (SDK-differential-tested)
   -> strict ix-mapper core
   -> mapped GLAM proxy instruction or reviewed native passthrough
   -> transaction composition and submission through the GLAM Kit binding
 ```
 
-The official protocol SDK owns reserve selection, protocol-state discovery,
-setup and cleanup, instruction ordering, and native instruction construction.
-GLAM does not build a Kamino SDK, a per-integration client SDK, or a generic
-protocol-client abstraction.
+The official protocol SDK is the semantic and differential-conformance
+authority for reserve selection, protocol-state discovery, setup and cleanup,
+instruction ordering, and native instruction construction. Prefer executing it
+directly. When its published runtime graph cannot execute in a target such as
+Hermes, a protocol adapter may carry a **named bounded portable operation
+binding** for exact reads, derivations, instruction construction, and ordering.
+That exception must match the pinned official SDK byte-for-byte and
+account-for-account, fail closed outside the named operation/version, and still
+send every emitted instruction through this mapper. It is not a general GLAM
+Kamino SDK, generic protocol client, or untrusted planner.
 
 ## Package boundaries
 
@@ -118,6 +125,20 @@ permissionless.
 Any official SDK, Kit, IDL, proxy, mapper, config, or manifest change invalidates
 the tuple until regenerated evidence and tests pass.
 
+Deployment and public maturity are independent axes. Every production and
+staging tuple carries one maturity value:
+
+- `proof-only`: internal evidence, absent from default public discovery;
+- `preview`: explicit opt-in with a complete immutable tuple, all runtime and
+  safety gates green, and no unclassified emitted instruction;
+- `supported`: stable public contract;
+- `withdraw-only`, `hold`, or `deprecated`: explicit recovery, restriction, or
+  sunset state.
+
+Onchain staging never implies preview or support. Kamino 9.1.5 and Kamino 10
+are separate tuples; evaluating or promoting one cannot mutate the other's
+manifest or artifacts.
+
 ## GLAM SDK transition
 
 The neutral GLAM domain core stays inside the existing public SDK lineage. The
@@ -132,7 +153,8 @@ they already express the domain contract.
 
 ## Release gates
 
-A compatibility profile cannot be marked supported until all of these pass:
+A compatibility profile cannot be marked preview or supported until all of
+these pass:
 
 - official Kit-shaped instructions map through the neutral entrypoint without
   legacy normalization;
