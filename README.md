@@ -22,9 +22,12 @@ its compatibility manifests are `proof-only`.
 
 ## Neutral, Kit-compatible API
 
-`@glamsystems/ix-mapper/core` is the first-class entrypoint. It has no Kit,
-Anchor, or web3.js runtime dependency. Official SDK instructions shaped like
-Kit instructions pass directly into it.
+The target package root is the first-class neutral entrypoint, with `/core` as
+an explicit equivalent subpath. The current proof artifact still uses `/core`
+while its root remains the legacy compatibility alias; the root transition is
+completed and packed-consumer-tested before public release. The neutral API
+has no Kit, Anchor, or web3.js runtime dependency. Official SDK instructions
+shaped like Kit instructions pass directly into it.
 
 ```typescript
 import { address } from "@solana/kit";
@@ -78,9 +81,15 @@ The current `0.3.0-test.0` Kamino proof has no approved passthrough rules.
 ## Kamino proof scope
 
 The proof calls the pinned official `@kamino-finance/klend-sdk` generated KVault
-builders and strictly maps the inner `deposit` and classic `withdraw`
+builders and strictly maps the inner `deposit` and `withdraw`
 instructions. It deliberately rejects `depositWithMinSharesOut`,
 `withdrawFromAvailable`, and unapproved setup/cleanup instructions.
+
+That is the initial audited proof, not the final KVault target. The existing
+`deposit`/`withdraw` proxy paths remain available while the two additional
+proxy instructions complete separate program-size, audit, staging,
+deployment, mapping, and artifact gates. Their source presence never changes
+the current proof manifest from `unsupported`.
 
 The high-level KVault helpers are not yet supported end to end. They always emit
 ATA creation and can conditionally emit memo, farm, WSOL, close-account, and
@@ -129,9 +138,11 @@ Existing consumers may import:
 import { mapInstruction, mapInstructions, mapToGlamIx } from "@glamsystems/ix-mapper/legacy-web3";
 ```
 
-The package root remains a compatibility alias. `mapInstruction` and
-`mapInstructions` convert web3.js values at that boundary and delegate to the
-neutral strict core. `mapToGlamIx` retains nullable v1 behavior only for legacy
+The current proof package root remains a compatibility alias only until the
+neutral-root release transition. `mapInstruction` and `mapInstructions`
+convert web3.js values at the explicit legacy boundary and delegate to the
+neutral strict core. web3.js becomes an optional peer used only by consumers
+of this subpath. `mapToGlamIx` retains nullable v1 behavior only for legacy
 consumers and must not be used for new integrations.
 
 Legacy nullable results never authorize native passthrough. `fixSignerAccounts`

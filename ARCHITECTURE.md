@@ -42,8 +42,9 @@ Kamino SDK, generic protocol client, or untrusted planner.
 
 ## Package boundaries
 
-`@glamsystems/ix-mapper/core` is the first-class entrypoint. Its contract uses
-only:
+The package root is the target first-class neutral entrypoint. `/core` remains
+an explicit equivalent subpath for consumers that prefer named boundaries.
+Their contract uses only:
 
 - base58 address strings;
 - numeric account roles (`0..3`);
@@ -56,8 +57,14 @@ directly; a Kit -> web3.js -> Kit conversion is forbidden.
 
 `@glamsystems/ix-mapper/legacy-web3` is the explicit compatibility entrypoint.
 It converts web3.js values at the edge and delegates strict decisions to the
-neutral core. The package root remains an alias for that legacy facade during
-the compatibility window. The dependency direction must never reverse.
+neutral core. web3.js is an optional peer installed only by consumers of that
+entrypoint. The dependency direction must never reverse.
+
+The current proof package still aliases its root to the legacy facade. Before
+public release, the root must switch to the neutral API, packed-consumer tests
+must prove that a neutral install does not install or bundle web3.js, and the
+legacy subpath must retain byte/account parity. This is a controlled package
+transition, not a silent claim about the current artifact.
 
 ## Result contract
 
@@ -93,9 +100,9 @@ permissionless but absent from the allowlist are `unsupported`.
 
 The current Kamino proof approves no passthrough rules. ATA creation,
 `SyncNative`, memo, farms, WSOL setup/cleanup, and every other instruction
-emitted around KVault deposit/withdraw remain unsupported until individually
-reviewed. Signer-bearing value transfers and account closes require a strict
-GLAM mapping rather than native passthrough.
+emitted around KVault `deposit`/`withdraw` remain unsupported until
+individually reviewed. Signer-bearing value transfers and account closes
+require a strict GLAM mapping rather than native passthrough.
 
 The KVault profile pins Kamino Farms to the Farms SDK's default program ID.
 Deposit helpers already use that default; `KaminoVaultClient.farmsProgramId`
