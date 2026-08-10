@@ -14,8 +14,9 @@ the normative permissionless-instruction policy.
 npm install @glamsystems/ix-mapper
 ```
 
-The proof package is verified on Node 22.22 and Node 24. Stable publication
-remains blocked while its compatibility manifests are `proof-only`.
+The proof package is verified on Node 22.22 and Node 24 with the exact npm
+version recorded in `packageManager`. Stable publication remains blocked while
+its compatibility manifests are `proof-only`.
 
 ## Neutral, Kit-compatible API
 
