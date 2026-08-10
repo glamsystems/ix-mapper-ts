@@ -148,6 +148,16 @@ instruction permissionless.
 Any official SDK, Kit, IDL, proxy, mapper, config, or manifest change invalidates
 the tuple until regenerated evidence and tests pass.
 
+The released npm tarball is the atomic compatibility artifact. CI builds and
+packs once, then writes a sidecar publication contract containing the tarball
+SHA-256/npm integrity, every member hash, and the active manifest plus bundled
+IDL/config/classification/profile hashes. Publishing consumes that exact
+verified tarball; rebuilding between verification and publication is
+forbidden. npm's immutable `(package, version)` tuple, the exact Git version
+tag, provenance, registry-integrity comparison, and signature audit close the
+release chain. A changed tuple requires a new semver release and regenerated
+contract; mutable runtime GitHub/CDN fetches are not part of the contract.
+
 Deployment and public maturity are independent axes. Every production and
 staging tuple carries one maturity value:
 
@@ -193,3 +203,9 @@ The Kamino KVault manifest remains `proof-only` until the bounded convenience
 API and client-runtime blockers are resolved. The operation profile does not
 promote memo, farms, WSOL, minimum-shares, available-withdraw, or close-account
 branches.
+
+Proof-only manifests are confined to prerelease package versions and the npm
+`test` dist-tag. They remain absent from default public discovery and cannot be
+published as `latest`. Preview/supported promotion requires a separately
+reviewed manifest change, complete green runtime gates, a new immutable
+contract, and an exact release tag.

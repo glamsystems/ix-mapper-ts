@@ -1,5 +1,12 @@
-import { execFileSync } from "node:child_process";
-import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { execFileSync, spawnSync } from "node:child_process";
+import {
+  mkdtemp,
+  mkdir,
+  readFile,
+  rm,
+  symlink,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -21,6 +28,17 @@ function run(command, args, cwd) {
       NPM_CONFIG_CACHE: path.join(temporaryRoot, "npm-cache"),
     },
     stdio: ["ignore", "pipe", "pipe"],
+  });
+}
+
+function probe(command, args, cwd) {
+  return spawnSync(command, args, {
+    cwd,
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      NPM_CONFIG_CACHE: path.join(temporaryRoot, "npm-cache"),
+    },
   });
 }
 
@@ -111,6 +129,58 @@ try {
     ],
     consumerRoot,
   );
+  for (const mode of [
+    [
+      "--input-type=module",
+      "-e",
+      'await import("@glamsystems/ix-mapper/legacy-web3")',
+    ],
+    ["-e", 'require("@glamsystems/ix-mapper/legacy-web3")'],
+  ]) {
+    const missingPeer = probe(process.execPath, mode, consumerRoot);
+    const output = `${missingPeer.stdout ?? ""}\n${missingPeer.stderr ?? ""}`;
+    if (missingPeer.status === 0 || !output.includes("@solana/web3.js")) {
+      throw new Error(
+        "Legacy entrypoint without its optional peer must fail explicitly on @solana/web3.js",
+      );
+    }
+  }
+
+  const pinnedWeb3Manifest = JSON.parse(
+    await readFile(
+      path.join(packageRoot, "node_modules/@solana/web3.js/package.json"),
+      "utf8",
+    ),
+  );
+  if (pinnedWeb3Manifest.version !== "1.98.4") {
+    throw new Error(
+      "Legacy packed-consumer peer is not pinned to web3.js 1.98.4",
+    );
+  }
+  const solanaScope = path.join(consumerRoot, "node_modules/@solana");
+  await mkdir(solanaScope, { recursive: true });
+  await symlink(
+    path.join(packageRoot, "node_modules/@solana/web3.js"),
+    path.join(solanaScope, "web3.js"),
+    "dir",
+  );
+  run(
+    process.execPath,
+    [
+      "--input-type=module",
+      "-e",
+      `const legacy=await import("@glamsystems/ix-mapper/legacy-web3"); for(const name of ["mapInstruction","mapInstructions","mapToGlamIx","fixSignerAccounts","normalizeInstruction"]) if(typeof legacy[name]!=="function") throw new Error(name);`,
+    ],
+    consumerRoot,
+  );
+  run(
+    process.execPath,
+    [
+      "-e",
+      `const legacy=require("@glamsystems/ix-mapper/legacy-web3"); if(typeof legacy.mapInstruction!=="function") throw new Error("CJS legacy export missing");`,
+    ],
+    consumerRoot,
+  );
 
   const installedManifest = JSON.parse(
     await readFile(
@@ -136,6 +206,8 @@ try {
         files: packed[0].entryCount,
         neutralRoot: true,
         web3Installed: false,
+        legacyMissingPeerFailure: true,
+        legacyWithPinnedPeer: pinnedWeb3Manifest.version,
         operationProfiles: 2,
       },
       null,

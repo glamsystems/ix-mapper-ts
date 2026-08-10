@@ -36,93 +36,53 @@ jobs:
       - name: Use pinned npm
         run: npm install -g npm@11.6.2
 
-      - name: Install dependencies
+      - name: Install exact dependencies
         run: npm ci
 
-      - name: Verify compatibility artifacts
+      - name: Run golden, adversarial, and type tests
+        run: npm test
+
+      - name: Verify exact compatibility tuples and remote SDK tarballs
         run: npm run verify:artifacts
         env:
           IX_MAPPER_VERIFY_SDK_TARBALLS: "1"
 
-      - name: Build package
+      - name: Build neutral and legacy entrypoints
         run: npm run build
 
-      - name: Run tests
-        run: npm test
+      - name: Verify packed neutral and legacy consumers
+        run: npm run verify:packed-consumer
 
-      - name: Check package contents
-        shell: bash
-        run: |
-          set -euo pipefail
+      - name: Build immutable publication contract
+        run: npm run pack:contract
 
-          npm pack --dry-run --json --ignore-scripts > npm-pack-dry-run.json
+      - name: Verify immutable publication contract
+        run: npm run verify:publication-contract
 
-          node <<'NODE'
-          const fs = require("node:fs");
-          const pack = JSON.parse(fs.readFileSync("npm-pack-dry-run.json", "utf8"))[0];
-          const files = new Set(pack.files.map((file) => file.path));
-          const required = [
-            "ARCHITECTURE.md",
-            "core.cjs",
-            "core.esm.mjs",
-            "core.d.ts",
-            "index.cjs",
-            "index.esm.js",
-            "index.esm.mjs",
-            "index.cjs.d.ts",
-            "index.esm.d.ts",
-            "legacy-web3.cjs",
-            "legacy-web3.esm.mjs",
-            "legacy-web3.d.ts",
-            "src/core-types.d.ts",
-            "src/core.d.ts",
-            "src/index.d.ts",
-            "src/legacy-web3.d.ts",
-            "src/neutral.d.ts",
-            "src/pda.d.ts",
-            "src/strict.d.ts",
-            "src/types.d.ts",
-            "instruction-classifications-v1/schema-v1.json",
-            "instruction-classifications-v1/kamino-kvaults.json",
-            "mapping-configs-v2/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json",
-            "mapping-configs-v2-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json",
-            "compatibility-manifests/schema-v1.json",
-            "compatibility-manifests/v1/kamino-kvaults-production.json",
-            "compatibility-manifests/v1/kamino-kvaults-staging.json",
-            "artifacts/kamino-kvaults/9.1.5/native-kvault.json",
-            "artifacts/ext-kamino/1.0.1/production.json",
-            "artifacts/ext-kamino/1.0.1/staging.json",
-            "README.md",
-            "LICENSE",
-            "THIRD_PARTY_NOTICES.md",
-          ];
-
-          for (const file of required) {
-            if (!files.has(file)) {
-              throw new Error(`Missing expected package file: ${file}`);
-            }
-          }
-
-          console.log(
-            JSON.stringify(
-              {
-                filename: pack.filename,
-                files: pack.files.length,
-                unpackedSize: pack.unpackedSize,
-              },
-              null,
-              2,
-            ),
-          );
-          NODE
-
-      - name: Smoke test package entrypoints
-        run: |
-          node -e "const root = require('@glamsystems/ix-mapper'); const core = require('@glamsystems/ix-mapper/core'); const legacy = require('@glamsystems/ix-mapper/legacy-web3'); for (const name of ['mapInstruction', 'mapInstructions', 'mapToGlamIx', 'fixSignerAccounts', 'normalizeInstruction']) if (typeof root[name] !== 'function' || typeof legacy[name] !== 'function') process.exit(1); if (typeof core.createNeutralMapper !== 'function') process.exit(1);"
-          node --input-type=module -e "const root = await import('@glamsystems/ix-mapper'); const core = await import('@glamsystems/ix-mapper/core'); const legacy = await import('@glamsystems/ix-mapper/legacy-web3'); if (typeof root.mapInstruction !== 'function' || typeof legacy.mapInstruction !== 'function' || typeof core.createNeutralMapper !== 'function') process.exit(1);"
-
-      - name: Upload pack manifest
+      - name: Upload immutable proof artifact
         uses: actions/upload-artifact@v4
         with:
-          name: npm-pack-dry-run-node-${{ matrix.node-version }}
-          path: npm-pack-dry-run.json
+          name: ix-mapper-publication-node-${{ matrix.node-version }}
+          path: publication/
+          if-no-files-found: error
+
+  reproducible-publication:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Download both runtime publication contracts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: ix-mapper-publication-node-*
+          path: publication-matrix/
+
+      - name: Require byte-identical Node 22 and Node 24 archives
+        run: npm run verify:publication-reproducibility -- publication-matrix

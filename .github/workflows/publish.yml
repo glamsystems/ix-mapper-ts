@@ -34,10 +34,10 @@ jobs:
       - name: Use pinned npm with trusted publishing support
         run: npm install -g npm@11.6.2
 
-      - name: Install dependencies
+      - name: Install exact dependencies
         run: npm ci
 
-      - name: Validate release ref
+      - name: Validate immutable release ref
         shell: bash
         run: |
           set -euo pipefail
@@ -45,13 +45,13 @@ jobs:
           PACKAGE_NAME="$(node -p "require('./package.json').name")"
           VERSION="$(node -p "require('./package.json').version")"
 
-          if ! git merge-base --is-ancestor HEAD origin/main; then
-            echo "Release commit must be on origin/main" >&2
+          if [[ "${GITHUB_REF_TYPE}" != "tag" || "${GITHUB_REF_NAME}" != "v${VERSION}" ]]; then
+            echo "Publishing requires the exact immutable tag v${VERSION}" >&2
             exit 1
           fi
 
-          if [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF_TYPE}" == "tag" && "${GITHUB_REF_NAME}" != "v${VERSION}" ]]; then
-            echo "Tag ${GITHUB_REF_NAME} does not match package version v${VERSION}" >&2
+          if ! git merge-base --is-ancestor HEAD origin/main; then
+            echo "Release commit must be on origin/main" >&2
             exit 1
           fi
 
@@ -60,62 +60,68 @@ jobs:
             exit 1
           fi
 
-      - name: Build package
-        run: npm run build
-
-      - name: Run tests
+      - name: Run golden, adversarial, and type tests
         run: npm test
 
-      - name: Verify compatibility artifacts
+      - name: Verify exact compatibility tuples and remote SDK tarballs
         run: npm run verify:artifacts
         env:
           IX_MAPPER_VERIFY_SDK_TARBALLS: "1"
 
-      - name: Dry-run pack
-        run: npm pack --dry-run --json --ignore-scripts > npm-pack-dry-run.json
+      - name: Build neutral and legacy entrypoints
+        run: npm run build
 
-      - name: Upload pack manifest
+      - name: Verify packed neutral and legacy consumers
+        run: npm run verify:packed-consumer
+
+      - name: Build immutable publication contract
+        run: npm run pack:contract
+
+      - name: Verify immutable publication contract
+        run: npm run verify:publication-contract
+
+      - name: Upload exact publication archive and contract
         uses: actions/upload-artifact@v4
         with:
-          name: npm-pack-dry-run
-          path: npm-pack-dry-run.json
+          name: ix-mapper-publication
+          path: publication/
+          if-no-files-found: error
 
-      - name: Publish
+      - name: Publish the verified archive
         shell: bash
         run: |
           set -euo pipefail
 
-          VERSION="$(node -p "require('./package.json').version")"
-          DIST_TAG="latest"
+          CONTRACT="$(find publication -maxdepth 1 -name '*.publication.json' -print -quit)"
+          ARCHIVE="$(node -p "require('./${CONTRACT}').tarball.filename")"
+          DIST_TAG="$(node -p "require('./${CONTRACT}').release.distTag")"
 
-          if [[ "${VERSION}" == *-* ]]; then
-            DIST_TAG="test"
-          fi
+          npm publish "publication/${ARCHIVE}" --access public --provenance --tag "${DIST_TAG}"
 
-          npm publish --access public --provenance --tag "${DIST_TAG}"
-
-      - name: Verify published signatures
+      - name: Verify registry integrity and signatures
         shell: bash
         run: |
           set -euo pipefail
 
           PACKAGE_NAME="$(node -p "require('./package.json').name")"
           VERSION="$(node -p "require('./package.json').version")"
+          CONTRACT="$(find publication -maxdepth 1 -name '*.publication.json' -print -quit)"
+          EXPECTED_INTEGRITY="$(node -p "require('./${CONTRACT}').tarball.npmIntegrity")"
           TMP_DIR="$(mktemp -d)"
 
-          cd "${TMP_DIR}"
-          npm init -y
-
           for attempt in {1..10}; do
-            if npm install "${PACKAGE_NAME}@${VERSION}"; then
+            ACTUAL_INTEGRITY="$(npm view "${PACKAGE_NAME}@${VERSION}" dist.integrity 2>/dev/null || true)"
+            if [[ "${ACTUAL_INTEGRITY}" == "${EXPECTED_INTEGRITY}" ]]; then
               break
             fi
-
             if [[ "${attempt}" == "10" ]]; then
+              echo "Published npm integrity did not match the immutable contract" >&2
               exit 1
             fi
-
             sleep 15
           done
 
+          cd "${TMP_DIR}"
+          npm init -y
+          npm install "${PACKAGE_NAME}@${VERSION}"
           npm audit signatures

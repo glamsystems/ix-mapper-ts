@@ -17,4 +17,5 @@ legacy-web3.esm.mjs
 legacy-web3.d.ts
 src/**/*.d.ts
 npm-pack-dry-run.json
+publication/
 .DS_Store

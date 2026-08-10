@@ -132,6 +132,25 @@ Stable releases reject `proof-only` manifests. The initial Kamino manifests
 remain proof-only while the official SDK package graph fails the Next,
 Expo/Hermes, and dependency-peer gates.
 
+CI packs the built package once and emits an adjacent immutable publication
+contract. The contract pins the archive SHA-256/npm integrity, every packed
+member hash, the active v2 manifests, and their bundled IDL/config,
+classification, and operation-profile hashes. Verify it with:
+
+```bash
+npm run build
+npm run pack:contract
+npm run verify:publication-contract
+```
+
+The publish workflow may publish only an exact `v<package-version>` tag whose
+commit is on `main`, and it publishes that verified archive rather than
+repacking the checkout. npm registry integrity and signatures are checked
+after publication. Build CI also requires Node 22.22 and Node 24 to produce
+byte-identical archive hashes. A proof-only tuple requires a prerelease version
+and the `test` dist-tag; it can never become `latest` or enter default public
+discovery. No package has been promoted by adding this contract.
+
 Deployment (`production` or `staging`) is separate from public maturity:
 `proof-only` is internal, `preview` is explicit opt-in with complete gates,
 `supported` is stable, and `withdraw-only`/`hold`/`deprecated` are explicit
@@ -155,3 +174,14 @@ integrations.
 Legacy nullable results never authorize native passthrough. `fixSignerAccounts`
 also remains compatibility-only because mechanical signer replacement can
 change an instruction's economic meaning.
+
+### Migration from the legacy package root
+
+`0.3.0-test.1` deliberately makes the package root neutral. New consumers use
+the root or `/core`; an existing web3.js consumer must change its import to
+`@glamsystems/ix-mapper/legacy-web3` and install the exact optional web3.js
+peer. The packed-consumer gate covers root/core and legacy CJS/ESM imports,
+proves that a neutral install contains no web3.js, and proves that selecting
+the legacy entrypoint without its peer fails on the missing
+`@solana/web3.js` dependency instead of silently selecting another client
+stack.

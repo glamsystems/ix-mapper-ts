@@ -51,6 +51,9 @@
     "verify:artifacts": "node scripts/verify-artifacts.mjs",
     "prepack": "npm test && npm run verify:artifacts && npm run build && npm run verify:packed-consumer",
     "verify:packed-consumer": "node scripts/verify-packed-consumer.mjs",
+    "pack:contract": "node scripts/build-publication-contract.mjs",
+    "verify:publication-contract": "node scripts/verify-publication-contract.mjs",
+    "verify:publication-reproducibility": "node scripts/verify-publication-reproducibility.mjs",
     "pack:dry-run": "npm pack --dry-run --json"
   },
   "files": [
