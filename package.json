@@ -1,10 +1,7 @@
 {
   "name": "@glamsystems/ix-mapper",
-  "version": "0.2.4",
-  "description": "Map Solana program instructions to GLAM integration instructions",
-  "main": "./index.cjs",
-  "module": "./index.esm.js",
-  "types": "./index.cjs.d.ts",
+  "version": "0.3.0",
+  "description": "Maps an instruction a protocol's own SDK built onto the GLAM instruction that carries it, from the generated mapping documents it bundles.",
   "homepage": "https://www.glam.systems",
   "repository": {
     "type": "git",
@@ -16,35 +13,43 @@
     "defi"
   ],
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=20.18.0"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./web3": {
+      "import": {
+        "types": "./dist/web3.d.ts",
+        "default": "./dist/web3.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "clean": "node scripts/clean.mjs",
-    "test": "vitest run --globals",
+    "clean": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "test": "node --import tsx --test \"test/**/*.test.ts\"",
     "prepack": "npm run build",
     "pack:dry-run": "npm pack --dry-run --json"
   },
-  "files": [
-    "README.md",
-    "LICENSE",
-    "index.cjs",
-    "index.esm.js",
-    "index.cjs.d.ts",
-    "index.esm.d.ts",
-    "src/**/*.d.ts"
-  ],
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@solana/web3.js": "^1.98.0"
-  },
-  "engines": {
-    "node": ">=24.0.0"
-  },
   "devDependencies": {
-    "@types/node": "^20.17.30",
-    "esbuild": "^0.25.2",
-    "typescript": "^5.8.3",
-    "vitest": "^4.1.8"
+    "@types/node": "24.13.3",
+    "tsx": "4.23.1",
+    "typescript": "5.8.3"
   }
 }

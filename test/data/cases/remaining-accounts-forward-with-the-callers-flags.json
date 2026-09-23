@@ -1,0 +1,119 @@
+{
+  "name": "remaining-accounts-forward-with-the-callers-flags",
+  "note": "accounts beyond the list ride after the seats with the flags the caller gave them",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "relay",
+          "discriminator": [1],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_relay",
+            "discriminator": [9]
+          },
+          "source_accounts": [
+            {
+              "name": "thing",
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "dynamic",
+              "name": "glam_state",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "source",
+              "source": 0,
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "any"
+          }
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Thing11111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Extra11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Extra21111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Extra31111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      }
+    ],
+    "data": [1, 5]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "relay",
+    "handler": "proxy_relay",
+    "instruction": {
+      "programAddress": "Proxy11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "State1111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Thing11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Extra11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Extra21111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Extra31111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "data": [9, 5]
+    }
+  }
+}

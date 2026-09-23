@@ -1,0 +1,34 @@
+{
+  "name": "system-transfer-from-another-owner-is-refused",
+  "note": "the source must be the vault",
+  "environment": "production",
+  "instruction": {
+    "programAddress": "11111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Other11111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      },
+      {
+        "address": "To11111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [2, 0, 0, 0, 16, 39, 0, 0, 0, 0, 0, 0]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "11111111111111111111111111111111",
+    "source": "transfer",
+    "reason": "account_expectation",
+    "message": "transfer account 0 (source) must be glam_vault"
+  }
+}

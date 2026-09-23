@@ -1,0 +1,114 @@
+{
+  "name": "cctp-deposit-for-burn-with-another-token-program-is-refused",
+  "note": "a pinned address expectation refuses an instruction built for another program rather than redirecting it",
+  "environment": "production",
+  "instruction": {
+    "programAddress": "CCTPV2vPZJS2u2BBsUoscuikbYjnpFmbFsvVuJdgUMQe",
+    "accounts": [
+      {
+        "address": "Vau1t1111111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      },
+      {
+        "address": "Signer111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      },
+      {
+        "address": "C211111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "C311111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "C411111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "C511111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "C611111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "C711111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "C811111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "C911111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "C101111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "C111111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      },
+      {
+        "address": "CCTPV2Sm4AdWt5296sk4P66VBZ7bEhcARwFaaS9YPbeC",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "CCTPV2vPZJS2u2BBsUoscuikbYjnpFmbFsvVuJdgUMQe",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "11111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "C161111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "CCTPV2vPZJS2u2BBsUoscuikbYjnpFmbFsvVuJdgUMQe",
+        "writable": false,
+        "signer": false
+      }
+    ],
+    "data": [215, 60, 61, 46, 114, 55, 128, 176, 7, 7, 7]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "CCTPV2vPZJS2u2BBsUoscuikbYjnpFmbFsvVuJdgUMQe",
+    "source": "deposit_for_burn",
+    "reason": "account_expectation",
+    "message": "deposit_for_burn account 14 (token_program) must be TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+  }
+}

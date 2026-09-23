@@ -1,0 +1,39 @@
+{
+  "name": "stake-authorize-built-the-web3-way-is-refused",
+  "note": "the Stake documents follow the sysvar-free layout the generated builders use; a web3.js v1 StakeProgram instruction carries the clock sysvar where the authority is expected and is refused",
+  "environment": "staging",
+  "instruction": {
+    "programAddress": "Stake11111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "StakeAcct111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "SysvarC1ock11111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Vau1t1111111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      }
+    ],
+    "data": [1, 0, 0, 0, 1, 2, 3]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "Stake11111111111111111111111111111111111111",
+    "source": "authorize",
+    "reason": "account_expectation",
+    "message": "authorize account 1 (authority) must be glam_vault"
+  }
+}

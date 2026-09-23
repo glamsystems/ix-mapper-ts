@@ -1,0 +1,170 @@
+{
+  "name": "phoenix-deposit-seats-the-trader-as-the-vault",
+  "note": "an extension that forwards the native accounts at their own account indices takes them in place; the signer position holds the vault and is seated without the signer bit",
+  "environment": "staging",
+  "instruction": {
+    "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+    "accounts": [
+      {
+        "address": "P011111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "P111111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "P211111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Vau1t1111111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      },
+      {
+        "address": "P411111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "P511111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "P611111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "P711111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "P811111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "P911111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [
+      202, 39, 52, 211, 53, 20, 250, 88, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0,
+      0, 0, 0
+    ]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+    "source": "deposit_funds",
+    "handler": "deposit_funds",
+    "instruction": {
+      "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
+      "accounts": [
+        {
+          "address": "State1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "11111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "P011111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "P111111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "P211111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t1111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "P411111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "P511111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "P611111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "P711111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "P811111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "P911111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [
+        202, 39, 52, 211, 53, 20, 250, 88, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,
+        0, 0, 0, 0
+      ]
+    }
+  }
+}

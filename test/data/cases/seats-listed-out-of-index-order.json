@@ -1,0 +1,111 @@
+{
+  "name": "seats-listed-out-of-index-order",
+  "note": "a document may list its seats in any order; the mapped instruction is in seat index order",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "shuffled",
+          "discriminator": [5],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_shuffled",
+            "discriminator": [6]
+          },
+          "source_accounts": [
+            {
+              "name": "a",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "name": "b",
+              "writable": false,
+              "signer": false
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 2,
+              "kind": "source",
+              "source": 1,
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 0,
+              "kind": "dynamic",
+              "name": "glam_state",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "source",
+              "source": 0,
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "none"
+          }
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "A111111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "B111111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      }
+    ],
+    "data": [5]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "shuffled",
+    "handler": "proxy_shuffled",
+    "instruction": {
+      "programAddress": "Proxy11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "State1111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "A111111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "B111111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [6]
+    }
+  }
+}

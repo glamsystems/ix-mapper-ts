@@ -1,0 +1,39 @@
+{
+  "name": "token-sync-native-passes-through",
+  "note": "nothing in it signs",
+  "environment": "production",
+  "instruction": {
+    "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    "accounts": [
+      {
+        "address": "Ata1111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [17]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "passthrough",
+    "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    "source": "sync_native",
+    "reason": "no signer account: the instruction needs no authority the vault holds",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [
+        {
+          "address": "Ata1111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [17]
+    }
+  }
+}

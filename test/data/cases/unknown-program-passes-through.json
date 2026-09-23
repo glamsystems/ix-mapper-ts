@@ -1,0 +1,26 @@
+{
+  "name": "unknown-program-passes-through",
+  "note": "GLAM does not proxy the program",
+  "environment": "production",
+  "instruction": {
+    "programAddress": "ComputeBudget111111111111111111111111111111",
+    "accounts": [],
+    "data": [2, 64, 13, 3, 0]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "passthrough",
+    "program": "ComputeBudget111111111111111111111111111111",
+    "reason": "the program has no mapping document",
+    "instruction": {
+      "programAddress": "ComputeBudget111111111111111111111111111111",
+      "accounts": [],
+      "data": [2, 64, 13, 3, 0]
+    }
+  }
+}

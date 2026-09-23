@@ -1,0 +1,79 @@
+{
+  "name": "two-trailing-optionals-both-absent",
+  "note": "every omittable position may be absent; the mapped instruction then seats no account",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "tail",
+          "discriminator": [1],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_tail",
+            "discriminator": [9]
+          },
+          "source_accounts": [
+            {
+              "name": "first",
+              "writable": false,
+              "signer": false,
+              "optional": "omitted"
+            },
+            {
+              "name": "second",
+              "writable": true,
+              "signer": false,
+              "optional": "omitted"
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "source",
+              "source": 0,
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "source",
+              "source": 1,
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "any"
+          }
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [],
+    "data": [1, 42]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "tail",
+    "handler": "proxy_tail",
+    "instruction": {
+      "programAddress": "Proxy11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [9, 42]
+    }
+  }
+}

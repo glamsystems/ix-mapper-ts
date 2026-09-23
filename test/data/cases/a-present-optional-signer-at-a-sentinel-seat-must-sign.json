@@ -1,0 +1,86 @@
+{
+  "name": "a-present-optional-signer-at-a-sentinel-seat-must-sign",
+  "note": "a real account at a sentinel seat the handler declares as a signer is checked like any forwarded signer",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "optional_signer",
+          "discriminator": [7],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_optional_signer",
+            "discriminator": [8]
+          },
+          "source_accounts": [
+            {
+              "name": "thing",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "name": "maybe_signer",
+              "writable": false,
+              "signer": true,
+              "optional": "program_id"
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "source",
+              "source": 0,
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "source",
+              "source": 1,
+              "writable": false,
+              "signer": true,
+              "sentinel": true
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "none"
+          }
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Thing11111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Maybe11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      }
+    ],
+    "data": [7, 1]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "optional_signer",
+    "reason": "account_privilege",
+    "message": "optional_signer account 1 (maybe_signer) must sign"
+  }
+}

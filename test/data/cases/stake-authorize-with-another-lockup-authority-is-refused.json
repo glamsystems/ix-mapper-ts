@@ -1,0 +1,42 @@
+{
+  "name": "stake-authorize-with-another-lockup-authority-is-refused",
+  "note": "the vault must hold every dropped signer position",
+  "environment": "staging",
+  "instruction": {
+    "programAddress": "Stake11111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Stake11111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Vau1t1111111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      },
+      {
+        "address": "Custodian1111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      }
+    ],
+    "data": [
+      1, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+      7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0
+    ]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "Stake11111111111111111111111111111111111111",
+    "source": "authorize",
+    "reason": "account_expectation",
+    "message": "authorize account 2 (lockup_authority) must be glam_vault"
+  }
+}

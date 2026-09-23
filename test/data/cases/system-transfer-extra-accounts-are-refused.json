@@ -1,0 +1,49 @@
+{
+  "name": "system-transfer-extra-accounts-are-refused",
+  "note": "the handler reads exactly the list the document states, so accounts beyond it are refused",
+  "environment": "production",
+  "instruction": {
+    "programAddress": "11111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Vau1t1111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      },
+      {
+        "address": "To11111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Extra11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Extra21111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Extra31111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      }
+    ],
+    "data": [2, 0, 0, 0, 16, 39, 0, 0, 0, 0, 0, 0]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "11111111111111111111111111111111",
+    "source": "transfer",
+    "reason": "remaining_accounts",
+    "message": "transfer takes no accounts beyond its 2; the instruction carries 5"
+  }
+}

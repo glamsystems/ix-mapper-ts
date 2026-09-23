@@ -1,0 +1,33 @@
+{
+  "name": "system-data-shorter-than-a-discriminator-matches-nothing",
+  "note": "a prefix match needs the whole discriminator",
+  "environment": "production",
+  "instruction": {
+    "programAddress": "11111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Vau1t1111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      },
+      {
+        "address": "To11111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [2]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "11111111111111111111111111111111",
+    "reason": "unknown_instruction",
+    "message": "no instruction of 11111111111111111111111111111111 matches the data"
+  }
+}

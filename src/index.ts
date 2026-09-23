@@ -1,345 +1,91 @@
+import { parseMappingDocument } from "./document.js";
 import {
-  type AccountMeta,
-  PublicKey,
-  TransactionInstruction,
-} from "@solana/web3.js";
+  PRODUCTION_DOCUMENTS,
+  STAGING_DOCUMENTS,
+} from "./generated/mapping/index.js";
+import { createMapperOver, type Mapper } from "./mapper.js";
+import type { MappingDocument } from "./schema.js";
 
-import SystemProgramConfig from "../mapping-configs-v1/11111111111111111111111111111111.json";
-import TokenProgramConfig from "../mapping-configs-v1/TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA.json";
-import Token2022ProgramConfig from "../mapping-configs-v1/TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb.json";
-import DriftProtocolProgramConfig from "../mapping-configs-v1/dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH.json";
-import DriftVaultProgramConfig from "../mapping-configs-v1/vAuLTsyrvSfZRuRB3XgvkPwNGgYSs9YRYymVebLKoxR.json";
-import KaminoLendProgramConfig from "../mapping-configs-v1/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
-import KvauGMspProgramConfig from "../mapping-configs-v1/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
-import FarmsProgramConfig from "../mapping-configs-v1/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
+export type {
+  DestinationAccount,
+  DynamicAccountName,
+  DynamicSeat,
+  Handler,
+  InstructionEntry,
+  MappedInstruction,
+  MappingDocument,
+  OptionalKind,
+  PassthroughInstruction,
+  Provenance,
+  RemainingAccounts,
+  SourceAccount,
+  SourceSeat,
+  StaticSeat,
+  UnsupportedInstruction,
+} from "./schema.js";
+export { DYNAMIC_ACCOUNT_NAMES, SCHEMA_VERSION } from "./schema.js";
+export { parseMappingDocument } from "./document.js";
+export { MappingDocumentError } from "./errors.js";
+export type {
+  Mapper,
+  MappingContext,
+  MapResult,
+  NeutralAccount,
+  NeutralInstruction,
+  UnsupportedReason,
+} from "./mapper.js";
+export type {
+  KitAccountMetaLike,
+  KitInstruction,
+  KitInstructionLike,
+  KitMappedAccount,
+  KitMapResult,
+  KitRole,
+  KitSignerOf,
+  KitSigningRole,
+} from "./kit.js";
+export {
+  fromKitInstruction,
+  mapKitInstruction,
+  roleOf,
+  toKitInstruction,
+} from "./kit.js";
 
-import StagingSystemProgramConfig from "../mapping-configs-v1-staging/11111111111111111111111111111111.json";
-import StagingTokenProgramConfig from "../mapping-configs-v1-staging/TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA.json";
-import StagingToken2022ProgramConfig from "../mapping-configs-v1-staging/TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb.json";
-import StagingDriftProtocolProgramConfig from "../mapping-configs-v1-staging/dRiftyHA39MWEi3m9aunc5MzRF1JYuBsbn6VPcn33UH.json";
-import StagingDriftVaultProgramConfig from "../mapping-configs-v1-staging/vAuLTsyrvSfZRuRB3XgvkPwNGgYSs9YRYymVebLKoxR.json";
-import StagingKaminoLendProgramConfig from "../mapping-configs-v1-staging/KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD.json";
-import StagingKvauGMspProgramConfig from "../mapping-configs-v1-staging/KvauGMspG5k6rtzrqqn7WNn3oZdyKqLKwK2XWQ8FLjd.json";
-import StagingFarmsProgramConfig from "../mapping-configs-v1-staging/FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr.json";
-import StagingLoopscaleProgramConfig from "../mapping-configs-v1-staging/1oopBoJG58DgkUVKkEzKgyG9dvRmpgeEm1AVjoHkF78.json";
-// Staging-only proxies (no mainnet v1 counterpart yet)
-import StagingPhoenixProgramConfig from "../mapping-configs-v1-staging/EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih.json";
-import StagingEmberProgramConfig from "../mapping-configs-v1-staging/EMBERpYNE6ehWmXymZZS2skiFmCa9V5dp14e1iduM5qy.json";
+export type Environment = "production" | "staging";
 
-import {
-  type Instruction as RemappingInstruction,
-  type RemappingConfigs,
-  type RemappingConfig,
-} from "./types";
-import { getIntegrationAuthority, getVaultPda } from "./pda";
-
-const DYNAMIC_ACCOUNT_NAMES = new Set([
-  "glam_state",
-  "glam_vault",
-  "glam_signer",
-  "integration_authority",
-]);
-
-function assertDenseUniqueIndices(label: string, indices: number[]): void {
-  const seen = new Set<number>();
-  const sorted = [...indices].sort((a, b) => a - b);
-
-  sorted.forEach((index) => {
-    if (!Number.isInteger(index) || index < 0) {
-      throw new Error(`${label} contains an invalid account index: ${index}`);
-    }
-    if (seen.has(index)) {
-      throw new Error(`${label} contains a duplicate account index: ${index}`);
-    }
-    seen.add(index);
-  });
-
-  sorted.forEach((index, expectedIndex) => {
-    if (index !== expectedIndex) {
-      throw new Error(
-        `${label} must form a dense range starting at 0, but found ${index} at position ${expectedIndex}`,
-      );
-    }
-  });
+/** The bundled documents of an environment, generated from the GLAM programs' IDLs. */
+export function mappingDocuments(
+  environment: Environment,
+): readonly MappingDocument[] {
+  switch (environment) {
+    case "production":
+      return PRODUCTION_DOCUMENTS;
+    case "staging":
+      return STAGING_DOCUMENTS;
+  }
 }
 
-function validateInstructionConfig(
-  config: RemappingConfig,
-  ixConfig: RemappingInstruction,
-): void {
-  ixConfig.dynamic_accounts.forEach(({ name, index }) => {
-    if (!DYNAMIC_ACCOUNT_NAMES.has(name)) {
-      throw new Error(
-        `Unknown dynamic account "${name}" in ${config.program_id}:${ixConfig.src_ix_name}`,
-      );
-    }
-    if (!Number.isInteger(index) || index < 0) {
-      throw new Error(
-        `Invalid dynamic account index ${index} in ${config.program_id}:${ixConfig.src_ix_name}`,
-      );
-    }
-  });
-
-  ixConfig.static_accounts.forEach(({ account, index }) => {
-    if (!Number.isInteger(index) || index < 0) {
-      throw new Error(
-        `Invalid static account index ${index} in ${config.program_id}:${ixConfig.src_ix_name}`,
-      );
-    }
-    new PublicKey(account);
-  });
-
-  ixConfig.index_map.forEach((index) => {
-    if (!Number.isInteger(index) || index < -1) {
-      throw new Error(
-        `Invalid index_map entry ${index} in ${config.program_id}:${ixConfig.src_ix_name}`,
-      );
-    }
-  });
-
-  ixConfig.program_id_placeholder_indices?.forEach((index) => {
-    if (!Number.isInteger(index) || index < 0) {
-      throw new Error(
-        `Invalid program_id_placeholder_indices entry ${index} in ${config.program_id}:${ixConfig.src_ix_name}`,
-      );
-    }
-    if (index >= ixConfig.index_map.length) {
-      throw new Error(
-        `program_id_placeholder_indices entry ${index} is out of bounds in ${config.program_id}:${ixConfig.src_ix_name}`,
-      );
-    }
-    if (ixConfig.index_map[index] === -1) {
-      throw new Error(
-        `program_id_placeholder_indices entry ${index} maps to -1 in ${config.program_id}:${ixConfig.src_ix_name}`,
-      );
-    }
-  });
-
-  assertDenseUniqueIndices(`${config.program_id}:${ixConfig.src_ix_name}`, [
-    ...ixConfig.dynamic_accounts.map(({ index }) => index),
-    ...ixConfig.static_accounts.map(({ index }) => index),
-    ...ixConfig.index_map.filter((index) => index !== -1),
-  ]);
-}
-
-function validateRemappingConfigs(configs: RemappingConfigs): RemappingConfigs {
-  Object.values(configs).forEach((config) => {
-    new PublicKey(config.program_id);
-    new PublicKey(config.proxy_program_id);
-    config.instructions.forEach((ixConfig) =>
-      validateInstructionConfig(config, ixConfig),
-    );
-  });
-
-  return configs;
-}
+export type CreateMapperOptions =
+  /** The bundled documents of an environment. */
+  | { readonly environment: Environment; readonly documents?: never }
+  /**
+   * Documents of the caller's own, parsed JSON or already admitted; each is admitted
+   * through `parseMappingDocument` here, so a document that does not admit throws.
+   */
+  | { readonly documents: readonly unknown[]; readonly environment?: never };
 
 /**
- * Production remapping configurations indexed by program ID
+ * A mapper over the bundled documents of an environment, or over documents the caller
+ * supplies. Throws `MappingDocumentError` when a caller document does not admit, or when
+ * the set forms no mapper: none, two environments, or two documents for one program.
  */
-const REMAPPING_CONFIGS: RemappingConfigs = validateRemappingConfigs({
-  [SystemProgramConfig.program_id]: SystemProgramConfig as RemappingConfig,
-  [TokenProgramConfig.program_id]: TokenProgramConfig as RemappingConfig,
-  [Token2022ProgramConfig.program_id]:
-    Token2022ProgramConfig as RemappingConfig,
-  [DriftProtocolProgramConfig.program_id]:
-    DriftProtocolProgramConfig as RemappingConfig,
-  [DriftVaultProgramConfig.program_id]:
-    DriftVaultProgramConfig as RemappingConfig,
-  [KaminoLendProgramConfig.program_id]:
-    KaminoLendProgramConfig as RemappingConfig,
-  [KvauGMspProgramConfig.program_id]: KvauGMspProgramConfig as RemappingConfig,
-  [FarmsProgramConfig.program_id]: FarmsProgramConfig as RemappingConfig,
-});
-
-/**
- * Staging remapping configurations indexed by program ID
- */
-const STAGING_REMAPPING_CONFIGS: RemappingConfigs = validateRemappingConfigs({
-  [StagingSystemProgramConfig.program_id]:
-    StagingSystemProgramConfig as RemappingConfig,
-  [StagingTokenProgramConfig.program_id]:
-    StagingTokenProgramConfig as RemappingConfig,
-  [StagingToken2022ProgramConfig.program_id]:
-    StagingToken2022ProgramConfig as RemappingConfig,
-  [StagingDriftProtocolProgramConfig.program_id]:
-    StagingDriftProtocolProgramConfig as RemappingConfig,
-  [StagingDriftVaultProgramConfig.program_id]:
-    StagingDriftVaultProgramConfig as RemappingConfig,
-  [StagingKaminoLendProgramConfig.program_id]:
-    StagingKaminoLendProgramConfig as RemappingConfig,
-  [StagingKvauGMspProgramConfig.program_id]:
-    StagingKvauGMspProgramConfig as RemappingConfig,
-  [StagingFarmsProgramConfig.program_id]:
-    StagingFarmsProgramConfig as RemappingConfig,
-  [StagingLoopscaleProgramConfig.program_id]:
-    StagingLoopscaleProgramConfig as RemappingConfig,
-  [StagingPhoenixProgramConfig.program_id]:
-    StagingPhoenixProgramConfig as RemappingConfig,
-  [StagingEmberProgramConfig.program_id]:
-    StagingEmberProgramConfig as RemappingConfig,
-});
-
-/**
- * Applies remapping config and transforms ix into a GLAM ix
- */
-function mapToGlamIx(
-  ix: TransactionInstruction,
-  glamState: PublicKey,
-  glamSigner: PublicKey,
-  staging = false,
-): TransactionInstruction | null {
-  const configs = staging ? STAGING_REMAPPING_CONFIGS : REMAPPING_CONFIGS;
-  const config = configs[ix.programId.toBase58()];
-  if (!config) {
-    return null;
-  }
-
-  // Find the matching instruction in the config
-  const ixConfig = config.instructions.find(({ src_discriminator }) => {
-    return ix.data
-      .subarray(0, src_discriminator.length)
-      .equals(new Uint8Array(src_discriminator));
-  });
-  if (!ixConfig) {
-    // No remapping config found for the incoming instruction. This happens when
-    // 1. The instruction is not supported
-    // 2. The instruction doesn't need to be remapped (e.g., it's permissionless and doesn't need to be signed by GLAM vault PDA)
-    return null;
-  }
-
-  const proxyProgramId = new PublicKey(config.proxy_program_id);
-  const accountMetasByIndex = new Map<number, AccountMeta>();
-
-  // We need to build the array of keys for the new ix
-  // `dynamic_accounts`
-  //   - `glam_state`: input `glamState`
-  //   - `glam_vault`: derived from `glamState`
-  //   - `glam_signer`: input `glamSigner`
-  //   - `integration_authority`: derived from `proxyProgramId`
-  // `static_accounts`
-  // `ix.keys`
-  //   - for ix.keys[i], if ixConfig.index_map[i] is -1, drop it
-
-  ixConfig.dynamic_accounts.forEach(({ name, index, writable, signer }) => {
-    if (name === "glam_state") {
-      accountMetasByIndex.set(index, {
-        pubkey: glamState,
-        isSigner: signer,
-        isWritable: writable,
-      });
-    } else if (name === "glam_vault") {
-      accountMetasByIndex.set(index, {
-        pubkey: getVaultPda(glamState, staging),
-        isSigner: signer,
-        isWritable: writable,
-      });
-    } else if (name === "glam_signer") {
-      accountMetasByIndex.set(index, {
-        pubkey: glamSigner,
-        isSigner: signer,
-        isWritable: writable,
-      });
-    } else if (name === "integration_authority") {
-      accountMetasByIndex.set(index, {
-        pubkey: getIntegrationAuthority(proxyProgramId),
-        isSigner: signer,
-        isWritable: writable,
-      });
-    } else {
-      throw new Error(`Unknown dynamic account at index ${index}: ${name}`);
-    }
-  });
-
-  ixConfig.static_accounts.forEach(({ index, account, writable, signer }) => {
-    accountMetasByIndex.set(index, {
-      pubkey: new PublicKey(account),
-      isSigner: signer,
-      isWritable: writable,
-    });
-  });
-
-  if (ix.keys.length < ixConfig.index_map.length) {
-    throw new RangeError(
-      `Instruction ${config.program_id}:${ixConfig.src_ix_name} requires at least ${ixConfig.index_map.length} accounts, received ${ix.keys.length}`,
-    );
-  }
-
-  const srcProgramId = ix.programId;
-  const placeholderIndices = new Set(
-    ixConfig.program_id_placeholder_indices ?? [],
+export function createMapper(options: CreateMapperOptions): Mapper {
+  return createMapperOver(
+    options.documents === undefined
+      ? mappingDocuments(options.environment)
+      : // Array.from visits a hole, so a sparse array is refused rather than skipped
+        Array.from(options.documents, (document, i) =>
+          parseMappingDocument(document, `documents[${i}]`),
+        ),
   );
-  const remainingAccountMetas = [] as AccountMeta[];
-  for (let i = 0; i < ix.keys.length; i++) {
-    if (i < ixConfig.index_map.length) {
-      if (ixConfig.index_map[i] === -1) {
-        continue;
-      }
-      const { pubkey, isSigner, isWritable } = ix.keys[i];
-      // When a protocol SDK passes its own program ID as a placeholder for
-      // optional accounts (e.g. Kamino uses KLend program ID for None),
-      // replace it with the proxy program ID so that Anchor's optional
-      // account detection recognizes it as None.
-      const mappedPubkey =
-        placeholderIndices.has(i) && pubkey.equals(srcProgramId)
-          ? proxyProgramId
-          : pubkey;
-      accountMetasByIndex.set(ixConfig.index_map[i], {
-        pubkey: mappedPubkey,
-        isSigner,
-        isWritable,
-      });
-    } else {
-      // if `i` is beyond the ixConfig.index_map length, it's a remaining account, add it as-is
-      remainingAccountMetas.push(ix.keys[i]);
-    }
-  }
-
-  // Replace src_discriminator with dst_discriminator in ix.data to get new ix data
-  const payload = ix.data.subarray(ixConfig.src_discriminator.length); // remove the discriminator
-  const targetIxData = Buffer.from([...ixConfig.dst_discriminator, ...payload]); // add new discriminator before payload
-
-  // The final account metas for the new ix are:
-  // accountMetasByIndex.values() sorted by index
-  // remainingAccountMetas
-  const accountMetas = [
-    ...[...accountMetasByIndex.entries()]
-      .sort(([a], [b]) => (a as number) - (b as number))
-      .map(([_, meta]) => meta),
-    ...remainingAccountMetas,
-  ];
-
-  return new TransactionInstruction({
-    programId: proxyProgramId,
-    keys: accountMetas,
-    data: targetIxData,
-  });
 }
-
-/**
- * Replace vault PDA with glamSigner wherever the vault appears as a signer.
- * The vault PDA can't sign at the transaction level — only the on-chain program
- * can sign for it via CPI. This fixes accounts like fee_payer (InitObligation)
- * and ATA creation payer that the protocol SDK sets to the vault.
- */
-function fixSignerAccounts(
-  ix: TransactionInstruction,
-  glamState: PublicKey,
-  glamSigner: PublicKey,
-  staging = false,
-): TransactionInstruction {
-  const vaultPda = getVaultPda(glamState, staging);
-  const fixedKeys = ix.keys.map((meta) => {
-    if (meta.pubkey.equals(vaultPda) && meta.isSigner) {
-      return { ...meta, pubkey: glamSigner };
-    }
-    return meta;
-  });
-  return new TransactionInstruction({
-    programId: ix.programId,
-    keys: fixedKeys,
-    data: ix.data,
-  });
-}
-
-export { mapToGlamIx, fixSignerAccounts };

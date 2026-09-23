@@ -1,0 +1,78 @@
+{
+  "name": "a-caller-decided-signer-is-seated-unsigned",
+  "note": "dynamic_signer skips the privilege check in the other direction too: a signing account at an unsigned seat is seated unsigned",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "caller_decides",
+          "discriminator": [2],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_caller_decides",
+            "discriminator": [8, 8]
+          },
+          "source_accounts": [
+            {
+              "name": "maybe_signer",
+              "writable": false,
+              "signer": false,
+              "dynamic_signer": true
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "source",
+              "source": 0,
+              "writable": false,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "any"
+          }
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Maybe11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      }
+    ],
+    "data": [2, 1]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "caller_decides",
+    "handler": "proxy_caller_decides",
+    "instruction": {
+      "programAddress": "Proxy11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "Maybe11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [8, 8, 1]
+    }
+  }
+}

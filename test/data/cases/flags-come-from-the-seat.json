@@ -1,0 +1,99 @@
+{
+  "name": "flags-come-from-the-seat",
+  "note": "the seat's flags replace the caller's: a read-only source account is seated writable, and an account the caller passed read-only is seated writable as the document says",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "reflag",
+          "discriminator": [3],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_reflag",
+            "discriminator": [7, 7]
+          },
+          "source_accounts": [
+            {
+              "name": "quiet",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "name": "loud",
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "source",
+              "source": 0,
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "source",
+              "source": 1,
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "any"
+          }
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Quiet11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Loud111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      }
+    ],
+    "data": [3, 1]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "reflag",
+    "handler": "proxy_reflag",
+    "instruction": {
+      "programAddress": "Proxy11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "Quiet11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Loud111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [7, 7, 1]
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "name": "system-transfer-maps",
+  "note": "the vault as source is dropped and seated dynamically; the destination forwards after the statics; the Token program the handler reads for a wrapped-SOL destination is seated last",
+  "environment": "production",
+  "instruction": {
+    "programAddress": "11111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Vau1t1111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      },
+      {
+        "address": "To11111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [2, 0, 0, 0, 16, 39, 0, 0, 0, 0, 0, 0]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "11111111111111111111111111111111",
+    "source": "transfer",
+    "handler": "system_transfer",
+    "instruction": {
+      "programAddress": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+      "accounts": [
+        {
+          "address": "State1111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Vau1t1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "11111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "To11111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [167, 164, 195, 155, 219, 152, 191, 230, 16, 39, 0, 0, 0, 0, 0, 0]
+    }
+  }
+}

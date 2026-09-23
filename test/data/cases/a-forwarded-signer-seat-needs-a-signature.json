@@ -1,0 +1,120 @@
+{
+  "name": "a-forwarded-signer-seat-needs-a-signature",
+  "note": "the seat signs, the account does not",
+  "environment": null,
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Payer11111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Thing11111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [1, 5]
+  },
+  "context": {
+    "glamState": "State1111111111111111111111111111111111111",
+    "glamVault": "Vau1t1111111111111111111111111111111111111",
+    "glamSigner": "Signer111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "signed_forward",
+    "reason": "account_privilege",
+    "message": "signed_forward account 0 (payer) must sign"
+  },
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "signed_forward",
+          "discriminator": [1],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_signed_forward",
+            "discriminator": [9, 9]
+          },
+          "source_accounts": [
+            {
+              "name": "payer",
+              "writable": true,
+              "signer": true
+            },
+            {
+              "name": "thing",
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "dynamic",
+              "name": "glam_state",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "source",
+              "source": 0,
+              "writable": true,
+              "signer": true
+            },
+            {
+              "index": 2,
+              "kind": "source",
+              "source": 1,
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "none"
+          }
+        },
+        {
+          "name": "caller_decides",
+          "discriminator": [2],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_caller_decides",
+            "discriminator": [8, 8]
+          },
+          "source_accounts": [
+            {
+              "name": "maybe_signer",
+              "writable": false,
+              "signer": false,
+              "dynamic_signer": true
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "source",
+              "source": 0,
+              "writable": false,
+              "signer": true
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "any"
+          }
+        }
+      ]
+    }
+  ]
+}
