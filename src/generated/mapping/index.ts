@@ -11,11 +11,11 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/system (revision 7c70ebdc8bcf, idl bb1a83194457)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/glam_protocol (revision 3ccbb51c203a, idl 8a68821aeea9)",
+        "glam managed anchor_v1/idls/glam/glam_protocol (revision baeeb79fda1f, idl 7ce7a778acce)",
     },
     instructions: [
       {
@@ -170,11 +170,11 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTcMDYgNLpDwgnrpSZvoSKQuR9NXG7S3DmtNQCDmrK",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/token_messenger_minter_v2 (revision c66d97e292c8, idl b9ac2aa0ddac)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_cctp (revision 15e063714601, idl 45fa32057095)",
+        "glam managed anchor_v1/idls/glam/ext_cctp (revision 063ce710869b, idl 49d36a61bc29)",
     },
     instructions: [
       {
@@ -544,11 +544,11 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_farms (revision 649915b9c497, idl d8ac1c6584e5)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_kamino (revision 630cb34d187e, idl 5bbfacf3c312)",
+        "glam managed anchor_v1/idls/glam/ext_kamino (revision c0b702e858e3, idl c57168bbe1f3)",
     },
     instructions: [
       {
@@ -1292,11 +1292,11 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_lending (revision 670fb38d6e10, idl 548daab3b893)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_kamino (revision 630cb34d187e, idl 5bbfacf3c312)",
+        "glam managed anchor_v1/idls/glam/ext_kamino (revision c0b702e858e3, idl c57168bbe1f3)",
     },
     instructions: [
       {
@@ -3286,11 +3286,11 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_vaults (revision d7d5f670e01c, idl 8f74ad72f6c1)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_kamino (revision 630cb34d187e, idl 5bbfacf3c312)",
+        "glam managed anchor_v1/idls/glam/ext_kamino (revision c0b702e858e3, idl c57168bbe1f3)",
     },
     instructions: [
       {
@@ -3870,11 +3870,11 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/spl_token (revision 3626047321fa, idl 33add106ed36)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_spl (revision b83335891218, idl fb06ee2a4512)",
+        "glam managed anchor_v1/idls/glam/ext_spl (revision 0cc2c7ed4ef6, idl 5ebe2d5d43c5)",
     },
     instructions: [
       {
@@ -4231,11 +4231,11 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/spl_token_2022 (revision f00d27a6031b, idl 13cbda721359)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_spl (revision b83335891218, idl fb06ee2a4512)",
+        "glam managed anchor_v1/idls/glam/ext_spl (revision 0cc2c7ed4ef6, idl 5ebe2d5d43c5)",
     },
     instructions: [
       {
@@ -5046,11 +5046,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/system (revision 7c70ebdc8bcf, idl bb1a83194457)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/glam_protocol_staging (revision cd1532b37886, idl 874250cef4d0)",
+        "glam managed anchor_v1/idls/glam/glam_protocol_staging (revision ab88e0796ef2, idl 4b154b17ee04)",
     },
     instructions: [
       {
@@ -5205,11 +5205,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgL6y4uWjsfM3Qjs5euoTDmEcXoUjqx8rkYJhYngG",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/loopscale (revision bdd5dde55d50, idl 0f36211402c6)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_loopscale_staging (revision 3c771a08da05, idl 18270b2bc1ea)",
+        "glam managed anchor_v1/idls/glam/ext_loopscale_staging (revision e8808e5c2c7c, idl 18270b2bc1ea)",
     },
     instructions: [
       {
@@ -8010,11 +8010,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgNyHgtURH7iuMn19GQczzv6Wc9fhPV2WDySZVyKx",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/ntbundle (revision fa1bf207f95e, idl 175030974bb8)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_neutral_staging (revision 07c2690cf008, idl 29118d73ec15)",
+        "glam managed anchor_v1/idls/glam/ext_neutral_staging (revision d51a425cad5a, idl 29118d73ec15)",
     },
     instructions: [
       {
@@ -8559,11 +8559,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgxS9yTioViNKdsM4DC33k1TU9un2VCYDQK8fAeSA",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/token_messenger_minter_v2 (revision c66d97e292c8, idl b9ac2aa0ddac)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_bridge_staging (revision 4f6416dde125, idl 661e6e913c0e)",
+        "glam managed anchor_v1/idls/glam/ext_bridge_staging (revision 35b7ee65d130, idl 661e6e913c0e)",
     },
     instructions: [
       {
@@ -8933,11 +8933,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/ember (revision 0648cc38d76f, idl d78e0f3715b1)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_phoenix_staging (revision baaf950cf320, idl 9687f84b921a)",
+        "glam managed anchor_v1/idls/glam/ext_phoenix_staging (revision 999879b97137, idl 9687f84b921a)",
     },
     instructions: [
       {
@@ -9195,11 +9195,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/phoenix (revision 5cf0f2d806d4, idl a5ad7ff67fd3)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_phoenix_staging (revision baaf950cf320, idl 9687f84b921a)",
+        "glam managed anchor_v1/idls/glam/ext_phoenix_staging (revision 999879b97137, idl 9687f84b921a)",
     },
     instructions: [
       {
@@ -11074,11 +11074,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/exponent_core (revision a8d92bfc0776, idl 2e84927ce940)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_exponent_staging (revision 69ff6bd9b0a7, idl b7958bc6431e)",
+        "glam managed anchor_v1/idls/glam/ext_exponent_staging (revision 04b387ad24f9, idl b7958bc6431e)",
     },
     instructions: [
       {
@@ -11833,11 +11833,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_farms (revision 649915b9c497, idl d8ac1c6584e5)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_kamino_staging (revision 21de60e2ff82, idl 446fe5182892)",
+        "glam managed anchor_v1/idls/glam/ext_kamino_staging (revision 1ddb1b5644e6, idl 83125650142b)",
     },
     instructions: [
       {
@@ -12581,11 +12581,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_lending (revision 670fb38d6e10, idl 548daab3b893)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_kamino_staging (revision 21de60e2ff82, idl 446fe5182892)",
+        "glam managed anchor_v1/idls/glam/ext_kamino_staging (revision 1ddb1b5644e6, idl 83125650142b)",
     },
     instructions: [
       {
@@ -14575,11 +14575,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_vaults (revision d7d5f670e01c, idl 8f74ad72f6c1)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_kamino_staging (revision 21de60e2ff82, idl 446fe5182892)",
+        "glam managed anchor_v1/idls/glam/ext_kamino_staging (revision 1ddb1b5644e6, idl 83125650142b)",
     },
     instructions: [
       {
@@ -15159,11 +15159,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgMghFitRBz2GXKwgpMd7L1JXd1sg59q2v5Y83vSY",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/marginfi (revision ad35a97f6a80, idl 494f94a4b865)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_marginfi_staging (revision fe0220940a0a, idl 926684f449b0)",
+        "glam managed anchor_v1/idls/glam/ext_marginfi_staging (revision aced07cb2784, idl 926684f449b0)",
     },
     instructions: [
       {
@@ -16756,11 +16756,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgmvM2o7h7GcScvXymH1oFgWskukWWxRHC1UJJ9FJ",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/marinade_finance (revision e72652d71c74, idl 7da9024f4b6c)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_marinade_staging (revision 9f62285f01e5, idl 6852b226ed68)",
+        "glam managed anchor_v1/idls/glam/ext_marinade_staging (revision 112c005abab2, idl 6852b226ed68)",
     },
     instructions: [
       {
@@ -17584,11 +17584,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/stake (revision 63da07e49f05, idl de27febd3fdb)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/glam_protocol_staging (revision cd1532b37886, idl 874250cef4d0)",
+        "glam managed anchor_v1/idls/glam/glam_protocol_staging (revision ab88e0796ef2, idl 4b154b17ee04)",
     },
     instructions: [
       {
@@ -18040,11 +18040,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgs9nJgX8PmRHWAAEP9H7xT3ZkaPWSGPYbj3mXdTa",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/spl_token (revision 3626047321fa, idl 33add106ed36)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_spl_staging (revision d1b7de218fc1, idl 70a0c6a40c4a)",
+        "glam managed anchor_v1/idls/glam/ext_spl_staging (revision c79b4b9b248a, idl 0deb38392545)",
     },
     instructions: [
       {
@@ -18401,11 +18401,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgs9nJgX8PmRHWAAEP9H7xT3ZkaPWSGPYbj3mXdTa",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/spl_token_2022 (revision f00d27a6031b, idl 13cbda721359)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_spl_staging (revision d1b7de218fc1, idl 70a0c6a40c4a)",
+        "glam managed anchor_v1/idls/glam/ext_spl_staging (revision c79b4b9b248a, idl 0deb38392545)",
     },
     instructions: [
       {
@@ -19213,11 +19213,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgJbGqoE3p1SdFA2dET9tcaCzNqGcdD8wpbGctnU9",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/jupiter_lending (revision 5a80a0ab6bd6, idl ef547c925d93)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_jupiter_staging (revision d57036509d2b, idl 1748825d2d7f)",
+        "glam managed anchor_v1/idls/glam/ext_jupiter_staging (revision a4255f99547c, idl f424fb73040c)",
     },
     instructions: [
       {
@@ -20172,11 +20172,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgJbGqoE3p1SdFA2dET9tcaCzNqGcdD8wpbGctnU9",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/jupiter_vaults (revision 596c3372bf8d, idl d4670504ee8c)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_jupiter_staging (revision d57036509d2b, idl 1748825d2d7f)",
+        "glam managed anchor_v1/idls/glam/ext_jupiter_staging (revision a4255f99547c, idl f424fb73040c)",
     },
     instructions: [
       {
@@ -20931,11 +20931,11 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgo1EgmTp2PbLSaL6Qg57P7uADx3aiRZrMsewEdSy",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
       source_idl:
         "glam managed anchor_v1/idls/external/whirlpools (revision 0b0be0570f29, idl f3e95ddf321d)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_orca_staging (revision 21c7ae46ef85, idl ee8a25b9afb3)",
+        "glam managed anchor_v1/idls/glam/ext_orca_staging (revision 6deaac41c956, idl ee8a25b9afb3)",
     },
     instructions: [
       {

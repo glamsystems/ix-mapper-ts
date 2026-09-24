@@ -4,9 +4,9 @@
   "program_id": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
   "proxy_program_id": "gstgo1EgmTp2PbLSaL6Qg57P7uADx3aiRZrMsewEdSy",
   "provenance": {
-    "generator": "idl-src-gen@8058a2d42df0bbbda95be94eb80d09ee7e69b9f8",
+    "generator": "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
     "source_idl": "glam managed anchor_v1/idls/external/whirlpools (revision 0b0be0570f29, idl f3e95ddf321d)",
-    "proxy_idl": "glam managed anchor_v1/idls/glam/ext_orca_staging (revision 21c7ae46ef85, idl ee8a25b9afb3)",
+    "proxy_idl": "glam managed anchor_v1/idls/glam/ext_orca_staging (revision 6deaac41c956, idl ee8a25b9afb3)",
     "config_revision": 1
   },
   "instructions": [
