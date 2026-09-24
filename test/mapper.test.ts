@@ -34,9 +34,9 @@ interface Case {
   readonly expected: Record<string, unknown>;
 }
 
-const STATE = "State1111111111111111111111111111111111111";
-const VAULT = "Vau1t1111111111111111111111111111111111111";
-const SIGNER = "Signer111111111111111111111111111111111111";
+const STATE = "State11111111111111111111111111111111111111";
+const VAULT = "Vau1t11111111111111111111111111111111111111";
+const SIGNER = "Signer1111111111111111111111111111111111111";
 const PROGRAM = "Src1111111111111111111111111111111111111111";
 const PROXY = "Proxy11111111111111111111111111111111111111";
 const context = { glamState: STATE, glamVault: VAULT, glamSigner: SIGNER };
@@ -365,7 +365,7 @@ describe("createMapper", () => {
       address:
         position.expect === "glam_vault"
           ? VAULT
-          : (position.expect ?? "Other111111111111111111111111111111111111111"),
+          : (position.expect ?? "Another1111111111111111111111111111111111111"),
       writable: position.writable,
       signer: position.signer,
     }));

@@ -6,7 +6,7 @@
     "programAddress": "Stake11111111111111111111111111111111111111",
     "accounts": [
       {
-        "address": "StakeAcct111111111111111111111111111111111",
+        "address": "StakeAcct1111111111111111111111111111111111",
         "writable": true,
         "signer": false
       },
@@ -16,7 +16,7 @@
         "signer": false
       },
       {
-        "address": "Vau1t1111111111111111111111111111111111111",
+        "address": "Vau1t11111111111111111111111111111111111111",
         "writable": false,
         "signer": true
       }
@@ -24,9 +24,9 @@
     "data": [1, 0, 0, 0, 1, 2, 3]
   },
   "context": {
-    "glamState": "State1111111111111111111111111111111111111",
-    "glamVault": "Vau1t1111111111111111111111111111111111111",
-    "glamSigner": "Signer111111111111111111111111111111111111",
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111",
     "integrationAuthority": true
   },
   "expected": {
