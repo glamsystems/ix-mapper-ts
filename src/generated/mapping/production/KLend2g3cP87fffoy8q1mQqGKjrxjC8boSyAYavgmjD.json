@@ -2265,7 +2265,7 @@
         }
       ],
       "remaining_accounts": {
-        "kind": "any"
+        "kind": "none"
       }
     },
     {

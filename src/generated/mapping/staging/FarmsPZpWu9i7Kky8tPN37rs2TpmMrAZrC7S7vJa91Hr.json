@@ -212,7 +212,7 @@
         }
       ],
       "remaining_accounts": {
-        "kind": "any"
+        "kind": "none"
       }
     },
     {
@@ -374,7 +374,7 @@
         }
       ],
       "remaining_accounts": {
-        "kind": "any"
+        "kind": "none"
       }
     },
     {
@@ -555,7 +555,7 @@
         }
       ],
       "remaining_accounts": {
-        "kind": "any"
+        "kind": "none"
       }
     },
     {
@@ -670,7 +670,7 @@
         }
       ],
       "remaining_accounts": {
-        "kind": "any"
+        "kind": "none"
       }
     },
     {
@@ -867,7 +867,7 @@
         }
       ],
       "remaining_accounts": {
-        "kind": "any"
+        "kind": "none"
       }
     }
   ]

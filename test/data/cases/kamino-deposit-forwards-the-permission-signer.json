@@ -1,0 +1,239 @@
+{
+  "name": "kamino-deposit-forwards-the-permission-signer",
+  "note": "a permissioned market's permission authority, appended after the list and signing, rides last with its signature",
+  "environment": "production",
+  "instruction": {
+    "programAddress": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+    "accounts": [
+      {
+        "address": "Vau1t11111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      },
+      {
+        "address": "K111111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "K211111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "K311111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "K411111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "K511111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "K611111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "K711111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "K811111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "K911111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "KaminoAcct111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "K111111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "K121111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "K131111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "K141111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "K151111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "K161111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Perm111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      }
+    ],
+    "data": [216, 224, 191, 27, 204, 151, 102, 175, 1, 0, 0, 0, 0, 0, 0, 0]
+  },
+  "context": {
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+    "source": "deposit_reserve_liquidity_and_obligation_collateral_v2",
+    "handler": "lending_deposit_reserve_liquidity_and_obligation_collateral_v2",
+    "instruction": {
+      "programAddress": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+      "accounts": [
+        {
+          "address": "State11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "AuthkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "KLend2g3cP87fffoy8q1mQqGKjrxjC8boSyAYavgmjD",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "11111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "K111111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "K211111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "K311111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "K411111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "K511111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "K611111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "K711111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "K811111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "K911111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "KaminoAcct111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "K111111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "K121111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "K131111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "K141111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "K151111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "K161111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Perm111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [33, 146, 50, 121, 127, 94, 92, 192, 1, 0, 0, 0, 0, 0, 0, 0]
+    }
+  }
+}

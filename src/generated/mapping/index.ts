@@ -711,7 +711,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
             signer: false,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
       {
         name: "idl_missing_types",
@@ -858,7 +858,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
             signer: false,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
       {
         name: "refresh_farm",
@@ -1015,7 +1015,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
             signer: false,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
       {
         name: "transfer_ownership",
@@ -1115,7 +1115,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
             sentinel: true,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
       {
         name: "update_farm_admin",
@@ -1281,7 +1281,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
             signer: false,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
     ],
   },
@@ -3250,7 +3250,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
             signer: false,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
       {
         name: "withdraw_obligation_collateral_v2",
@@ -12000,7 +12000,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             signer: false,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
       {
         name: "idl_missing_types",
@@ -12147,7 +12147,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             signer: false,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
       {
         name: "refresh_farm",
@@ -12304,7 +12304,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             signer: false,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
       {
         name: "transfer_ownership",
@@ -12404,7 +12404,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             sentinel: true,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
       {
         name: "update_farm_admin",
@@ -12570,7 +12570,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             signer: false,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
     ],
   },
@@ -14539,7 +14539,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             signer: false,
           },
         ],
-        remaining_accounts: { kind: "any" },
+        remaining_accounts: { kind: "none" },
       },
       {
         name: "withdraw_obligation_collateral_v2",
