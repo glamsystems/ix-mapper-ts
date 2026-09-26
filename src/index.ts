@@ -19,6 +19,7 @@ export type {
   Provenance,
   RemainingAccounts,
   SourceAccount,
+  SuppliedAccount,
   SourceSeat,
   StaticSeat,
   UnsupportedInstruction,
@@ -29,6 +30,7 @@ export { MappingDocumentError } from "./errors.js";
 export type {
   Mapper,
   MappingContext,
+  SuppliedAccountsRequest,
   MapResult,
   NeutralAccount,
   NeutralInstruction,

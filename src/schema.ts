@@ -76,6 +76,22 @@ export interface RemainingAccounts {
   readonly kind: "any" | "none";
 }
 
+/**
+ * One account the caller supplies to a mapped instruction, inserted after the seats and
+ * before the accounts beyond the list, read-only and unsigned: a GLAM-side account the
+ * handler reads from its remaining accounts that a native instruction never carries (a
+ * price oracle, a strategy's market). The mapper interprets no role; it hands the role and
+ * the addresses at the `of` positions to the context's supplier and inserts what comes back.
+ */
+export interface SuppliedAccount {
+  /** What the account is, in the caller's vocabulary; never blank. */
+  readonly role: string;
+  /** Source positions whose addresses the supplier receives with the role. */
+  readonly of?: readonly number[];
+  /** The supplier may leave it out; optional accounts trail the required ones. */
+  readonly optional?: true;
+}
+
 export interface Handler {
   readonly name: string;
   readonly discriminator: readonly number[];
@@ -89,6 +105,8 @@ export interface MappedInstruction {
   readonly source_accounts: readonly SourceAccount[];
   readonly destination_accounts: readonly DestinationAccount[];
   readonly remaining_accounts: RemainingAccounts;
+  /** What the context supplies after the seats, in order; absent when nothing is. */
+  readonly supplied_accounts?: readonly SuppliedAccount[];
 }
 
 export interface PassthroughInstruction {

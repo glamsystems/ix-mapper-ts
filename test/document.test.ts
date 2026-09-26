@@ -178,6 +178,35 @@ describe("parseMappingDocument", () => {
         .remaining_accounts,
       { kind: "any" },
     );
+    assert.equal(
+      (mapped as { supplied_accounts?: unknown }).supplied_accounts,
+      undefined,
+    );
+  });
+
+  it("admits supplied accounts and reads them as written", () => {
+    const document = parseMappingDocument(
+      withPatch((d) => {
+        // without the seat a client may leave out, and its position
+        (entry(d).destination_accounts as unknown[]).pop();
+        (entry(d).source_accounts as unknown[]).pop();
+        entry(d).supplied_accounts = [
+          { role: "asset_oracle", of: [1] },
+          { role: "asset_oracle", of: [0, 1] },
+          { role: "sol_usd_oracle", optional: true },
+        ];
+      }),
+    );
+    // the same position may serve two roles
+    assert.deepEqual(
+      (document.instructions[0] as { supplied_accounts?: unknown })
+        .supplied_accounts,
+      [
+        { role: "asset_oracle", of: [1] },
+        { role: "asset_oracle", of: [0, 1] },
+        { role: "sol_usd_oracle", optional: true },
+      ],
+    );
   });
 
   const refusals: [
@@ -499,6 +528,149 @@ describe("parseMappingDocument", () => {
         seats[4]!.index = 3;
       },
       "forwards omittable position 2 after position 3",
+    ],
+    [
+      "supplied accounts on a passthrough",
+      (d) => (entry(d, 1).supplied_accounts = []),
+      'a passthrough entry carries no "supplied_accounts"',
+    ],
+    [
+      "supplied accounts on an unsupported entry",
+      (d) => (entry(d, 2).supplied_accounts = []),
+      'a unsupported entry carries no "supplied_accounts"',
+    ],
+    [
+      "supplied accounts that are not an array",
+      (d) => (entry(d).supplied_accounts = 5),
+      "supplied_accounts must be an array",
+    ],
+    [
+      "a supplied account that is not an object",
+      (d) => (entry(d).supplied_accounts = [5]),
+      "supplied_accounts[0]: must be an object",
+    ],
+    [
+      "a null supplied account",
+      (d) => (entry(d).supplied_accounts = [null]),
+      "supplied_accounts[0]: must be an object",
+    ],
+    [
+      "a supplied account without a role",
+      (d) => (entry(d).supplied_accounts = [{ of: [1] }]),
+      "supplied_accounts[0]: role must be a non-blank string",
+    ],
+    [
+      "a second supplied account without a role",
+      (d) => (entry(d).supplied_accounts = [{ role: "a" }, { of: [1] }]),
+      "supplied_accounts[1]: role must be a non-blank string",
+    ],
+    [
+      "a supplied account with a blank role",
+      (d) => (entry(d).supplied_accounts = [{ role: " " }]),
+      "role must be a non-blank string",
+    ],
+    [
+      "a supplied account with an unknown field",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", x: 1 }]),
+      'unknown field "x"',
+    ],
+    [
+      "a supplied account whose of is not an array",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", of: 5 }]),
+      "of must be an array",
+    ],
+    [
+      "a supplied account whose of holds a string",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", of: ["x"] }]),
+      "of[0] must be a non-negative integer",
+    ],
+    [
+      "a supplied account whose of holds a negative",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", of: [-1] }]),
+      "of[0] must be a non-negative integer",
+    ],
+    [
+      "a supplied account whose of holds a fraction",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", of: [1.5] }]),
+      "of[0] must be a non-negative integer",
+    ],
+    [
+      "a supplied account naming the position just past the list",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", of: [4] }]),
+      "supplied_accounts[0] names source position 4, which is out of range of 4",
+    ],
+    [
+      "a supplied account naming a position out of range",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", of: [9] }]),
+      "supplied_accounts[0] names source position 9, which is out of range of 4",
+    ],
+    [
+      "a supplied account naming an omittable position",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", of: [3] }]),
+      "supplied_accounts[0] names source position 3, which a client may leave out; an absent run would shift it",
+    ],
+    [
+      "a supplied account naming a position a client may pass as the program id",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", of: [2] }]),
+      "supplied_accounts[0] names source position 2, which a client may pass as the program id; an absent optional names no account",
+    ],
+    [
+      "a supplied account with a role that is not a string",
+      (d) => (entry(d).supplied_accounts = [{ role: 5 }]),
+      "role must be a non-blank string",
+    ],
+    [
+      "a supplied account with two unknown fields",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", aaa: 1, bbb: 2 }]),
+      'unknown field "aaa"',
+    ],
+    [
+      "a second bad of position",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", of: [1, "x"] }]),
+      "of[1] must be a non-negative integer",
+    ],
+    [
+      "two bad of positions name the first",
+      (d) => (entry(d).supplied_accounts = [{ role: "r", of: ["x", "y"] }]),
+      "of[0] must be a non-negative integer",
+    ],
+    [
+      "a supplied account whose optional is not a boolean",
+      (d) => (entry(d).supplied_accounts = [{ role: "a", optional: "yes" }]),
+      "optional must be true when present",
+    ],
+    [
+      "a bad element ahead of a shape fault: the element is named first",
+      (d) =>
+        (entry(d).supplied_accounts = [
+          { role: "a", optional: true },
+          { role: "b", of: ["x"] },
+        ]),
+      "supplied_accounts[1]: of[0] must be a non-negative integer",
+    ],
+    [
+      "a required supplied account after an optional one",
+      (d) =>
+        (entry(d).supplied_accounts = [
+          { role: "a", optional: true },
+          { role: "b" },
+        ]),
+      "supplied_accounts[1] is required after an optional one; optional accounts trail",
+    ],
+    [
+      "supplied accounts on an entry with a seat a client may leave out",
+      (d) => (entry(d).supplied_accounts = [{ role: "r" }]),
+      "supplied_accounts follow seat 4, which a client may leave out; an absent one would shift them",
+    ],
+    [
+      "a supplied account whose optional is false",
+      (d) => (entry(d).supplied_accounts = [{ role: "a", optional: false }]),
+      "optional must be true when present",
+    ],
+    [
+      "a supplied account whose optional is the string true",
+      (d) => (entry(d).supplied_accounts = [{ role: "a", optional: "true" }]),
+      "optional must be true when present",
     ],
   ];
   for (const [what, patch, message] of refusals) {

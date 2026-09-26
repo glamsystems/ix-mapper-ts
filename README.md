@@ -75,7 +75,12 @@ Every instruction of the program appears once, with its `discriminator` and a
   GLAM account by name, a `static` address, or a `source` position forwarded; a `sentinel`
   seat is an optional account of
   the handler's own, where the source program's id (an absent optional, as Anchor clients
-  pass it) becomes the proxy program's id. `remaining_accounts` says what to do with
+  pass it) becomes the proxy program's id. `supplied_accounts` lists, in order, accounts the
+  context supplies after the seats: a handler reads them from its remaining accounts and a
+  native instruction never carries them (a pool's price oracles, a strategy's market). Each
+  names a `role` the mapper does not interpret, the source positions (`of`) whose addresses
+  the supplier receives with it, and `optional` when the supplier may leave it out; optional
+  ones trail the required ones. `remaining_accounts` says what to do with
   accounts beyond the listed positions: `any` forwards them after the seats, `none`
   refuses them.
 - `passthrough`: forwarded unchanged. The `reason` says why: the instruction's declared
@@ -83,10 +88,9 @@ Every instruction of the program appears once, with its `discriminator` and a
 - `unsupported`: refused, with the `reason`: no GLAM handler proxies it, it declares no
   accounts so nothing says which of the accounts it takes sign (the Token programs'
   `batch`, whose nested instructions carry their own authorities inside its data), the
-  handler needs accounts a native instruction never carries (Orca's liquidity handlers read
-  GLAM's config and price oracles from their remaining accounts, Loopscale's
-  `update_strategy` its market), it is left out by configuration, or why the generator
-  could not derive its handler.
+  handler needs accounts a native instruction never carries and the document does not list
+  them as supplied, it is left out by configuration, or why the generator could not derive
+  its handler.
 
 ## The rules
 
@@ -95,8 +99,11 @@ version it does not know, seats that are not dense from 0, a source position for
 twice or forwarded read-only while the native position is writable, an omittable optional
 ahead of a required position, a seat after an omittable one or omittable seats out of
 source order, a sentinel seat that does not forward an optional the client passes as the
-program id, an unknown dynamic account, and a discriminator that is a prefix of another's,
-since matching is by prefix.
+program id, an unknown dynamic account, a discriminator that is a prefix of another's,
+since matching is by prefix, and supplied accounts on a `passthrough` or `unsupported`
+entry or on an entry with a seat a client may leave out (an absent seat would shift them),
+naming a position outside the list or an optional one (a client may leave it out or pass
+the program id in its place), or a required one after an optional one.
 
 At mapping time, an instruction of a program with no document passes through: GLAM does
 not proxy that program. For a documented program, the entry whose discriminator prefixes
@@ -108,7 +115,12 @@ disagrees with its seat (unless the IDL leaves it to the caller), and accounts b
 list when the rule is `none`. It sets the handler's flags on every seat rather than
 copying the source's, with one exception: the source program's id at a sentinel seat
 becomes the proxy program's id, read-only and unsigned, as an absent optional reaches an
-Anchor program, since the invoked program is never a writable account. It forwards
-remaining accounts after the seats with the flags the caller gave them, and relays the
-data verbatim behind the swapped discriminator. The Java mapper, `ix-mapper-java`, still
-reads the earlier document and moves to these documents and rules in its own change.
+Anchor program, since the invoked program is never a writable account. For an entry with
+supplied accounts it asks the context's supplier once, with the roles and the addresses at
+their `of` positions and the instruction itself, and inserts the answer after the seats,
+read-only and unsigned, in the answer's order: no supplier, a null answer or a supplier
+that throws refuses with `context`, a count outside the required and optional bounds or a
+null account with `supplied_accounts`. It forwards remaining accounts after that with the flags the caller
+gave them, and relays the data verbatim behind the swapped discriminator. The Java mapper,
+`ix-mapper-java`, reads the same documents and implements the same rules; the conformance
+cases under `test/data/cases` are the contract both run.

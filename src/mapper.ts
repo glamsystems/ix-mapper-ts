@@ -4,6 +4,7 @@ import type {
   DynamicAccountName,
   MappedInstruction,
   MappingDocument,
+  SuppliedAccount,
 } from "./schema.js";
 
 /** An account of an instruction, in the terms every instruction shape shares. */
@@ -20,6 +21,32 @@ export interface NeutralInstruction {
   readonly data: Uint8Array;
 }
 
+/**
+ * What the mapper asks the context's supplier for, once per mapped instruction whose entry
+ * lists supplied accounts: the roles, in the order the accounts are inserted, each with the
+ * addresses found at its `of` positions, and the instruction itself for a supplier that reads
+ * its data. The supplier answers with the accounts in the same order, the required ones
+ * first; it may leave out a trailing run of optional ones.
+ */
+export interface SuppliedAccountsRequest {
+  /** The GLAM program the mapped instruction targets. */
+  readonly proxyProgram: string;
+  /** The source program. */
+  readonly program: string;
+  /** The entry's name, the source instruction. */
+  readonly source: string;
+  /** The GLAM instruction that carries it. */
+  readonly handler: string;
+  /** The supplied accounts the entry lists, with their `of` addresses. */
+  readonly roles: readonly {
+    readonly role: string;
+    readonly of: readonly string[];
+    readonly optional: boolean;
+  }[];
+  /** The source instruction as the caller passed it. */
+  readonly instruction: NeutralInstruction;
+}
+
 /** What a mapping needs from the caller: the GLAM accounts a document seats dynamically. */
 export interface MappingContext {
   readonly glamState: string;
@@ -27,6 +54,16 @@ export interface MappingContext {
   readonly glamSigner: string;
   /** The integration authority of a proxy program, for a document that seats one. */
   readonly integrationAuthority?: (proxyProgram: string) => string | undefined;
+  /**
+   * The accounts a document lists as supplied, for an entry that lists any: called once
+   * per such instruction, answering in the request's order, the required ones first, a
+   * trailing run of optional ones left out at will. No supplier or a nullish answer refuses
+   * the instruction with reason `context`; a wrong count or a nullish account with
+   * `supplied_accounts`; a throw with `context`, never as an escape.
+   */
+  readonly suppliedAccounts?: (
+    request: SuppliedAccountsRequest,
+  ) => readonly (string | null | undefined)[] | null | undefined;
 }
 
 export type UnsupportedReason =
@@ -42,8 +79,10 @@ export type UnsupportedReason =
   | "account_privilege"
   /** The instruction carries accounts beyond the list and the document forbids them. */
   | "remaining_accounts"
-  /** The context supplies no address for a GLAM account the document seats. */
+  /** The context supplies no address for a GLAM account the document seats, or no accounts for an entry that lists supplied ones. */
   | "context"
+  /** The context supplied the wrong number of accounts for an entry that lists supplied ones, or a null one. */
+  | "supplied_accounts"
   /** The caller's address library refused an address of the mapped instruction. */
   | "address";
 
@@ -302,6 +341,74 @@ function mapEntry(
       }
     }
   }
+  const supplied = entry.supplied_accounts ?? [];
+  if (supplied.length > 0) {
+    const supplier = context.suppliedAccounts;
+    if (supplier === undefined || supplier === null) {
+      return refuse(
+        "context",
+        `the context supplies no accounts for ${source}`,
+      );
+    }
+    // every `of` position is inside the list and none is omittable, so the instruction
+    // carries it: a shorter instruction was refused above; and no seat above was left out,
+    // since an entry with a seat a client may leave out lists no supplied accounts
+    const roles = supplied.map((account) => ({
+      role: account.role,
+      of: (account.of ?? []).map(
+        (position) => instruction.accounts[position]!.address,
+      ),
+      optional: account.optional === true,
+    }));
+    const required = supplied.filter((account) => !account.optional).length;
+    let answer: readonly (string | null | undefined)[] | null | undefined;
+    try {
+      const raw = supplier({
+        proxyProgram: document.proxy_program_id,
+        program,
+        source,
+        handler: entry.handler.name,
+        roles,
+        instruction,
+      });
+      // read once, here: an answer that fails while it is read is the supplier's failure,
+      // and so is one that is not an array, whatever an untyped caller returned
+      if (raw !== null && raw !== undefined && !Array.isArray(raw)) {
+        throw new TypeError(
+          "the supplier answered with something other than an array",
+        );
+      }
+      answer = raw === null || raw === undefined ? raw : Array.from(raw);
+    } catch (error) {
+      return refuse(
+        "context",
+        `the context's supplied accounts failed for ${source}: ${error instanceof Error ? error.message : describe(error)}`,
+      );
+    }
+    if (answer === null || answer === undefined) {
+      return refuse(
+        "context",
+        `the context supplies no accounts for ${source}`,
+      );
+    }
+    const max = supplied.length;
+    if (answer.length < required || answer.length > max) {
+      return refuse(
+        "supplied_accounts",
+        `${source} takes ${required === max ? String(max) : `${required} to ${max}`}${max === 1 ? " supplied account (" : " supplied accounts ("}${roleNames(supplied)}); the context supplied ${answer.length}`,
+      );
+    }
+    for (let i = 0; i < answer.length; i++) {
+      const address = answer[i];
+      if (address === null || address === undefined) {
+        return refuse(
+          "supplied_accounts",
+          `the context supplied a null account at ${i} for ${source}`,
+        );
+      }
+      accounts.push({ address, writable: false, signer: false });
+    }
+  }
   if (provided > positions.length) {
     if (entry.remaining_accounts.kind === "none") {
       return refuse(
@@ -352,6 +459,13 @@ function dynamicAddress(
         return error instanceof Error ? error : new Error(describe(error));
       }
   }
+}
+
+/** The roles of an entry's supplied accounts, comma-separated, an optional one marked `?`. */
+function roleNames(supplied: readonly SuppliedAccount[]): string {
+  return supplied
+    .map((account) => (account.optional ? `${account.role}?` : account.role))
+    .join(", ");
 }
 
 /** A thrown value as text, for a value that refuses conversion. */

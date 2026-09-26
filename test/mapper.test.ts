@@ -10,6 +10,7 @@ import {
   type MappingContext,
   type MapResult,
   type NeutralInstruction,
+  type SuppliedAccountsRequest,
 } from "../src/index.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -30,8 +31,30 @@ interface Case {
     glamVault: string;
     glamSigner: string;
     integrationAuthority?: true;
+    /** Per entry the supplier serves, what the mapper must ask for and what it gets. */
+    suppliedAccounts?: Record<string, SuppliedSpec>;
   };
   readonly expected: Record<string, unknown>;
+}
+
+/**
+ * The supplier's side of one entry: the request the mapper makes for it, exactly once (its
+ * instruction is the case's own), and either the answer (addresses, a null kept) or the
+ * message the supplier throws with.
+ */
+interface SuppliedSpec {
+  readonly request: {
+    readonly proxyProgram: string;
+    readonly program: string;
+    readonly handler: string;
+    readonly roles: {
+      readonly role: string;
+      readonly of: string[];
+      readonly optional: boolean;
+    }[];
+  };
+  readonly answer?: (string | null)[] | null;
+  readonly throws?: string;
 }
 
 const STATE = "State11111111111111111111111111111111111111";
@@ -81,6 +104,9 @@ describe("the mapping cases", () => {
         testCase.environment === null
           ? createMapper({ documents: testCase.documents ?? [] })
           : createMapper({ environment: testCase.environment });
+      const instruction = toInstruction(testCase.instruction);
+      const specs = testCase.context.suppliedAccounts;
+      const asked: SuppliedAccountsRequest[] = [];
       const context: MappingContext = {
         glamState: testCase.context.glamState,
         glamVault: testCase.context.glamVault,
@@ -88,9 +114,39 @@ describe("the mapping cases", () => {
         ...(testCase.context.integrationAuthority
           ? { integrationAuthority: authorityOf }
           : {}),
+        ...(specs === undefined || specs === null
+          ? {}
+          : {
+              suppliedAccounts: (request) => {
+                asked.push(request);
+                const spec = specs[request.source];
+                if (spec === undefined) return null;
+                if (spec.throws !== undefined) throw new Error(spec.throws);
+                return spec.answer ?? null;
+              },
+            }),
       };
-      const result = mapper.map(toInstruction(testCase.instruction), context);
+      const result = mapper.map(instruction, context);
       assert.deepEqual(toComparable(result), testCase.expected);
+      // the mapper asked once per served entry, for the roles the case spells out, with the
+      // addresses at their `of` positions, and handed the supplier the instruction itself
+      for (const [entry, spec] of Object.entries(specs ?? {})) {
+        const requests = asked.filter((request) => request.source === entry);
+        assert.equal(requests.length, 1, `${entry} is asked once`);
+        const request = requests[0]!;
+        assert.equal(request.instruction, instruction);
+        assert.deepEqual(
+          {
+            proxyProgram: request.proxyProgram,
+            program: request.program,
+            handler: request.handler,
+            roles: request.roles,
+          },
+          spec.request,
+        );
+      }
+      // and nothing else was asked: an entry without supplied accounts leaves the supplier alone
+      assert.equal(asked.length, Object.keys(specs ?? {}).length);
     });
   }
 });
@@ -350,6 +406,44 @@ describe("createMapper", () => {
       integrationAuthority: () => PROXY,
     });
     assert.equal(found.kind, "mapped");
+  });
+
+  it("refuses an untyped supplier's non-array answer as its failure", () => {
+    const needing = JSON.parse(
+      fs.readFileSync(
+        path.join(casesDir, "supplied-accounts-need-a-supplier.json"),
+        "utf8",
+      ),
+    ) as Case;
+    const mapper = createMapper({ documents: needing.documents ?? [] });
+    const result = mapper.map(toInstruction(needing.instruction), {
+      ...context,
+      suppliedAccounts: () => "Price1A" as unknown as string[],
+    });
+    assert.equal(result.kind, "unsupported");
+    if (result.kind !== "unsupported") return;
+    assert.equal(result.reason, "context");
+    assert.match(result.message, /failed for place: .*other than an array/);
+  });
+
+  it("treats a null supplier as none, like an absent one", () => {
+    // the need-a-supplier case, whose context has none; a JavaScript caller may pass null
+    const needing = JSON.parse(
+      fs.readFileSync(
+        path.join(casesDir, "supplied-accounts-need-a-supplier.json"),
+        "utf8",
+      ),
+    ) as Case;
+    const mapper = createMapper({ documents: needing.documents ?? [] });
+    const withNull = { ...context, suppliedAccounts: null };
+    const result = mapper.map(
+      toInstruction(needing.instruction),
+      withNull as unknown as MappingContext,
+    );
+    assert.equal(result.kind, "unsupported");
+    if (result.kind !== "unsupported") return;
+    assert.equal(result.reason, "context");
+    assert.equal(result.message, "the context supplies no accounts for place");
   });
 
   it("turns a throwing integration authority lookup into a refusal, whatever it throws", () => {

@@ -1,0 +1,140 @@
+{
+  "name": "supplied-accounts-come-before-the-extras-rule-with-a-supplier",
+  "environment": null,
+  "note": "with a supplier, it is asked once and the extras are then refused by the entry's rule",
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "place",
+          "discriminator": [7],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_place",
+            "discriminator": [9, 9]
+          },
+          "source_accounts": [
+            {
+              "name": "mint_a",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "name": "mint_b",
+              "writable": false,
+              "signer": false
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "dynamic",
+              "name": "glam_vault",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "source",
+              "source": 0,
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 2,
+              "kind": "source",
+              "source": 1,
+              "writable": false,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "none"
+          },
+          "supplied_accounts": [
+            {
+              "role": "asset_oracle",
+              "of": [0]
+            },
+            {
+              "role": "asset_oracle",
+              "of": [1]
+            },
+            {
+              "role": "sol_usd_oracle",
+              "optional": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "MintA11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "MintB11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Extra11111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [7, 5, 6]
+  },
+  "context": {
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111",
+    "suppliedAccounts": {
+      "place": {
+        "request": {
+          "proxyProgram": "Proxy11111111111111111111111111111111111111",
+          "program": "Src1111111111111111111111111111111111111111",
+          "handler": "proxy_place",
+          "roles": [
+            {
+              "role": "asset_oracle",
+              "of": ["MintA11111111111111111111111111111111111111"],
+              "optional": false
+            },
+            {
+              "role": "asset_oracle",
+              "of": ["MintB11111111111111111111111111111111111111"],
+              "optional": false
+            },
+            {
+              "role": "sol_usd_oracle",
+              "of": [],
+              "optional": true
+            }
+          ]
+        },
+        "answer": [
+          "Price1A111111111111111111111111111111111111",
+          "Price1B111111111111111111111111111111111111",
+          "SoLUsd1111111111111111111111111111111111111"
+        ]
+      }
+    }
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "place",
+    "reason": "remaining_accounts",
+    "message": "place takes no accounts beyond its 2; the instruction carries 3"
+  }
+}

@@ -11,6 +11,7 @@ import {
   type Provenance,
   type RemainingAccounts,
   type SourceAccount,
+  type SuppliedAccount,
 } from "./schema.js";
 
 /**
@@ -20,8 +21,10 @@ import {
  * while the native position is writable, an omittable optional ahead of a required
  * position, a seat after an omittable one or omittable seats out of source order, a
  * sentinel seat that does not forward an optional the client passes as the program id, an
- * unknown dynamic account, and a discriminator that is a prefix of another's, since
- * matching is by prefix.
+ * unknown dynamic account, a discriminator that is a prefix of another's, since matching is
+ * by prefix, and supplied accounts on a `passthrough` or `unsupported` entry or on an entry
+ * with a seat a client may leave out, naming a position outside the list or an optional
+ * one, or a required one after an optional one.
  */
 export function parseMappingDocument(
   value: unknown,
@@ -139,6 +142,7 @@ function parseEntry(value: unknown, at: string): InstructionEntry {
     "source_accounts",
     "destination_accounts",
     "remaining_accounts",
+    "supplied_accounts",
   ]);
   const name = nonBlankString(object.name, at, "name");
   const discriminator = byteArray(object.discriminator, at, "discriminator");
@@ -157,6 +161,7 @@ function parseEntry(value: unknown, at: string): InstructionEntry {
           "source_accounts",
           "destination_accounts",
           "remaining_accounts",
+          "supplied_accounts",
         ],
         `a ${disposition} entry`,
       );
@@ -185,7 +190,19 @@ function parseEntry(value: unknown, at: string): InstructionEntry {
               object.remaining_accounts,
               `${at} remaining_accounts`,
             );
-      validateShape(source_accounts, destination_accounts, at);
+      const supplied_accounts =
+        object.supplied_accounts === undefined
+          ? undefined
+          : asArray(object.supplied_accounts, at, "supplied_accounts").map(
+              (account, i) =>
+                parseSuppliedAccount(account, `${at} supplied_accounts[${i}]`),
+            );
+      validateShape(
+        source_accounts,
+        destination_accounts,
+        supplied_accounts ?? [],
+        at,
+      );
       return {
         name,
         discriminator,
@@ -194,6 +211,7 @@ function parseEntry(value: unknown, at: string): InstructionEntry {
         source_accounts,
         destination_accounts,
         remaining_accounts,
+        ...(supplied_accounts === undefined ? {} : { supplied_accounts }),
       };
     }
     case undefined:
@@ -336,12 +354,77 @@ function parseRemaining(value: unknown, at: string): RemainingAccounts {
   return { kind: object.kind };
 }
 
-/** The invariants over a map entry's positions and seats. */
+function parseSuppliedAccount(value: unknown, at: string): SuppliedAccount {
+  const object = asObject(value, at, ["role", "of", "optional"]);
+  const role = nonBlankString(object.role, at, "role");
+  const of =
+    object.of === undefined
+      ? undefined
+      : asArray(object.of, at, "of").map((position, i) =>
+          nonNegativeInteger(position, at, `of[${i}]`),
+        );
+  if (object.optional !== undefined && object.optional !== true) {
+    throw new MappingDocumentError(at, "optional must be true when present");
+  }
+  return {
+    role,
+    ...(of === undefined ? {} : { of }),
+    ...(object.optional === true ? { optional: true as const } : {}),
+  };
+}
+
+/**
+ * Supplied accounts name positions inside the list and none that is optional (an absent
+ * run would shift what they name, and a program id in an optional's place names no
+ * account), and the optional ones trail the required ones, so a supplier's shorter answer
+ * leaves out only a trailing run.
+ */
+function validateSupplied(
+  sources: readonly SourceAccount[],
+  supplied: readonly SuppliedAccount[],
+  at: string,
+): void {
+  let optionalSeen = false;
+  supplied.forEach((account, i) => {
+    for (const position of account.of ?? []) {
+      if (position >= sources.length) {
+        throw new MappingDocumentError(
+          at,
+          `supplied_accounts[${i}] names source position ${position}, which is out of range of ${sources.length}`,
+        );
+      }
+      if (sources[position]!.optional === "omitted") {
+        throw new MappingDocumentError(
+          at,
+          `supplied_accounts[${i}] names source position ${position}, which a client may leave out; an absent run would shift it`,
+        );
+      }
+      if (sources[position]!.optional === "program_id") {
+        throw new MappingDocumentError(
+          at,
+          `supplied_accounts[${i}] names source position ${position}, which a client may pass as the program id; an absent optional names no account`,
+        );
+      }
+    }
+    if (account.optional) {
+      optionalSeen = true;
+    } else if (optionalSeen) {
+      throw new MappingDocumentError(
+        at,
+        `supplied_accounts[${i}] is required after an optional one; optional accounts trail`,
+      );
+    }
+  });
+}
+
+/** The invariants over a map entry's positions, seats and supplied accounts. */
 function validateShape(
   sources: readonly SourceAccount[],
   seats: readonly DestinationAccount[],
+  supplied: readonly SuppliedAccount[],
   at: string,
 ): void {
+  validateSupplied(sources, supplied, at);
   const seen = new Array<boolean>(seats.length).fill(false);
   const forwarded = new Array<boolean>(sources.length).fill(false);
   for (const seat of seats) {
@@ -405,6 +488,13 @@ function validateShape(
       seat.kind === "source" && sources[seat.source]!.optional === "omitted";
     if (omittable) {
       omittableSeen = true;
+      if (supplied.length > 0) {
+        // supplied accounts follow the seats, so the first would land where the absent one was
+        throw new MappingDocumentError(
+          at,
+          `supplied_accounts follow seat ${seat.index}, which a client may leave out; an absent one would shift them`,
+        );
+      }
       if (seat.source <= lastOmittableSource) {
         throw new MappingDocumentError(
           at,
