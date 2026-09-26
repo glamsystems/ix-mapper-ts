@@ -1,0 +1,438 @@
+[
+  {
+    "name": "production-advance_nonce_account-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [4, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "advance_nonce_account",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-allocate-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [8, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "allocate",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-allocate_with_seed-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [9, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "allocate_with_seed",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-assign-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [1, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "assign",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-assign_with_seed-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [10, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "assign_with_seed",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-authorize_nonce_account-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [7, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "authorize_nonce_account",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-create_account-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [0, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "create_account",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-create_account_allow_prefund-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [13, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "create_account_allow_prefund",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-create_account_with_seed-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [3, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "create_account_with_seed",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-initialize_nonce_account-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [6, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "11111111111111111111111111111111",
+        "accounts": [],
+        "data": [6, 0, 0, 0, 1, 2, 3]
+      },
+      "program": "11111111111111111111111111111111",
+      "source": "initialize_nonce_account",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-transfer-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "4ykhK7s4hCRenDRovtKQmBH3DpcEK5dsnx1MGd11FsD",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [2, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "4ykhK7s4hCRenDRovtKQmBH3DpcEK5dsnx1MGd11FsD",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [167, 164, 195, 155, 219, 152, 191, 230, 1, 2, 3]
+      },
+      "program": "11111111111111111111111111111111",
+      "source": "transfer",
+      "handler": "system_transfer"
+    }
+  },
+  {
+    "name": "production-transfer-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "4ykhK7s4hCRenDRovtKQmBH3DpcEK5dsnx1MGd11FsD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "AukW9kyrsLA2KUtSgQAXiN38V3ggiXEmQFhNADdPEtSx",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [2, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "transfer",
+      "reason": "remaining_accounts",
+      "message": "transfer takes no accounts beyond its 2; the instruction carries 3"
+    }
+  },
+  {
+    "name": "production-transfer_sol_with_seed-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [11, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "transfer_sol_with_seed",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-upgrade_nonce_account-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [12, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "11111111111111111111111111111111",
+        "accounts": [],
+        "data": [12, 0, 0, 0, 1, 2, 3]
+      },
+      "program": "11111111111111111111111111111111",
+      "source": "upgrade_nonce_account",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-withdraw_nonce_account-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [5, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "source": "withdraw_nonce_account",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-11111111111111111111111111111111-no-entry-matches",
+    "note": "a documented program's instruction that no entry's discriminator prefixes",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "11111111111111111111111111111111",
+      "accounts": [],
+      "data": [255, 254, 253, 252, 251, 250, 249, 248]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111"
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "11111111111111111111111111111111",
+      "reason": "unknown_instruction",
+      "message": "no instruction of 11111111111111111111111111111111 matches the data"
+    }
+  }
+]

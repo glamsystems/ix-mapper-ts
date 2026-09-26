@@ -1,0 +1,2064 @@
+[
+  {
+    "name": "staging-add_emission-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [18, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "add_emission",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-add_farm-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [22, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "add_farm",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-add_lp_tokens_metadata-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [41, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "add_lp_tokens_metadata",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-add_market_emission-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [25, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "add_market_emission",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-buy_yt-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "buy_yt",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-claim_farm_emissions-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [24, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "claim_farm_emissions",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-collect_emission-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [19, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "collect_emission",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-collect_interest-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [6, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "collect_interest",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-collect_treasury_emission-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [20, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "collect_treasury_emission",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-collect_treasury_interest-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [21, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "collect_treasury_interest",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-deposit_yt-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [7, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "deposit_yt",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-init_lp_position-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [13, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "init_lp_position",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-init_market_two-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [10, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "init_market_two",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-initialize_vault-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [2, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "initialize_vault",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-initialize_yield_position-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [3, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "initialize_yield_position",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-market_collect_emission-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [16, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "market_collect_emission",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-market_deposit_lp-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [14, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "market_deposit_lp",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-market_two_deposit_liquidity-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [11, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "market_two_deposit_liquidity",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-market_two_withdraw_liquidity-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [12, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "market_two_withdraw_liquidity",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-market_withdraw_lp-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [15, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "market_withdraw_lp",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-merge-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [5, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "merge",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-modify_farm-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [23, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "modify_farm",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-modify_market_setting-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [27, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "modify_market_setting",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-modify_vault_setting-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [26, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "modify_vault_setting",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-realloc_market-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [40, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "realloc_market",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-sell_yt-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [1, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "sell_yt",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-stage_yt_yield-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [9, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "stage_yt_yield",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-strip-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [4, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "strip",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-trade_pt-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [17, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "trade_pt",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-withdraw_yt-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [8, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "withdraw_yt",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-wrapper_buy_pt-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "J2e2jW1bTApjqKw2jtq8XsSo1PjPsLFPXjp6ANSPyXnd",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "CkBadDcNmYwwxhR7KwugyaETPqSknr5V7hFL1GbBLrtU",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "6tm664UX2LFE87mZNGLidEkBfqiSNnma4BbqJoHC9d6e",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "2eR5PoZzWCymx8rUpeoUMqViYQhtEgzkB4mALF7X4TVP",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8MZeHKqax2u1N8Amz6UZpdnA93HPXhHQrve2v3944KuW",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8K9jCeH8tg5EwTspSibZrHYEfng2CTprzgcbpjJBkWPD",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "CbASWHitd4m7YxMrpeXDLrfUYzS81MrSyaHVAcousbns",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "9uezza8ukCeGg15jz9sVrPQtXLbqMmLTaKSn2pEcvT2u",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "7sQvG1YBeWJmKAqvvwnjmudwEgX8TdHYHJBZxporc5o",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [29, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Authx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "J2e2jW1bTApjqKw2jtq8XsSo1PjPsLFPXjp6ANSPyXnd",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "CkBadDcNmYwwxhR7KwugyaETPqSknr5V7hFL1GbBLrtU",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "6tm664UX2LFE87mZNGLidEkBfqiSNnma4BbqJoHC9d6e",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "2eR5PoZzWCymx8rUpeoUMqViYQhtEgzkB4mALF7X4TVP",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "8MZeHKqax2u1N8Amz6UZpdnA93HPXhHQrve2v3944KuW",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "8K9jCeH8tg5EwTspSibZrHYEfng2CTprzgcbpjJBkWPD",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "CbASWHitd4m7YxMrpeXDLrfUYzS81MrSyaHVAcousbns",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "9uezza8ukCeGg15jz9sVrPQtXLbqMmLTaKSn2pEcvT2u",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "7sQvG1YBeWJmKAqvvwnjmudwEgX8TdHYHJBZxporc5o",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [6, 127, 6, 136, 226, 194, 250, 168, 1, 2, 3]
+      },
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_buy_pt",
+      "handler": "wrapper_buy_pt"
+    }
+  },
+  {
+    "name": "staging-wrapper_buy_pt-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "J2e2jW1bTApjqKw2jtq8XsSo1PjPsLFPXjp6ANSPyXnd",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "CkBadDcNmYwwxhR7KwugyaETPqSknr5V7hFL1GbBLrtU",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "6tm664UX2LFE87mZNGLidEkBfqiSNnma4BbqJoHC9d6e",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "2eR5PoZzWCymx8rUpeoUMqViYQhtEgzkB4mALF7X4TVP",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8MZeHKqax2u1N8Amz6UZpdnA93HPXhHQrve2v3944KuW",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8K9jCeH8tg5EwTspSibZrHYEfng2CTprzgcbpjJBkWPD",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "CbASWHitd4m7YxMrpeXDLrfUYzS81MrSyaHVAcousbns",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "9uezza8ukCeGg15jz9sVrPQtXLbqMmLTaKSn2pEcvT2u",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "7sQvG1YBeWJmKAqvvwnjmudwEgX8TdHYHJBZxporc5o",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "97DBGyij1TikcJ6EjdKkjiH2dBKbaTESSdvWXPM9Hwhq",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [29, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Authx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "J2e2jW1bTApjqKw2jtq8XsSo1PjPsLFPXjp6ANSPyXnd",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "CkBadDcNmYwwxhR7KwugyaETPqSknr5V7hFL1GbBLrtU",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "6tm664UX2LFE87mZNGLidEkBfqiSNnma4BbqJoHC9d6e",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "2eR5PoZzWCymx8rUpeoUMqViYQhtEgzkB4mALF7X4TVP",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "8MZeHKqax2u1N8Amz6UZpdnA93HPXhHQrve2v3944KuW",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "8K9jCeH8tg5EwTspSibZrHYEfng2CTprzgcbpjJBkWPD",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "CbASWHitd4m7YxMrpeXDLrfUYzS81MrSyaHVAcousbns",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "9uezza8ukCeGg15jz9sVrPQtXLbqMmLTaKSn2pEcvT2u",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "7sQvG1YBeWJmKAqvvwnjmudwEgX8TdHYHJBZxporc5o",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "97DBGyij1TikcJ6EjdKkjiH2dBKbaTESSdvWXPM9Hwhq",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [6, 127, 6, 136, 226, 194, 250, 168, 1, 2, 3]
+      },
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_buy_pt",
+      "handler": "wrapper_buy_pt"
+    }
+  },
+  {
+    "name": "staging-wrapper_buy_yt-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [31, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_buy_yt",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-wrapper_collect_interest-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [33, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_collect_interest",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-wrapper_merge-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "2iqLcGcwABPHGVM6ExKVUB5jyiUxb3NE5jYq8dF9rBxR",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "GFH8rWJkEmFrgyhoJtWcMkSsPMKp5Mm1o6bfEPmtnw3H",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "2iJMh7nJZxkqNu6frYrZtSpax6b6spX4DqDXqUNdqYpe",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3tThtTg7h98x4JwzniAHFZ6rm1NQFjPnkT8CwUNRb7hZ",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "B7ihzKenrAawJ13R9RqAzbdKSMZy3xe1q8dZN2r1SFu3",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "275jbCxvBLb6gH8sXbEcJiyYT3jJiCVZzKmkqH5BWZ5q",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "J7VeHDZ8iDdJtAkfptJhFwVYpziyS3tVkuLcY5fARe6E",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "BsQA6TZ1t59XRmzTP3QLjVjsHBrK9AZVNkSQezQwUpz4",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "GVsqnHYWYvU9j2SXSPXqpcToWkuEbJ9Xjy5YTSh8Ny7h",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "EZmAdu4Mg3aJ5o4zDEkDVV9pDdYMv6jN8R2mpsnyiwCd",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "GfeY9MyqxTHwXvQBwdr7ArtSD31dsK85JbytjKh1AG44",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "11111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "7He1x7sWSQNypaSYyi3mG9csV6nAq8psmb6xbztnwKbs",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [39, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Authx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "2iqLcGcwABPHGVM6ExKVUB5jyiUxb3NE5jYq8dF9rBxR",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "GFH8rWJkEmFrgyhoJtWcMkSsPMKp5Mm1o6bfEPmtnw3H",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "2iJMh7nJZxkqNu6frYrZtSpax6b6spX4DqDXqUNdqYpe",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "3tThtTg7h98x4JwzniAHFZ6rm1NQFjPnkT8CwUNRb7hZ",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "B7ihzKenrAawJ13R9RqAzbdKSMZy3xe1q8dZN2r1SFu3",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "275jbCxvBLb6gH8sXbEcJiyYT3jJiCVZzKmkqH5BWZ5q",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "J7VeHDZ8iDdJtAkfptJhFwVYpziyS3tVkuLcY5fARe6E",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "BsQA6TZ1t59XRmzTP3QLjVjsHBrK9AZVNkSQezQwUpz4",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "GVsqnHYWYvU9j2SXSPXqpcToWkuEbJ9Xjy5YTSh8Ny7h",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "EZmAdu4Mg3aJ5o4zDEkDVV9pDdYMv6jN8R2mpsnyiwCd",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "GfeY9MyqxTHwXvQBwdr7ArtSD31dsK85JbytjKh1AG44",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "7He1x7sWSQNypaSYyi3mG9csV6nAq8psmb6xbztnwKbs",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [177, 36, 171, 125, 89, 198, 144, 219, 1, 2, 3]
+      },
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_merge",
+      "handler": "wrapper_merge"
+    }
+  },
+  {
+    "name": "staging-wrapper_merge-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "2iqLcGcwABPHGVM6ExKVUB5jyiUxb3NE5jYq8dF9rBxR",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "GFH8rWJkEmFrgyhoJtWcMkSsPMKp5Mm1o6bfEPmtnw3H",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "2iJMh7nJZxkqNu6frYrZtSpax6b6spX4DqDXqUNdqYpe",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3tThtTg7h98x4JwzniAHFZ6rm1NQFjPnkT8CwUNRb7hZ",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "B7ihzKenrAawJ13R9RqAzbdKSMZy3xe1q8dZN2r1SFu3",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "275jbCxvBLb6gH8sXbEcJiyYT3jJiCVZzKmkqH5BWZ5q",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "J7VeHDZ8iDdJtAkfptJhFwVYpziyS3tVkuLcY5fARe6E",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "BsQA6TZ1t59XRmzTP3QLjVjsHBrK9AZVNkSQezQwUpz4",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "GVsqnHYWYvU9j2SXSPXqpcToWkuEbJ9Xjy5YTSh8Ny7h",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "EZmAdu4Mg3aJ5o4zDEkDVV9pDdYMv6jN8R2mpsnyiwCd",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "GfeY9MyqxTHwXvQBwdr7ArtSD31dsK85JbytjKh1AG44",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "11111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "7He1x7sWSQNypaSYyi3mG9csV6nAq8psmb6xbztnwKbs",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "FhwHHF58BRExbhP3tFDbcnQFW2UQg4EtMUWdaegLjeK",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [39, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Authx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "2iqLcGcwABPHGVM6ExKVUB5jyiUxb3NE5jYq8dF9rBxR",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "GFH8rWJkEmFrgyhoJtWcMkSsPMKp5Mm1o6bfEPmtnw3H",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "2iJMh7nJZxkqNu6frYrZtSpax6b6spX4DqDXqUNdqYpe",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "3tThtTg7h98x4JwzniAHFZ6rm1NQFjPnkT8CwUNRb7hZ",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "B7ihzKenrAawJ13R9RqAzbdKSMZy3xe1q8dZN2r1SFu3",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "275jbCxvBLb6gH8sXbEcJiyYT3jJiCVZzKmkqH5BWZ5q",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "J7VeHDZ8iDdJtAkfptJhFwVYpziyS3tVkuLcY5fARe6E",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "BsQA6TZ1t59XRmzTP3QLjVjsHBrK9AZVNkSQezQwUpz4",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "GVsqnHYWYvU9j2SXSPXqpcToWkuEbJ9Xjy5YTSh8Ny7h",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "EZmAdu4Mg3aJ5o4zDEkDVV9pDdYMv6jN8R2mpsnyiwCd",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "GfeY9MyqxTHwXvQBwdr7ArtSD31dsK85JbytjKh1AG44",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "7He1x7sWSQNypaSYyi3mG9csV6nAq8psmb6xbztnwKbs",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "FhwHHF58BRExbhP3tFDbcnQFW2UQg4EtMUWdaegLjeK",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [177, 36, 171, 125, 89, 198, 144, 219, 1, 2, 3]
+      },
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_merge",
+      "handler": "wrapper_merge"
+    }
+  },
+  {
+    "name": "staging-wrapper_provide_liquidity-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [28, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_provide_liquidity",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-wrapper_provide_liquidity_base-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [36, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_provide_liquidity_base",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-wrapper_provide_liquidity_classic-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [37, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_provide_liquidity_classic",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-wrapper_sell_pt-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "5X2vHNeRU6gupCSDCzdhL6EKmALxZWaX3dT8JdAt2Bk5",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "FB3uuZNrNic4hsL3TWsZmWY6NBgaoQCJogvKx9g8wm2K",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "9ur8c6kp54Bf9Rf5obArUGnGUU4DByjH99hLa6JehLZx",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "HrQ5j17UXmwTKSmW6K3N8D7j3Ta8zzfJNqgn5fmePceh",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3iLosUPSgpaMGKonVoejyvhgGrVucVpgKFFo798EVUSp",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3ovhqGnPVLxW3qJxnXPtVK8SfEBcorZRF3djwsrr1jre",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "GxcPDqdXCAW7BYbpLrcMLjNrzBLgAjPZr7a257VNJUmS",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "CfoZJXJbyTnavXSgUT5Gtg6xz79Mx9pTGND1pnqP3bWD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "2X5qGaP8qBQyBEzCCDLeHvRTWTPDCXsbuywjyHy8oeTj",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [30, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Authx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "5X2vHNeRU6gupCSDCzdhL6EKmALxZWaX3dT8JdAt2Bk5",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "FB3uuZNrNic4hsL3TWsZmWY6NBgaoQCJogvKx9g8wm2K",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "9ur8c6kp54Bf9Rf5obArUGnGUU4DByjH99hLa6JehLZx",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "HrQ5j17UXmwTKSmW6K3N8D7j3Ta8zzfJNqgn5fmePceh",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "3iLosUPSgpaMGKonVoejyvhgGrVucVpgKFFo798EVUSp",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "3ovhqGnPVLxW3qJxnXPtVK8SfEBcorZRF3djwsrr1jre",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GxcPDqdXCAW7BYbpLrcMLjNrzBLgAjPZr7a257VNJUmS",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "CfoZJXJbyTnavXSgUT5Gtg6xz79Mx9pTGND1pnqP3bWD",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "2X5qGaP8qBQyBEzCCDLeHvRTWTPDCXsbuywjyHy8oeTj",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [127, 65, 108, 12, 72, 21, 50, 200, 1, 2, 3]
+      },
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_sell_pt",
+      "handler": "wrapper_sell_pt"
+    }
+  },
+  {
+    "name": "staging-wrapper_sell_pt-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "5X2vHNeRU6gupCSDCzdhL6EKmALxZWaX3dT8JdAt2Bk5",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "FB3uuZNrNic4hsL3TWsZmWY6NBgaoQCJogvKx9g8wm2K",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "9ur8c6kp54Bf9Rf5obArUGnGUU4DByjH99hLa6JehLZx",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "HrQ5j17UXmwTKSmW6K3N8D7j3Ta8zzfJNqgn5fmePceh",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3iLosUPSgpaMGKonVoejyvhgGrVucVpgKFFo798EVUSp",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3ovhqGnPVLxW3qJxnXPtVK8SfEBcorZRF3djwsrr1jre",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "GxcPDqdXCAW7BYbpLrcMLjNrzBLgAjPZr7a257VNJUmS",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "CfoZJXJbyTnavXSgUT5Gtg6xz79Mx9pTGND1pnqP3bWD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "2X5qGaP8qBQyBEzCCDLeHvRTWTPDCXsbuywjyHy8oeTj",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "9h8VMkHsQdv9C5t34qmJ2vdiv4jv4jfZbCCb9hQRQ4zB",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [30, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Authx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "5X2vHNeRU6gupCSDCzdhL6EKmALxZWaX3dT8JdAt2Bk5",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "FB3uuZNrNic4hsL3TWsZmWY6NBgaoQCJogvKx9g8wm2K",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "9ur8c6kp54Bf9Rf5obArUGnGUU4DByjH99hLa6JehLZx",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "HrQ5j17UXmwTKSmW6K3N8D7j3Ta8zzfJNqgn5fmePceh",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "3iLosUPSgpaMGKonVoejyvhgGrVucVpgKFFo798EVUSp",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "3ovhqGnPVLxW3qJxnXPtVK8SfEBcorZRF3djwsrr1jre",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GxcPDqdXCAW7BYbpLrcMLjNrzBLgAjPZr7a257VNJUmS",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "CfoZJXJbyTnavXSgUT5Gtg6xz79Mx9pTGND1pnqP3bWD",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "2X5qGaP8qBQyBEzCCDLeHvRTWTPDCXsbuywjyHy8oeTj",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "9h8VMkHsQdv9C5t34qmJ2vdiv4jv4jfZbCCb9hQRQ4zB",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [127, 65, 108, 12, 72, 21, 50, 200, 1, 2, 3]
+      },
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_sell_pt",
+      "handler": "wrapper_sell_pt"
+    }
+  },
+  {
+    "name": "staging-wrapper_sell_yt-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [32, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_sell_yt",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-wrapper_strip-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [38, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_strip",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-wrapper_withdraw_liquidity-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [34, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_withdraw_liquidity",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-wrapper_withdraw_liquidity_classic-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [35, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "source": "wrapper_withdraw_liquidity_classic",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7-no-entry-matches",
+    "note": "a documented program's instruction that no entry's discriminator prefixes",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "accounts": [],
+      "data": [255, 254, 253, 252, 251, 250, 249, 248]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111"
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7",
+      "reason": "unknown_instruction",
+      "message": "no instruction of ExponentnaRg3CQbW6dqQNZKXp7gtZ9DGMp1cwC4HAS7 matches the data"
+    }
+  }
+]

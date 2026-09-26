@@ -11,7 +11,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/system (revision 7c70ebdc8bcf, idl bb1a83194457)",
       proxy_idl:
@@ -170,7 +170,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTcMDYgNLpDwgnrpSZvoSKQuR9NXG7S3DmtNQCDmrK",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/token_messenger_minter_v2 (revision c66d97e292c8, idl b9ac2aa0ddac)",
       proxy_idl:
@@ -544,7 +544,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_farms (revision 649915b9c497, idl d8ac1c6584e5)",
       proxy_idl:
@@ -1292,7 +1292,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_lending (revision 670fb38d6e10, idl 548daab3b893)",
       proxy_idl:
@@ -3286,7 +3286,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_vaults (revision d7d5f670e01c, idl 8f74ad72f6c1)",
       proxy_idl:
@@ -3870,7 +3870,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/spl_token (revision 3626047321fa, idl 33add106ed36)",
       proxy_idl:
@@ -4231,7 +4231,7 @@ export const PRODUCTION_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/spl_token_2022 (revision f00d27a6031b, idl 13cbda721359)",
       proxy_idl:
@@ -5046,7 +5046,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/system (revision 7c70ebdc8bcf, idl bb1a83194457)",
       proxy_idl:
@@ -5205,7 +5205,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgL6y4uWjsfM3Qjs5euoTDmEcXoUjqx8rkYJhYngG",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/loopscale (revision bdd5dde55d50, idl 0f36211402c6)",
       proxy_idl:
@@ -7368,9 +7368,159 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       {
         name: "update_strategy",
         discriminator: [16, 76, 138, 179, 171, 112, 196, 21],
-        disposition: "unsupported",
-        reason:
-          "the handler reads the strategy's market from its first remaining account, which a native instruction does not carry; build it with the GLAM SDK",
+        disposition: "map",
+        handler: {
+          name: "update_strategy",
+          discriminator: [16, 76, 138, 179, 171, 112, 196, 21],
+        },
+        source_accounts: [
+          { name: "bs_auth", writable: false, signer: true },
+          {
+            name: "payer",
+            writable: true,
+            signer: true,
+            expect: "glam_signer",
+          },
+          {
+            name: "lender",
+            writable: false,
+            signer: true,
+            expect: "glam_vault",
+          },
+          { name: "strategy", writable: true, signer: false },
+          { name: "principal_mint", writable: false, signer: false },
+          { name: "strategy_ta", writable: true, signer: false },
+          {
+            name: "system_program",
+            writable: false,
+            signer: false,
+            expect: "11111111111111111111111111111111",
+          },
+          {
+            name: "associated_token_program",
+            writable: false,
+            signer: false,
+            expect: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+          },
+          { name: "token_program", writable: false, signer: false },
+          { name: "protocol_admin_state", writable: false, signer: false },
+          { name: "event_authority", writable: false, signer: false },
+          {
+            name: "program",
+            writable: false,
+            signer: false,
+            expect: "1oopBoJG58DgkUVKkEzKgyG9dvRmpgeEm1AVjoHkF78",
+          },
+        ],
+        destination_accounts: [
+          {
+            index: 0,
+            kind: "dynamic",
+            name: "glam_state",
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 1,
+            kind: "dynamic",
+            name: "glam_vault",
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 2,
+            kind: "dynamic",
+            name: "glam_signer",
+            writable: true,
+            signer: true,
+          },
+          {
+            index: 3,
+            kind: "dynamic",
+            name: "integration_authority",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 4,
+            kind: "static",
+            address: "1oopBoJG58DgkUVKkEzKgyG9dvRmpgeEm1AVjoHkF78",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 5,
+            kind: "static",
+            address: "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 6,
+            kind: "static",
+            address: "11111111111111111111111111111111",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 7,
+            kind: "source",
+            source: 0,
+            writable: false,
+            signer: true,
+          },
+          {
+            index: 8,
+            kind: "source",
+            source: 3,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 9,
+            kind: "source",
+            source: 4,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 10,
+            kind: "source",
+            source: 5,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 11,
+            kind: "static",
+            address: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 12,
+            kind: "source",
+            source: 8,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 13,
+            kind: "source",
+            source: 9,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 14,
+            kind: "source",
+            source: 10,
+            writable: false,
+            signer: false,
+          },
+        ],
+        remaining_accounts: { kind: "any" },
+        supplied_accounts: [{ role: "loopscale_strategy_market", of: [3] }],
       },
       {
         name: "update_vault",
@@ -8010,7 +8160,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgNyHgtURH7iuMn19GQczzv6Wc9fhPV2WDySZVyKx",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/ntbundle (revision fa1bf207f95e, idl 175030974bb8)",
       proxy_idl:
@@ -8559,7 +8709,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgxS9yTioViNKdsM4DC33k1TU9un2VCYDQK8fAeSA",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/token_messenger_minter_v2 (revision c66d97e292c8, idl b9ac2aa0ddac)",
       proxy_idl:
@@ -8933,7 +9083,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/ember (revision 0648cc38d76f, idl d78e0f3715b1)",
       proxy_idl:
@@ -9195,7 +9345,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/phoenix (revision 5cf0f2d806d4, idl a5ad7ff67fd3)",
       proxy_idl:
@@ -11074,7 +11224,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgx5AbCFq4mfYKbZP23YDC7XZFUx2EURiG3PcWX6W",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/exponent_core (revision a8d92bfc0776, idl 2e84927ce940)",
       proxy_idl:
@@ -11833,7 +11983,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_farms (revision 649915b9c497, idl d8ac1c6584e5)",
       proxy_idl:
@@ -12581,7 +12731,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_lending (revision 670fb38d6e10, idl 548daab3b893)",
       proxy_idl:
@@ -14575,7 +14725,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgKa2Gq9wf5hM3DFWx1TvUrGYzDYszyFGq3XBY9Uq",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/kamino_vaults (revision d7d5f670e01c, idl 8f74ad72f6c1)",
       proxy_idl:
@@ -15159,7 +15309,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgMghFitRBz2GXKwgpMd7L1JXd1sg59q2v5Y83vSY",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/marginfi (revision ad35a97f6a80, idl 494f94a4b865)",
       proxy_idl:
@@ -16756,7 +16906,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgmvM2o7h7GcScvXymH1oFgWskukWWxRHC1UJJ9FJ",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/marinade_finance (revision e72652d71c74, idl 7da9024f4b6c)",
       proxy_idl:
@@ -17584,7 +17734,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/stake (revision 63da07e49f05, idl de27febd3fdb)",
       proxy_idl:
@@ -18040,7 +18190,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgs9nJgX8PmRHWAAEP9H7xT3ZkaPWSGPYbj3mXdTa",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/spl_token (revision 3626047321fa, idl 33add106ed36)",
       proxy_idl:
@@ -18401,7 +18551,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgs9nJgX8PmRHWAAEP9H7xT3ZkaPWSGPYbj3mXdTa",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/spl_token_2022 (revision f00d27a6031b, idl 13cbda721359)",
       proxy_idl:
@@ -19213,7 +19363,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgJbGqoE3p1SdFA2dET9tcaCzNqGcdD8wpbGctnU9",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/jupiter_lending (revision 5a80a0ab6bd6, idl ef547c925d93)",
       proxy_idl:
@@ -20172,7 +20322,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgJbGqoE3p1SdFA2dET9tcaCzNqGcdD8wpbGctnU9",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/jupiter_vaults (revision 596c3372bf8d, idl d4670504ee8c)",
       proxy_idl:
@@ -20931,7 +21081,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
     proxy_program_id: "gstgo1EgmTp2PbLSaL6Qg57P7uADx3aiRZrMsewEdSy",
     provenance: {
       config_revision: 1,
-      generator: "idl-src-gen@51f2f4d10f5b053033ef81672c0ec924173b2a86",
+      generator: "idl-src-gen@633ad602d3fecbb9458e42d9ae4ce0046bf023fe",
       source_idl:
         "glam managed anchor_v1/idls/external/whirlpools (revision 0b0be0570f29, idl f3e95ddf321d)",
       proxy_idl:
@@ -21288,9 +21438,195 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       {
         name: "decrease_liquidity_v2",
         discriminator: [58, 127, 188, 62, 79, 82, 196, 96],
-        disposition: "unsupported",
-        reason:
-          "the handler reads GLAM's global config and the price oracles of the pool's mints from its remaining accounts, which a native instruction does not carry; build it with the GLAM SDK",
+        disposition: "map",
+        handler: {
+          name: "decrease_liquidity_v2",
+          discriminator: [58, 127, 188, 62, 79, 82, 196, 96],
+        },
+        source_accounts: [
+          { name: "whirlpool", writable: true, signer: false },
+          { name: "token_program_a", writable: false, signer: false },
+          { name: "token_program_b", writable: false, signer: false },
+          { name: "memo_program", writable: false, signer: false },
+          {
+            name: "position_authority",
+            writable: false,
+            signer: true,
+            expect: "glam_vault",
+          },
+          { name: "position", writable: true, signer: false },
+          { name: "position_token_account", writable: false, signer: false },
+          { name: "token_mint_a", writable: false, signer: false },
+          { name: "token_mint_b", writable: false, signer: false },
+          { name: "token_owner_account_a", writable: true, signer: false },
+          { name: "token_owner_account_b", writable: true, signer: false },
+          { name: "token_vault_a", writable: true, signer: false },
+          { name: "token_vault_b", writable: true, signer: false },
+          { name: "tick_array_lower", writable: true, signer: false },
+          { name: "tick_array_upper", writable: true, signer: false },
+        ],
+        destination_accounts: [
+          {
+            index: 0,
+            kind: "dynamic",
+            name: "glam_state",
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 1,
+            kind: "dynamic",
+            name: "glam_vault",
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 2,
+            kind: "dynamic",
+            name: "glam_signer",
+            writable: true,
+            signer: true,
+          },
+          {
+            index: 3,
+            kind: "dynamic",
+            name: "integration_authority",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 4,
+            kind: "static",
+            address: "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 5,
+            kind: "static",
+            address: "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 6,
+            kind: "static",
+            address: "11111111111111111111111111111111",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 7,
+            kind: "source",
+            source: 0,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 8,
+            kind: "source",
+            source: 1,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 9,
+            kind: "source",
+            source: 2,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 10,
+            kind: "source",
+            source: 3,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 11,
+            kind: "source",
+            source: 5,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 12,
+            kind: "source",
+            source: 6,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 13,
+            kind: "source",
+            source: 7,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 14,
+            kind: "source",
+            source: 8,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 15,
+            kind: "source",
+            source: 9,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 16,
+            kind: "source",
+            source: 10,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 17,
+            kind: "source",
+            source: 11,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 18,
+            kind: "source",
+            source: 12,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 19,
+            kind: "source",
+            source: 13,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 20,
+            kind: "source",
+            source: 14,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 21,
+            kind: "static",
+            address: "6avract7PxKqoq6hdmpAgGKgJWoJWdiXPPzzFZ62Hck6",
+            writable: false,
+            signer: false,
+          },
+        ],
+        remaining_accounts: { kind: "any" },
+        supplied_accounts: [
+          { role: "asset_oracle", of: [7] },
+          { role: "asset_oracle", of: [8] },
+          { role: "sol_usd_oracle", optional: true },
+        ],
       },
       {
         name: "delete_position_bundle",
@@ -21320,16 +21656,388 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       {
         name: "increase_liquidity_by_token_amounts_v2",
         discriminator: [239, 251, 9, 124, 210, 198, 53, 43],
-        disposition: "unsupported",
-        reason:
-          "the handler reads GLAM's global config and the price oracles of the pool's mints from its remaining accounts, which a native instruction does not carry; build it with the GLAM SDK",
+        disposition: "map",
+        handler: {
+          name: "increase_liquidity_by_token_amounts_v2",
+          discriminator: [239, 251, 9, 124, 210, 198, 53, 43],
+        },
+        source_accounts: [
+          { name: "whirlpool", writable: true, signer: false },
+          { name: "token_program_a", writable: false, signer: false },
+          { name: "token_program_b", writable: false, signer: false },
+          { name: "memo_program", writable: false, signer: false },
+          {
+            name: "position_authority",
+            writable: false,
+            signer: true,
+            expect: "glam_vault",
+          },
+          { name: "position", writable: true, signer: false },
+          { name: "position_token_account", writable: false, signer: false },
+          { name: "token_mint_a", writable: false, signer: false },
+          { name: "token_mint_b", writable: false, signer: false },
+          { name: "token_owner_account_a", writable: true, signer: false },
+          { name: "token_owner_account_b", writable: true, signer: false },
+          { name: "token_vault_a", writable: true, signer: false },
+          { name: "token_vault_b", writable: true, signer: false },
+          { name: "tick_array_lower", writable: true, signer: false },
+          { name: "tick_array_upper", writable: true, signer: false },
+        ],
+        destination_accounts: [
+          {
+            index: 0,
+            kind: "dynamic",
+            name: "glam_state",
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 1,
+            kind: "dynamic",
+            name: "glam_vault",
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 2,
+            kind: "dynamic",
+            name: "glam_signer",
+            writable: true,
+            signer: true,
+          },
+          {
+            index: 3,
+            kind: "dynamic",
+            name: "integration_authority",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 4,
+            kind: "static",
+            address: "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 5,
+            kind: "static",
+            address: "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 6,
+            kind: "static",
+            address: "11111111111111111111111111111111",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 7,
+            kind: "source",
+            source: 0,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 8,
+            kind: "source",
+            source: 1,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 9,
+            kind: "source",
+            source: 2,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 10,
+            kind: "source",
+            source: 3,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 11,
+            kind: "source",
+            source: 5,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 12,
+            kind: "source",
+            source: 6,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 13,
+            kind: "source",
+            source: 7,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 14,
+            kind: "source",
+            source: 8,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 15,
+            kind: "source",
+            source: 9,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 16,
+            kind: "source",
+            source: 10,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 17,
+            kind: "source",
+            source: 11,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 18,
+            kind: "source",
+            source: 12,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 19,
+            kind: "source",
+            source: 13,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 20,
+            kind: "source",
+            source: 14,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 21,
+            kind: "static",
+            address: "6avract7PxKqoq6hdmpAgGKgJWoJWdiXPPzzFZ62Hck6",
+            writable: false,
+            signer: false,
+          },
+        ],
+        remaining_accounts: { kind: "any" },
+        supplied_accounts: [
+          { role: "asset_oracle", of: [7] },
+          { role: "asset_oracle", of: [8] },
+          { role: "sol_usd_oracle", optional: true },
+        ],
       },
       {
         name: "increase_liquidity_v2",
         discriminator: [133, 29, 89, 223, 69, 238, 176, 10],
-        disposition: "unsupported",
-        reason:
-          "the handler reads GLAM's global config and the price oracles of the pool's mints from its remaining accounts, which a native instruction does not carry; build it with the GLAM SDK",
+        disposition: "map",
+        handler: {
+          name: "increase_liquidity_v2",
+          discriminator: [133, 29, 89, 223, 69, 238, 176, 10],
+        },
+        source_accounts: [
+          { name: "whirlpool", writable: true, signer: false },
+          { name: "token_program_a", writable: false, signer: false },
+          { name: "token_program_b", writable: false, signer: false },
+          { name: "memo_program", writable: false, signer: false },
+          {
+            name: "position_authority",
+            writable: false,
+            signer: true,
+            expect: "glam_vault",
+          },
+          { name: "position", writable: true, signer: false },
+          { name: "position_token_account", writable: false, signer: false },
+          { name: "token_mint_a", writable: false, signer: false },
+          { name: "token_mint_b", writable: false, signer: false },
+          { name: "token_owner_account_a", writable: true, signer: false },
+          { name: "token_owner_account_b", writable: true, signer: false },
+          { name: "token_vault_a", writable: true, signer: false },
+          { name: "token_vault_b", writable: true, signer: false },
+          { name: "tick_array_lower", writable: true, signer: false },
+          { name: "tick_array_upper", writable: true, signer: false },
+        ],
+        destination_accounts: [
+          {
+            index: 0,
+            kind: "dynamic",
+            name: "glam_state",
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 1,
+            kind: "dynamic",
+            name: "glam_vault",
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 2,
+            kind: "dynamic",
+            name: "glam_signer",
+            writable: true,
+            signer: true,
+          },
+          {
+            index: 3,
+            kind: "dynamic",
+            name: "integration_authority",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 4,
+            kind: "static",
+            address: "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 5,
+            kind: "static",
+            address: "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 6,
+            kind: "static",
+            address: "11111111111111111111111111111111",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 7,
+            kind: "source",
+            source: 0,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 8,
+            kind: "source",
+            source: 1,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 9,
+            kind: "source",
+            source: 2,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 10,
+            kind: "source",
+            source: 3,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 11,
+            kind: "source",
+            source: 5,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 12,
+            kind: "source",
+            source: 6,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 13,
+            kind: "source",
+            source: 7,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 14,
+            kind: "source",
+            source: 8,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 15,
+            kind: "source",
+            source: 9,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 16,
+            kind: "source",
+            source: 10,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 17,
+            kind: "source",
+            source: 11,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 18,
+            kind: "source",
+            source: 12,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 19,
+            kind: "source",
+            source: 13,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 20,
+            kind: "source",
+            source: 14,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 21,
+            kind: "static",
+            address: "6avract7PxKqoq6hdmpAgGKgJWoJWdiXPPzzFZ62Hck6",
+            writable: false,
+            signer: false,
+          },
+        ],
+        remaining_accounts: { kind: "any" },
+        supplied_accounts: [
+          { role: "asset_oracle", of: [7] },
+          { role: "asset_oracle", of: [8] },
+          { role: "sol_usd_oracle", optional: true },
+        ],
       },
       {
         name: "initialize_adaptive_fee_tier",
@@ -21675,9 +22383,223 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       {
         name: "reposition_liquidity_v2",
         discriminator: [191, 169, 224, 11, 131, 19, 158, 253],
-        disposition: "unsupported",
-        reason:
-          "the handler reads GLAM's global config and the price oracles of the pool's mints from its remaining accounts, which a native instruction does not carry; build it with the GLAM SDK",
+        disposition: "map",
+        handler: {
+          name: "reposition_liquidity_v2",
+          discriminator: [191, 169, 224, 11, 131, 19, 158, 253],
+        },
+        source_accounts: [
+          { name: "whirlpool", writable: true, signer: false },
+          { name: "token_program_a", writable: false, signer: false },
+          { name: "token_program_b", writable: false, signer: false },
+          { name: "memo_program", writable: false, signer: false },
+          {
+            name: "position_authority",
+            writable: false,
+            signer: true,
+            expect: "glam_vault",
+          },
+          {
+            name: "funder",
+            writable: true,
+            signer: true,
+            expect: "glam_signer",
+          },
+          { name: "position", writable: true, signer: false },
+          { name: "position_token_account", writable: false, signer: false },
+          { name: "token_mint_a", writable: false, signer: false },
+          { name: "token_mint_b", writable: false, signer: false },
+          { name: "token_owner_account_a", writable: true, signer: false },
+          { name: "token_owner_account_b", writable: true, signer: false },
+          { name: "token_vault_a", writable: true, signer: false },
+          { name: "token_vault_b", writable: true, signer: false },
+          { name: "existing_tick_array_lower", writable: true, signer: false },
+          { name: "existing_tick_array_upper", writable: true, signer: false },
+          { name: "new_tick_array_lower", writable: true, signer: false },
+          { name: "new_tick_array_upper", writable: true, signer: false },
+          {
+            name: "system_program",
+            writable: false,
+            signer: false,
+            expect: "11111111111111111111111111111111",
+          },
+        ],
+        destination_accounts: [
+          {
+            index: 0,
+            kind: "dynamic",
+            name: "glam_state",
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 1,
+            kind: "dynamic",
+            name: "glam_vault",
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 2,
+            kind: "dynamic",
+            name: "glam_signer",
+            writable: true,
+            signer: true,
+          },
+          {
+            index: 3,
+            kind: "dynamic",
+            name: "integration_authority",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 4,
+            kind: "static",
+            address: "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 5,
+            kind: "static",
+            address: "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 6,
+            kind: "static",
+            address: "11111111111111111111111111111111",
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 7,
+            kind: "source",
+            source: 0,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 8,
+            kind: "source",
+            source: 1,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 9,
+            kind: "source",
+            source: 2,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 10,
+            kind: "source",
+            source: 3,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 11,
+            kind: "source",
+            source: 6,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 12,
+            kind: "source",
+            source: 7,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 13,
+            kind: "source",
+            source: 8,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 14,
+            kind: "source",
+            source: 9,
+            writable: false,
+            signer: false,
+          },
+          {
+            index: 15,
+            kind: "source",
+            source: 10,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 16,
+            kind: "source",
+            source: 11,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 17,
+            kind: "source",
+            source: 12,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 18,
+            kind: "source",
+            source: 13,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 19,
+            kind: "source",
+            source: 14,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 20,
+            kind: "source",
+            source: 15,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 21,
+            kind: "source",
+            source: 16,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 22,
+            kind: "source",
+            source: 17,
+            writable: true,
+            signer: false,
+          },
+          {
+            index: 23,
+            kind: "static",
+            address: "6avract7PxKqoq6hdmpAgGKgJWoJWdiXPPzzFZ62Hck6",
+            writable: false,
+            signer: false,
+          },
+        ],
+        remaining_accounts: { kind: "any" },
+        supplied_accounts: [
+          { role: "asset_oracle", of: [8] },
+          { role: "asset_oracle", of: [9] },
+          { role: "sol_usd_oracle", optional: true },
+        ],
       },
       {
         name: "reset_position_range",

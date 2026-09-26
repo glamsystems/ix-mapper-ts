@@ -1,0 +1,1055 @@
+[
+  {
+    "name": "production-amount_to_ui_amount-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [23, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [23, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "amount_to_ui_amount",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-approve-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [4, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "approve",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-approve_checked-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [13, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "approve_checked",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-batch-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [255, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "batch",
+      "reason": "refused_instruction",
+      "message": "declares no accounts: which accounts it takes, and which of them sign, is not in the IDL"
+    }
+  },
+  {
+    "name": "production-burn-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [8, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "burn",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-burn_checked-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [15, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "burn_checked",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-close_account-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [
+        {
+          "address": "6axxm96QSvxdXScmS8xhrC8NdmEohMqvHBaZ9tUzEMTk",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [9, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "6axxm96QSvxdXScmS8xhrC8NdmEohMqvHBaZ9tUzEMTk",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [240, 32, 179, 154, 96, 110, 43, 79, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "close_account",
+      "handler": "token_close_account"
+    }
+  },
+  {
+    "name": "production-close_account-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [
+        {
+          "address": "6axxm96QSvxdXScmS8xhrC8NdmEohMqvHBaZ9tUzEMTk",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "D1xGAo8eq98JrKJSg6VKoegV7g7PqFe6wAEqYEh3oC7K",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [9, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "6axxm96QSvxdXScmS8xhrC8NdmEohMqvHBaZ9tUzEMTk",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "D1xGAo8eq98JrKJSg6VKoegV7g7PqFe6wAEqYEh3oC7K",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [240, 32, 179, 154, 96, 110, 43, 79, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "close_account",
+      "handler": "token_close_account"
+    }
+  },
+  {
+    "name": "production-freeze_account-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [10, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "freeze_account",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-get_account_data_size-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [21, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [21, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "get_account_data_size",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-initialize_account-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [1, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [1, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "initialize_account",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-initialize_account2-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [16, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [16, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "initialize_account2",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-initialize_account3-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [18, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [18, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "initialize_account3",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-initialize_immutable_owner-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [22, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [22, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "initialize_immutable_owner",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-initialize_mint-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [0, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "initialize_mint",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-initialize_mint2-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [20, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [20, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "initialize_mint2",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-initialize_multisig-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [2, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [2, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "initialize_multisig",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-initialize_multisig2-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [19, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [19, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "initialize_multisig2",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-mint_to-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [7, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "mint_to",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-mint_to_checked-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [14, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "mint_to_checked",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-revoke-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [5, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "revoke",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-set_authority-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [6, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "set_authority",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-sync_native-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [17, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [17, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "sync_native",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-thaw_account-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [11, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "thaw_account",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-transfer-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [3, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "transfer",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-transfer_checked-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [
+        {
+          "address": "5QyDDaaxs1XBqHHwTh5svLMs7NzQdiNUnBDbJsJWzbkU",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "D3SGfQo1qnZPuX8uxjikBjajvXpT1Eck5WuM13qWxRCX",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "B3kKyViJQ9eKZ2wXrqTe3BrBBLTEhyT7HWp8HMWzwuXm",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [12, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "5QyDDaaxs1XBqHHwTh5svLMs7NzQdiNUnBDbJsJWzbkU",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "D3SGfQo1qnZPuX8uxjikBjajvXpT1Eck5WuM13qWxRCX",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "B3kKyViJQ9eKZ2wXrqTe3BrBBLTEhyT7HWp8HMWzwuXm",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [169, 178, 117, 156, 169, 191, 199, 116, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "transfer_checked",
+      "handler": "token_transfer_checked"
+    }
+  },
+  {
+    "name": "production-transfer_checked-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [
+        {
+          "address": "5QyDDaaxs1XBqHHwTh5svLMs7NzQdiNUnBDbJsJWzbkU",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "D3SGfQo1qnZPuX8uxjikBjajvXpT1Eck5WuM13qWxRCX",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "B3kKyViJQ9eKZ2wXrqTe3BrBBLTEhyT7HWp8HMWzwuXm",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "CxmWBuZVGNT1xtQoBCseyJPBZwNsMDKpZRR7zDcq5pnK",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [12, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "5QyDDaaxs1XBqHHwTh5svLMs7NzQdiNUnBDbJsJWzbkU",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "D3SGfQo1qnZPuX8uxjikBjajvXpT1Eck5WuM13qWxRCX",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "B3kKyViJQ9eKZ2wXrqTe3BrBBLTEhyT7HWp8HMWzwuXm",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "CxmWBuZVGNT1xtQoBCseyJPBZwNsMDKpZRR7zDcq5pnK",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [169, 178, 117, 156, 169, 191, 199, 116, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "transfer_checked",
+      "handler": "token_transfer_checked"
+    }
+  },
+  {
+    "name": "production-ui_amount_to_amount-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [24, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "accounts": [],
+        "data": [24, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "ui_amount_to_amount",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-unwrap_lamports-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [45, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "unwrap_lamports",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-withdraw_excess_lamports-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [38, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "withdraw_excess_lamports",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA-no-entry-matches",
+    "note": "a documented program's instruction that no entry's discriminator prefixes",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [],
+      "data": [254, 254, 253, 252, 251, 250, 249, 248]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111"
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "reason": "unknown_instruction",
+      "message": "no instruction of TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA matches the data"
+    }
+  }
+]

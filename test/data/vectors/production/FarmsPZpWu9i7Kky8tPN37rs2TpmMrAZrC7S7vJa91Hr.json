@@ -1,0 +1,1911 @@
+[
+  {
+    "name": "production-add_rewards-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [88, 186, 25, 227, 38, 137, 81, 23, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "add_rewards",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-deposit_to_farm_vault-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [131, 166, 64, 94, 108, 213, 114, 183, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "deposit_to_farm_vault",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-harvest_reward-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "JCMb8LZ5bnRbjo7gYM8jU8DkyMRKBeGcBJTFktRpnHDD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4yZCdE1M1NqKAsaBARXhTee4HCyh6UFbNNH62mxeL8vb",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4Yd5J17GBb1PkorDN1o5gV7QYTTjNY87U68YhduZnaU5",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "D6ZKc3fjkSt8g1ipqp4umcgDSX31pnxf6WF7spjVFPDp",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "AHXbS3DG8rnB3HuSbNoefjAgfBrSRRqUxn3nSBMFbxQv",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Be59A3enrLBjSWKprxA1wqycCgsFxAQukdXPZNGBDDmk",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "12nS8MSKPtAnAnh9aecmQ3Ef9L3fLDkXPhSv2pmAYj8k",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8owx2xe8fJqqWAXhCNmQsqRmMeLDwUend3Q9G9ufE8ig",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "12gjsfKhhfDQLdx9w59GCh6Fm8ADkEqTUdJUzyofUJ6E",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [68, 200, 228, 233, 184, 32, 226, 188, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "JCMb8LZ5bnRbjo7gYM8jU8DkyMRKBeGcBJTFktRpnHDD",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "4yZCdE1M1NqKAsaBARXhTee4HCyh6UFbNNH62mxeL8vb",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "4Yd5J17GBb1PkorDN1o5gV7QYTTjNY87U68YhduZnaU5",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "D6ZKc3fjkSt8g1ipqp4umcgDSX31pnxf6WF7spjVFPDp",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "AHXbS3DG8rnB3HuSbNoefjAgfBrSRRqUxn3nSBMFbxQv",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Be59A3enrLBjSWKprxA1wqycCgsFxAQukdXPZNGBDDmk",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "12nS8MSKPtAnAnh9aecmQ3Ef9L3fLDkXPhSv2pmAYj8k",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "8owx2xe8fJqqWAXhCNmQsqRmMeLDwUend3Q9G9ufE8ig",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "12gjsfKhhfDQLdx9w59GCh6Fm8ADkEqTUdJUzyofUJ6E",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [244, 248, 124, 210, 194, 52, 75, 152, 1, 2, 3]
+      },
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "harvest_reward",
+      "handler": "farms_harvest_reward"
+    }
+  },
+  {
+    "name": "production-harvest_reward-program-id-optionals-present",
+    "note": "every program-id optional carried as an account of its own",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "JCMb8LZ5bnRbjo7gYM8jU8DkyMRKBeGcBJTFktRpnHDD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4yZCdE1M1NqKAsaBARXhTee4HCyh6UFbNNH62mxeL8vb",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4Yd5J17GBb1PkorDN1o5gV7QYTTjNY87U68YhduZnaU5",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "D6ZKc3fjkSt8g1ipqp4umcgDSX31pnxf6WF7spjVFPDp",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "AHXbS3DG8rnB3HuSbNoefjAgfBrSRRqUxn3nSBMFbxQv",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Be59A3enrLBjSWKprxA1wqycCgsFxAQukdXPZNGBDDmk",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "12nS8MSKPtAnAnh9aecmQ3Ef9L3fLDkXPhSv2pmAYj8k",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8owx2xe8fJqqWAXhCNmQsqRmMeLDwUend3Q9G9ufE8ig",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "4qN5asFxgV9xmxSshz4QjnC5nLgMgvwrzBpSey6T5rgt",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "12gjsfKhhfDQLdx9w59GCh6Fm8ADkEqTUdJUzyofUJ6E",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [68, 200, 228, 233, 184, 32, 226, 188, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "JCMb8LZ5bnRbjo7gYM8jU8DkyMRKBeGcBJTFktRpnHDD",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "4yZCdE1M1NqKAsaBARXhTee4HCyh6UFbNNH62mxeL8vb",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "4Yd5J17GBb1PkorDN1o5gV7QYTTjNY87U68YhduZnaU5",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "D6ZKc3fjkSt8g1ipqp4umcgDSX31pnxf6WF7spjVFPDp",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "AHXbS3DG8rnB3HuSbNoefjAgfBrSRRqUxn3nSBMFbxQv",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Be59A3enrLBjSWKprxA1wqycCgsFxAQukdXPZNGBDDmk",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "12nS8MSKPtAnAnh9aecmQ3Ef9L3fLDkXPhSv2pmAYj8k",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "8owx2xe8fJqqWAXhCNmQsqRmMeLDwUend3Q9G9ufE8ig",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "4qN5asFxgV9xmxSshz4QjnC5nLgMgvwrzBpSey6T5rgt",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "12gjsfKhhfDQLdx9w59GCh6Fm8ADkEqTUdJUzyofUJ6E",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [244, 248, 124, 210, 194, 52, 75, 152, 1, 2, 3]
+      },
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "harvest_reward",
+      "handler": "farms_harvest_reward"
+    }
+  },
+  {
+    "name": "production-harvest_reward-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "JCMb8LZ5bnRbjo7gYM8jU8DkyMRKBeGcBJTFktRpnHDD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4yZCdE1M1NqKAsaBARXhTee4HCyh6UFbNNH62mxeL8vb",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4Yd5J17GBb1PkorDN1o5gV7QYTTjNY87U68YhduZnaU5",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "D6ZKc3fjkSt8g1ipqp4umcgDSX31pnxf6WF7spjVFPDp",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "AHXbS3DG8rnB3HuSbNoefjAgfBrSRRqUxn3nSBMFbxQv",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Be59A3enrLBjSWKprxA1wqycCgsFxAQukdXPZNGBDDmk",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "12nS8MSKPtAnAnh9aecmQ3Ef9L3fLDkXPhSv2pmAYj8k",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8owx2xe8fJqqWAXhCNmQsqRmMeLDwUend3Q9G9ufE8ig",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "12gjsfKhhfDQLdx9w59GCh6Fm8ADkEqTUdJUzyofUJ6E",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "CXidcNfDscSNHCRpVYbtun1pakxid9WW6qrBKVoNCCGQ",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [68, 200, 228, 233, 184, 32, 226, 188, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "harvest_reward",
+      "reason": "remaining_accounts",
+      "message": "harvest_reward takes no accounts beyond its 11; the instruction carries 12"
+    }
+  },
+  {
+    "name": "production-idl_missing_types-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [130, 80, 38, 153, 80, 212, 182, 253, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "idl_missing_types",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-initialize_farm-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [252, 28, 185, 172, 244, 74, 117, 165, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "initialize_farm",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-initialize_farm_delegated-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [250, 84, 101, 25, 51, 77, 204, 91, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "initialize_farm_delegated",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-initialize_global_config-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [113, 216, 122, 131, 225, 209, 22, 55, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "initialize_global_config",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-initialize_reward-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [95, 135, 192, 196, 242, 129, 230, 68, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "initialize_reward",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-initialize_user-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "HMMxYJEEr1EtMc7DeN1uuaURxFMTBiYRykaXjED3UPLf",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Lbh8hfHWqCDPsCb6Sq617hRh9rbrcL3wkRh2FvERVyH",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "11111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "SysvarRent111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [111, 17, 185, 250, 60, 122, 38, 254, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "HMMxYJEEr1EtMc7DeN1uuaURxFMTBiYRykaXjED3UPLf",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Lbh8hfHWqCDPsCb6Sq617hRh9rbrcL3wkRh2FvERVyH",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "SysvarRent111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [188, 148, 82, 37, 44, 46, 162, 34, 1, 2, 3]
+      },
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "initialize_user",
+      "handler": "farms_initialize_user"
+    }
+  },
+  {
+    "name": "production-initialize_user-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "HMMxYJEEr1EtMc7DeN1uuaURxFMTBiYRykaXjED3UPLf",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Lbh8hfHWqCDPsCb6Sq617hRh9rbrcL3wkRh2FvERVyH",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "11111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "SysvarRent111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "2iGDrTsH2LtrR5b6JZr9CYZKqqpvr27s9VimEX1DoQa5",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [111, 17, 185, 250, 60, 122, 38, 254, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "initialize_user",
+      "reason": "remaining_accounts",
+      "message": "initialize_user takes no accounts beyond its 8; the instruction carries 9"
+    }
+  },
+  {
+    "name": "production-refresh_farm-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [214, 131, 138, 183, 144, 194, 172, 42, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+        "accounts": [],
+        "data": [214, 131, 138, 183, 144, 194, 172, 42, 1, 2, 3]
+      },
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "refresh_farm",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-refresh_user_state-as-listed",
+    "note": "a passthrough entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [1, 135, 12, 62, 243, 140, 77, 108, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+        "accounts": [],
+        "data": [1, 135, 12, 62, 243, 140, 77, 108, 1, 2, 3]
+      },
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "refresh_user_state",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "production-reward_user_once-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [219, 137, 57, 22, 94, 186, 96, 114, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "reward_user_once",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-set_stake_delegated-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [73, 171, 184, 75, 30, 56, 198, 223, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "set_stake_delegated",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-stake-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "DBQ8CqKvUXXzEEm3hxLD9vpNTsS534Sujv38QptRmukv",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8iVjS7WXDcTQvMZy4YbhJUjrFAwpQHZYdbezT81DWjwV",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3WC3Hk6A3uuaPYyGB9o7kZRhHvrUTygDNe9rtBs565K2",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "6SZzk2pFHk94gkeJcT9ukCDHqYDzPeze1F8ikRM9bTRr",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "664iv6X5hSrtg2j3PhJAt71p9oFoozoeBfw58zVxUpuA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "5nfkcjsqcMWM3ZGXRMqJZeu8S6CmHVz97RcAULfWoFJc",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [206, 176, 202, 18, 200, 209, 179, 108, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "DBQ8CqKvUXXzEEm3hxLD9vpNTsS534Sujv38QptRmukv",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "8iVjS7WXDcTQvMZy4YbhJUjrFAwpQHZYdbezT81DWjwV",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "3WC3Hk6A3uuaPYyGB9o7kZRhHvrUTygDNe9rtBs565K2",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "6SZzk2pFHk94gkeJcT9ukCDHqYDzPeze1F8ikRM9bTRr",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "664iv6X5hSrtg2j3PhJAt71p9oFoozoeBfw58zVxUpuA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "5nfkcjsqcMWM3ZGXRMqJZeu8S6CmHVz97RcAULfWoFJc",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [224, 105, 208, 179, 98, 200, 213, 238, 1, 2, 3]
+      },
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "stake",
+      "handler": "farms_stake"
+    }
+  },
+  {
+    "name": "production-stake-program-id-optionals-present",
+    "note": "every program-id optional carried as an account of its own",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "DBQ8CqKvUXXzEEm3hxLD9vpNTsS534Sujv38QptRmukv",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8iVjS7WXDcTQvMZy4YbhJUjrFAwpQHZYdbezT81DWjwV",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3WC3Hk6A3uuaPYyGB9o7kZRhHvrUTygDNe9rtBs565K2",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "6SZzk2pFHk94gkeJcT9ukCDHqYDzPeze1F8ikRM9bTRr",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "664iv6X5hSrtg2j3PhJAt71p9oFoozoeBfw58zVxUpuA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "HHa7qx6yBJG8psCX6wPu67wHtZkMGx25W8iv5VNCPrZ6",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "5nfkcjsqcMWM3ZGXRMqJZeu8S6CmHVz97RcAULfWoFJc",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [206, 176, 202, 18, 200, 209, 179, 108, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "DBQ8CqKvUXXzEEm3hxLD9vpNTsS534Sujv38QptRmukv",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "8iVjS7WXDcTQvMZy4YbhJUjrFAwpQHZYdbezT81DWjwV",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "3WC3Hk6A3uuaPYyGB9o7kZRhHvrUTygDNe9rtBs565K2",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "6SZzk2pFHk94gkeJcT9ukCDHqYDzPeze1F8ikRM9bTRr",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "664iv6X5hSrtg2j3PhJAt71p9oFoozoeBfw58zVxUpuA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "HHa7qx6yBJG8psCX6wPu67wHtZkMGx25W8iv5VNCPrZ6",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "5nfkcjsqcMWM3ZGXRMqJZeu8S6CmHVz97RcAULfWoFJc",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [224, 105, 208, 179, 98, 200, 213, 238, 1, 2, 3]
+      },
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "stake",
+      "handler": "farms_stake"
+    }
+  },
+  {
+    "name": "production-stake-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "DBQ8CqKvUXXzEEm3hxLD9vpNTsS534Sujv38QptRmukv",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8iVjS7WXDcTQvMZy4YbhJUjrFAwpQHZYdbezT81DWjwV",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3WC3Hk6A3uuaPYyGB9o7kZRhHvrUTygDNe9rtBs565K2",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "6SZzk2pFHk94gkeJcT9ukCDHqYDzPeze1F8ikRM9bTRr",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "664iv6X5hSrtg2j3PhJAt71p9oFoozoeBfw58zVxUpuA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "5nfkcjsqcMWM3ZGXRMqJZeu8S6CmHVz97RcAULfWoFJc",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Ea3LKwJXFRDAdTwxJUc55BQYHgagc1M1VwZQVtnywUhx",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [206, 176, 202, 18, 200, 209, 179, 108, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "stake",
+      "reason": "remaining_accounts",
+      "message": "stake takes no accounts beyond its 8; the instruction carries 9"
+    }
+  },
+  {
+    "name": "production-transfer_ownership-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [65, 177, 215, 73, 53, 45, 99, 47, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "transfer_ownership",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-unstake-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "38RD2foUrNQeHR74R5pmoaDQLxXH2NnuWakDSLHYQcA7",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "6994qrVc2EgMXnNeZVUj96fifTxFmzmAZ6M1LFqsyof9",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [90, 95, 107, 42, 205, 124, 50, 225, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "38RD2foUrNQeHR74R5pmoaDQLxXH2NnuWakDSLHYQcA7",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "6994qrVc2EgMXnNeZVUj96fifTxFmzmAZ6M1LFqsyof9",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [180, 131, 50, 144, 26, 242, 175, 242, 1, 2, 3]
+      },
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "unstake",
+      "handler": "farms_unstake"
+    }
+  },
+  {
+    "name": "production-unstake-program-id-optionals-present",
+    "note": "every program-id optional carried as an account of its own",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "38RD2foUrNQeHR74R5pmoaDQLxXH2NnuWakDSLHYQcA7",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "6994qrVc2EgMXnNeZVUj96fifTxFmzmAZ6M1LFqsyof9",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "AfJ4QZqFxdvTYToeunK2o2E683GYnxjzpLVhHykztcDa",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [90, 95, 107, 42, 205, 124, 50, 225, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "38RD2foUrNQeHR74R5pmoaDQLxXH2NnuWakDSLHYQcA7",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "6994qrVc2EgMXnNeZVUj96fifTxFmzmAZ6M1LFqsyof9",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "AfJ4QZqFxdvTYToeunK2o2E683GYnxjzpLVhHykztcDa",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [180, 131, 50, 144, 26, 242, 175, 242, 1, 2, 3]
+      },
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "unstake",
+      "handler": "farms_unstake"
+    }
+  },
+  {
+    "name": "production-unstake-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "38RD2foUrNQeHR74R5pmoaDQLxXH2NnuWakDSLHYQcA7",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "6994qrVc2EgMXnNeZVUj96fifTxFmzmAZ6M1LFqsyof9",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "4V7KkbX4L597ccZNTtWj6CUvSj1SAkbAc7wMPXBuJ5VD",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [90, 95, 107, 42, 205, 124, 50, 225, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "unstake",
+      "reason": "remaining_accounts",
+      "message": "unstake takes no accounts beyond its 4; the instruction carries 5"
+    }
+  },
+  {
+    "name": "production-update_farm_admin-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [20, 37, 136, 19, 122, 239, 36, 130, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "update_farm_admin",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-update_farm_config-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [214, 176, 188, 244, 203, 59, 230, 207, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "update_farm_config",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-update_global_config-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [164, 84, 130, 189, 111, 58, 250, 200, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "update_global_config",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-update_global_config_admin-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [184, 87, 23, 193, 156, 238, 175, 119, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "update_global_config_admin",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-update_second_delegated_authority-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [127, 26, 6, 181, 203, 248, 117, 64, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "update_second_delegated_authority",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-withdraw_from_farm_vault-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [22, 82, 128, 250, 86, 79, 124, 78, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "withdraw_from_farm_vault",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-withdraw_reward-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [191, 187, 176, 137, 9, 25, 187, 244, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "withdraw_reward",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-withdraw_slashed_amount-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [202, 217, 67, 74, 172, 22, 140, 216, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "withdraw_slashed_amount",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-withdraw_treasury-as-listed",
+    "note": "a unsupported entry",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [40, 63, 122, 158, 144, 216, 83, 96, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "withdraw_treasury",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "production-withdraw_unstaked_deposits-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "BBBsQEKVXAD9z9axnDMKCLioDjGGPjhWNTrDKj1NwKPD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "AqjyjUNpdUSM3qGCiRSsCegi4qKarCmv4e6QoK21tYcQ",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "5poGLCsrFZ1jyiugDU1rigzghPsBZBvFkLuCuYzMYkQh",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4aABf7L8x4cjcnknnvcb4bPdsa6DnvWtXLDhrrVp9jwo",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "DBkGY8cYWVDMwsvk1fmuMQD4kCHDzbvwzG6g8ZrTnCSm",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "79tYZ75DNS18Em1ajxMopyvqext8awZ2oV9DY9XEWH9Q",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [36, 102, 187, 49, 220, 36, 132, 67, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthkDEUR3pkEqGCKZtmtmVzCUEdYa86pezHkwYbLyde",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "BBBsQEKVXAD9z9axnDMKCLioDjGGPjhWNTrDKj1NwKPD",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "AqjyjUNpdUSM3qGCiRSsCegi4qKarCmv4e6QoK21tYcQ",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "5poGLCsrFZ1jyiugDU1rigzghPsBZBvFkLuCuYzMYkQh",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "4aABf7L8x4cjcnknnvcb4bPdsa6DnvWtXLDhrrVp9jwo",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "DBkGY8cYWVDMwsvk1fmuMQD4kCHDzbvwzG6g8ZrTnCSm",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "79tYZ75DNS18Em1ajxMopyvqext8awZ2oV9DY9XEWH9Q",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [107, 97, 50, 15, 211, 245, 52, 96, 1, 2, 3]
+      },
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "withdraw_unstaked_deposits",
+      "handler": "farms_withdraw_unstaked_deposits"
+    }
+  },
+  {
+    "name": "production-withdraw_unstaked_deposits-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "BBBsQEKVXAD9z9axnDMKCLioDjGGPjhWNTrDKj1NwKPD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "AqjyjUNpdUSM3qGCiRSsCegi4qKarCmv4e6QoK21tYcQ",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "5poGLCsrFZ1jyiugDU1rigzghPsBZBvFkLuCuYzMYkQh",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4aABf7L8x4cjcnknnvcb4bPdsa6DnvWtXLDhrrVp9jwo",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "DBkGY8cYWVDMwsvk1fmuMQD4kCHDzbvwzG6g8ZrTnCSm",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "79tYZ75DNS18Em1ajxMopyvqext8awZ2oV9DY9XEWH9Q",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "HRy9h8cqhiW2jTZrwvhjXdks5UhcbojXfya4PUZFLyqF",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [36, 102, 187, 49, 220, 36, 132, 67, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "source": "withdraw_unstaked_deposits",
+      "reason": "remaining_accounts",
+      "message": "withdraw_unstaked_deposits takes no accounts beyond its 7; the instruction carries 8"
+    }
+  },
+  {
+    "name": "production-FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr-no-entry-matches",
+    "note": "a documented program's instruction that no entry's discriminator prefixes",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "accounts": [],
+      "data": [255, 254, 253, 252, 251, 250, 249, 248]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111"
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr",
+      "reason": "unknown_instruction",
+      "message": "no instruction of FarmsPZpWu9i7Kky8tPN37rs2TpmMrAZrC7S7vJa91Hr matches the data"
+    }
+  }
+]

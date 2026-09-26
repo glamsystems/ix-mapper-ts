@@ -1,0 +1,292 @@
+{
+  "name": "staging-orca-reposition-liquidity-v2",
+  "note": "the mints sit one position later than in the other liquidity instructions, and the funder must be the GLAM signer, which the handler forwards in its place",
+  "environment": "staging",
+  "instruction": {
+    "programAddress": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+    "accounts": [
+      {
+        "address": "ABDsjL6RiV6T2sMe4kEg8D79MpCtXbQiBkefDTrk9VJQ",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Vau1t11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      },
+      {
+        "address": "Signer1111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      },
+      {
+        "address": "Position11111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Positiontokenaccount11111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "MintA11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "MintB11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Tokenowneraccounta1111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Tokenowneraccountb1111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "2MyssGoyVxcUUmXp7Z8P1sJTrdszNt5t6md7FTCmtpzg",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "69YQvjeSMhxfNwWVUMF1VCb4kGucV2t9vYHvUn3uhnay",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "6KxJsSZV4VXHc347aznWjRe3vxHPZz3D8nEEcwN8UUac",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Existingtickarrayupp11111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "CxWCqcerV37zcnL3seaQxAa8yrovBDAXydirJLFQVw7w",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Newtickarrayupper11111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "11111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      }
+    ],
+    "data": [191, 169, 224, 11, 131, 19, 158, 253, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  },
+  "context": {
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111",
+    "integrationAuthority": true,
+    "suppliedAccounts": {
+      "reposition_liquidity_v2": {
+        "request": {
+          "proxyProgram": "gstgo1EgmTp2PbLSaL6Qg57P7uADx3aiRZrMsewEdSy",
+          "program": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+          "handler": "reposition_liquidity_v2",
+          "roles": [
+            {
+              "role": "asset_oracle",
+              "of": ["MintA11111111111111111111111111111111111111"],
+              "optional": false
+            },
+            {
+              "role": "asset_oracle",
+              "of": ["MintB11111111111111111111111111111111111111"],
+              "optional": false
+            },
+            {
+              "role": "sol_usd_oracle",
+              "of": [],
+              "optional": true
+            }
+          ]
+        },
+        "answer": [
+          "Price1A111111111111111111111111111111111111",
+          "Price1B111111111111111111111111111111111111",
+          "SoLUsd1111111111111111111111111111111111111"
+        ]
+      }
+    }
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+    "source": "reposition_liquidity_v2",
+    "handler": "reposition_liquidity_v2",
+    "instruction": {
+      "programAddress": "gstgo1EgmTp2PbLSaL6Qg57P7uADx3aiRZrMsewEdSy",
+      "accounts": [
+        {
+          "address": "State11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "Autho1EgmTp2PbLSaL6Qg57P7uADx3aiRZrMsewEdSy",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "11111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "ABDsjL6RiV6T2sMe4kEg8D79MpCtXbQiBkefDTrk9VJQ",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Position11111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Positiontokenaccount11111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "MintA11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "MintB11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Tokenowneraccounta1111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Tokenowneraccountb1111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "2MyssGoyVxcUUmXp7Z8P1sJTrdszNt5t6md7FTCmtpzg",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "69YQvjeSMhxfNwWVUMF1VCb4kGucV2t9vYHvUn3uhnay",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "6KxJsSZV4VXHc347aznWjRe3vxHPZz3D8nEEcwN8UUac",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Existingtickarrayupp11111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "CxWCqcerV37zcnL3seaQxAa8yrovBDAXydirJLFQVw7w",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Newtickarrayupper11111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "6avract7PxKqoq6hdmpAgGKgJWoJWdiXPPzzFZ62Hck6",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Price1A111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Price1B111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "SoLUsd1111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [
+        191, 169, 224, 11, 131, 19, 158, 253, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+      ]
+    }
+  }
+}

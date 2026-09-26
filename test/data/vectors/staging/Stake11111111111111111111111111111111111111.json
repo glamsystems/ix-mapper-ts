@@ -1,0 +1,1200 @@
+[
+  {
+    "name": "staging-authorize-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "ZApE2hBfKV4ksSx8A9nqLiY97NhuDNTPvbyh4Fvw7UD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [1, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Stake11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "ZApE2hBfKV4ksSx8A9nqLiY97NhuDNTPvbyh4Fvw7UD",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "SysvarC1ock11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [127, 247, 88, 164, 201, 0, 79, 7, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "authorize",
+      "handler": "stake_authorize"
+    }
+  },
+  {
+    "name": "staging-authorize-omittable-tail-absent",
+    "note": "the trailing run of omittable positions left out",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "ZApE2hBfKV4ksSx8A9nqLiY97NhuDNTPvbyh4Fvw7UD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [1, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Stake11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "ZApE2hBfKV4ksSx8A9nqLiY97NhuDNTPvbyh4Fvw7UD",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "SysvarC1ock11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [127, 247, 88, 164, 201, 0, 79, 7, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "authorize",
+      "handler": "stake_authorize"
+    }
+  },
+  {
+    "name": "staging-authorize-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "ZApE2hBfKV4ksSx8A9nqLiY97NhuDNTPvbyh4Fvw7UD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "8BTyKXMq4wU68ZCa8hGPkPgjPVJxYyCPzQMGkhQEyqgr",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [1, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Stake11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "ZApE2hBfKV4ksSx8A9nqLiY97NhuDNTPvbyh4Fvw7UD",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "SysvarC1ock11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "8BTyKXMq4wU68ZCa8hGPkPgjPVJxYyCPzQMGkhQEyqgr",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [127, 247, 88, 164, 201, 0, 79, 7, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "authorize",
+      "handler": "stake_authorize"
+    }
+  },
+  {
+    "name": "staging-authorize_checked-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [10, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "authorize_checked",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-authorize_checked_with_seed-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [11, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "authorize_checked_with_seed",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-authorize_with_seed-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [8, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "authorize_with_seed",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-deactivate-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "EoH3P3uh6fiFkUaXiEjZaAsKFxPiTjL3Wy26SeVTXSEY",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [5, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Stake11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "EoH3P3uh6fiFkUaXiEjZaAsKFxPiTjL3Wy26SeVTXSEY",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "SysvarC1ock11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [224, 10, 93, 175, 175, 145, 237, 169, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "deactivate",
+      "handler": "stake_deactivate"
+    }
+  },
+  {
+    "name": "staging-deactivate-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "EoH3P3uh6fiFkUaXiEjZaAsKFxPiTjL3Wy26SeVTXSEY",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "4YrYwZMC87V79X3HXagEFoG6kDeTztXm2S3jJFJngdsy",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [5, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "deactivate",
+      "reason": "remaining_accounts",
+      "message": "deactivate takes no accounts beyond its 2; the instruction carries 3"
+    }
+  },
+  {
+    "name": "staging-deactivate_delinquent-as-listed",
+    "note": "a passthrough entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [14, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "Stake11111111111111111111111111111111111111",
+        "accounts": [],
+        "data": [14, 0, 0, 0, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "deactivate_delinquent",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "staging-delegate_stake-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [2, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "delegate_stake",
+      "reason": "refused_instruction",
+      "message": "not derived: extension account 'stake_config' has no source counterpart"
+    }
+  },
+  {
+    "name": "staging-get_minimum_delegation-as-listed",
+    "note": "a passthrough entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [13, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "Stake11111111111111111111111111111111111111",
+        "accounts": [],
+        "data": [13, 0, 0, 0, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "get_minimum_delegation",
+      "reason": "a read: it declares no account and takes none"
+    }
+  },
+  {
+    "name": "staging-initialize-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [0, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "initialize",
+      "reason": "refused_instruction",
+      "message": "not derived: argument layout differs: source [u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,i64,u64,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8,u8], handler []; the mapper relays the payload verbatim"
+    }
+  },
+  {
+    "name": "staging-initialize_checked-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [9, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "initialize_checked",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-merge-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "CoBv9eceSwKGNoDEx3V8Jh3oC47xremH35PDdCTmJtGw",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "XviY3JhhGSgDWSGnCKCAx41ytkDHhQbWrhScSYoMrjG",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [7, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Stake11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "CoBv9eceSwKGNoDEx3V8Jh3oC47xremH35PDdCTmJtGw",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "XviY3JhhGSgDWSGnCKCAx41ytkDHhQbWrhScSYoMrjG",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "SysvarC1ock11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "SysvarStakeHistory1111111111111111111111111",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [46, 181, 125, 12, 51, 179, 134, 176, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "merge",
+      "handler": "stake_merge"
+    }
+  },
+  {
+    "name": "staging-merge-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "CoBv9eceSwKGNoDEx3V8Jh3oC47xremH35PDdCTmJtGw",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "XviY3JhhGSgDWSGnCKCAx41ytkDHhQbWrhScSYoMrjG",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "86X5bu5Y5qGRMZX6sAs7natSztcWCwME9sguYqjLXTNt",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [7, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Stake11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "CoBv9eceSwKGNoDEx3V8Jh3oC47xremH35PDdCTmJtGw",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "XviY3JhhGSgDWSGnCKCAx41ytkDHhQbWrhScSYoMrjG",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "SysvarC1ock11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "SysvarStakeHistory1111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "86X5bu5Y5qGRMZX6sAs7natSztcWCwME9sguYqjLXTNt",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [46, 181, 125, 12, 51, 179, 134, 176, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "merge",
+      "handler": "stake_merge"
+    }
+  },
+  {
+    "name": "staging-move_lamports-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [17, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "move_lamports",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-move_stake-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [16, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "move_stake",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-set_lockup-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [6, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "set_lockup",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-set_lockup_checked-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [12, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "set_lockup_checked",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-split-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "GQBJ89uH4BumN67URJAa1vsCF1PHAqvaWthwh4U3kq7q",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "272GBt8MgZtg4pbLRwSfuuTSKTz4rnKdoEs1yWgVXZHQ",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [3, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Stake11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GQBJ89uH4BumN67URJAa1vsCF1PHAqvaWthwh4U3kq7q",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "272GBt8MgZtg4pbLRwSfuuTSKTz4rnKdoEs1yWgVXZHQ",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [63, 128, 169, 206, 158, 60, 135, 48, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "split",
+      "handler": "stake_split"
+    }
+  },
+  {
+    "name": "staging-split-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "GQBJ89uH4BumN67URJAa1vsCF1PHAqvaWthwh4U3kq7q",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "272GBt8MgZtg4pbLRwSfuuTSKTz4rnKdoEs1yWgVXZHQ",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "AT4i3uZuQGSjoHdpXawfg4YBRkAjyaCF6GZ5aMta8jFJ",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [3, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Stake11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GQBJ89uH4BumN67URJAa1vsCF1PHAqvaWthwh4U3kq7q",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "272GBt8MgZtg4pbLRwSfuuTSKTz4rnKdoEs1yWgVXZHQ",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "AT4i3uZuQGSjoHdpXawfg4YBRkAjyaCF6GZ5aMta8jFJ",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [63, 128, 169, 206, 158, 60, 135, 48, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "split",
+      "handler": "stake_split"
+    }
+  },
+  {
+    "name": "staging-withdraw-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "BqzQws7Dj8ostRg6ekeKNQq7E5QmLbeozeL6SpUtRVve",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [4, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Stake11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "BqzQws7Dj8ostRg6ekeKNQq7E5QmLbeozeL6SpUtRVve",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "SysvarC1ock11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "SysvarStakeHistory1111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [199, 13, 168, 20, 92, 151, 29, 56, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "withdraw",
+      "handler": "stake_withdraw"
+    }
+  },
+  {
+    "name": "staging-withdraw-omittable-tail-absent",
+    "note": "the trailing run of omittable positions left out",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "BqzQws7Dj8ostRg6ekeKNQq7E5QmLbeozeL6SpUtRVve",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [4, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "Stake11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "BqzQws7Dj8ostRg6ekeKNQq7E5QmLbeozeL6SpUtRVve",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "SysvarC1ock11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "SysvarStakeHistory1111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [199, 13, 168, 20, 92, 151, 29, 56, 1, 2, 3]
+      },
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "withdraw",
+      "handler": "stake_withdraw"
+    }
+  },
+  {
+    "name": "staging-withdraw-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "BqzQws7Dj8ostRg6ekeKNQq7E5QmLbeozeL6SpUtRVve",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "2o4J41saMVaHdkotttdKbunAqSphA8KVsoAe3DLToPtc",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [4, 0, 0, 0, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "source": "withdraw",
+      "reason": "remaining_accounts",
+      "message": "withdraw takes no accounts beyond its 4; the instruction carries 5"
+    }
+  },
+  {
+    "name": "staging-Stake11111111111111111111111111111111111111-no-entry-matches",
+    "note": "a documented program's instruction that no entry's discriminator prefixes",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "Stake11111111111111111111111111111111111111",
+      "accounts": [],
+      "data": [255, 254, 253, 252, 251, 250, 249, 248]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111"
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "Stake11111111111111111111111111111111111111",
+      "reason": "unknown_instruction",
+      "message": "no instruction of Stake11111111111111111111111111111111111111 matches the data"
+    }
+  }
+]

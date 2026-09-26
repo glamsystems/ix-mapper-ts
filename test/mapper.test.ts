@@ -15,6 +15,7 @@ import {
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const casesDir = path.join(here, "data", "cases");
+const vectorsDir = path.join(here, "data", "vectors");
 
 interface Case {
   readonly name: string;
@@ -37,11 +38,7 @@ interface Case {
   readonly expected: Record<string, unknown>;
 }
 
-/**
- * The supplier's side of one entry: the request the mapper makes for it, exactly once (its
- * instruction is the case's own), and either the answer (addresses, a null kept) or the
- * message the supplier throws with.
- */
+/** One entry's supplier: the request the mapper must make, once, and the answer or the throw. */
 interface SuppliedSpec {
   readonly request: {
     readonly proxyProgram: string;
@@ -88,16 +85,32 @@ function toComparable(result: MapResult): Record<string, unknown> {
   };
 }
 
+/** The hand-written cases, one per file, then the generated vectors, a file of many per document. */
+function readCase(file: string): Case & Case[] {
+  return JSON.parse(fs.readFileSync(file, "utf8")) as Case & Case[];
+}
+
+function allCases(): Case[] {
+  const json = (dir: string) =>
+    fs
+      .readdirSync(dir)
+      .filter((f) => f.endsWith(".json"))
+      .sort()
+      .map((f) => path.join(dir, f));
+  const environments = fs
+    .readdirSync(vectorsDir)
+    .sort()
+    .map((e) => path.join(vectorsDir, e));
+  return [
+    ...json(casesDir).map(readCase),
+    ...environments.flatMap((dir) => json(dir).flatMap(readCase)),
+  ];
+}
+
 describe("the mapping cases", () => {
-  const files = fs
-    .readdirSync(casesDir)
-    .filter((name) => name.endsWith(".json"))
-    .sort();
-  assert.ok(files.length > 0);
-  for (const file of files) {
-    const testCase = JSON.parse(
-      fs.readFileSync(path.join(casesDir, file), "utf8"),
-    ) as Case;
+  const cases = allCases();
+  assert.ok(cases.length > 0);
+  for (const testCase of cases) {
     it(`${testCase.name}: ${testCase.note}`, () => {
       // a case's own documents go in as parsed JSON: createMapper admits them
       const mapper =
@@ -409,12 +422,9 @@ describe("createMapper", () => {
   });
 
   it("refuses an untyped supplier's non-array answer as its failure", () => {
-    const needing = JSON.parse(
-      fs.readFileSync(
-        path.join(casesDir, "supplied-accounts-need-a-supplier.json"),
-        "utf8",
-      ),
-    ) as Case;
+    const needing = readCase(
+      path.join(casesDir, "supplied-accounts-need-a-supplier.json"),
+    );
     const mapper = createMapper({ documents: needing.documents ?? [] });
     const result = mapper.map(toInstruction(needing.instruction), {
       ...context,
@@ -428,12 +438,9 @@ describe("createMapper", () => {
 
   it("treats a null supplier as none, like an absent one", () => {
     // the need-a-supplier case, whose context has none; a JavaScript caller may pass null
-    const needing = JSON.parse(
-      fs.readFileSync(
-        path.join(casesDir, "supplied-accounts-need-a-supplier.json"),
-        "utf8",
-      ),
-    ) as Case;
+    const needing = readCase(
+      path.join(casesDir, "supplied-accounts-need-a-supplier.json"),
+    );
     const mapper = createMapper({ documents: needing.documents ?? [] });
     const withNull = { ...context, suppliedAccounts: null };
     const result = mapper.map(
