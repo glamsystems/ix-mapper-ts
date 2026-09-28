@@ -1,5 +1,170 @@
 [
   {
+    "name": "staging-accept_escrow_request-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [182, 41, 62, 227, 228, 175, 22, 137, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "accept_escrow_request",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-acknowledge_restart-as-listed",
+    "note": "a passthrough entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [211, 56, 236, 97, 132, 106, 54, 156, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+        "accounts": [],
+        "data": [211, 56, 236, 97, 132, 106, 54, 156, 1, 2, 3]
+      },
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "acknowledge_restart",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "staging-activate_native_sol-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [15, 246, 91, 93, 70, 233, 191, 120, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "activate_native_sol",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-add_market-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [41, 137, 185, 126, 69, 139, 254, 55, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "add_market",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-authorized_force_cancel-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [13, 22, 221, 234, 211, 165, 172, 2, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "authorized_force_cancel",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-authorized_force_cancel_by_id-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [122, 159, 12, 159, 144, 108, 225, 241, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "authorized_force_cancel_by_id",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-authorized_transfer_collateral-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [222, 214, 69, 15, 116, 115, 121, 37, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "authorized_transfer_collateral",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-cancel_all-every-position-present",
     "note": "every source position carried, the expectations met, an absent optional as the program id",
     "environment": "staging",
@@ -335,6 +500,75 @@
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "cancel_all",
       "handler": "cancel_all"
+    }
+  },
+  {
+    "name": "staging-cancel_all_plus_conditional-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [142, 173, 238, 126, 79, 19, 53, 103, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "cancel_all_plus_conditional",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-cancel_conditional_order-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [82, 104, 25, 51, 248, 54, 66, 184, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "cancel_conditional_order",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-cancel_escrow_request-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [202, 26, 163, 239, 32, 8, 85, 2, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "cancel_escrow_request",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
     }
   },
   {
@@ -1037,6 +1271,121 @@
     }
   },
   {
+    "name": "staging-change_exchange_status-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [212, 102, 200, 118, 138, 162, 228, 165, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "change_exchange_status",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-change_market_status-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [221, 127, 224, 41, 177, 145, 126, 8, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "change_market_status",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-change_spot_asset_params-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [41, 110, 206, 72, 187, 197, 197, 112, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "change_spot_asset_params",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-claim_authority-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [222, 132, 185, 123, 127, 107, 6, 31, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "claim_authority",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-claim_fees-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [82, 251, 233, 156, 12, 52, 184, 202, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "claim_fees",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-clear_expired_orders-as-listed",
     "note": "a passthrough entry",
     "environment": "staging",
@@ -1064,6 +1413,52 @@
     }
   },
   {
+    "name": "staging-clear_position_flip_orders-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [245, 113, 37, 98, 82, 52, 120, 91, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "clear_position_flip_orders",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-close_market-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [88, 154, 248, 186, 48, 14, 123, 244, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "close_market",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-close_matched_positions-as-listed",
     "note": "a unsupported entry",
     "environment": "staging",
@@ -1082,6 +1477,52 @@
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "close_matched_positions",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-close_trader_account-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [126, 222, 38, 149, 207, 164, 108, 187, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "close_trader_account",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-configure_native_sol-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [241, 19, 44, 37, 119, 51, 197, 27, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "configure_native_sol",
       "reason": "refused_instruction",
       "message": "no GLAM handler proxies this instruction"
     }
@@ -1114,6 +1555,75 @@
     }
   },
   {
+    "name": "staging-create_conditional_orders_account-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [201, 6, 112, 61, 231, 15, 57, 248, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "create_conditional_orders_account",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-create_escrow_account-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [146, 147, 225, 47, 51, 64, 112, 1, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "create_escrow_account",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-create_escrow_request-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [116, 164, 236, 204, 187, 132, 195, 219, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "create_escrow_request",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-create_permission-as-listed",
     "note": "a unsupported entry",
     "environment": "staging",
@@ -1137,6 +1647,29 @@
     }
   },
   {
+    "name": "staging-deactivate_spline-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [0, 254, 22, 100, 238, 197, 118, 181, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "deactivate_spline",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-delegate_trader-as-listed",
     "note": "a unsupported entry",
     "environment": "staging",
@@ -1155,6 +1688,29 @@
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "delegate_trader",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-delete_tombstoned_market-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [146, 17, 252, 116, 222, 113, 52, 102, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "delete_tombstoned_market",
       "reason": "refused_instruction",
       "message": "no GLAM handler proxies this instruction"
     }
@@ -1498,6 +2054,52 @@
     }
   },
   {
+    "name": "staging-enable_feature-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [27, 23, 206, 255, 190, 19, 231, 92, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "enable_feature",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-execute_conditional_orders-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [101, 214, 110, 0, 190, 226, 177, 236, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "execute_conditional_orders",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-execute_stop_loss-as-listed",
     "note": "a unsupported entry",
     "environment": "staging",
@@ -1516,6 +2118,29 @@
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "execute_stop_loss",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-force_cancel_after_hours-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [147, 13, 224, 61, 248, 234, 64, 164, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "force_cancel_after_hours",
       "reason": "refused_instruction",
       "message": "no GLAM handler proxies this instruction"
     }
@@ -1545,7 +2170,7 @@
   },
   {
     "name": "staging-force_cancel_risk_increasing-as-listed",
-    "note": "a passthrough entry",
+    "note": "a unsupported entry",
     "environment": "staging",
     "instruction": {
       "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
@@ -1559,15 +2184,80 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "passthrough",
-      "instruction": {
-        "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-        "accounts": [],
-        "data": [41, 55, 217, 35, 92, 72, 42, 238, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "force_cancel_risk_increasing",
-      "reason": "no signer account: the instruction needs no authority the vault holds"
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-force_cancel_stop_loss-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [114, 230, 115, 170, 66, 79, 19, 172, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "force_cancel_stop_loss",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-initialize_arena-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [11, 37, 221, 1, 205, 120, 25, 230, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "initialize_arena",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-liquidate_native_sol-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [173, 44, 209, 10, 104, 250, 64, 50, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "liquidate_native_sol",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
     }
   },
   {
@@ -1635,6 +2325,148 @@
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "log",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-log_event_lengths-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [247, 7, 134, 203, 181, 71, 153, 71, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "log_event_lengths",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-market_closed_force_cancel_all-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [229, 101, 143, 249, 150, 175, 175, 219, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "market_closed_force_cancel_all",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-migrate_trader_state-as-listed",
+    "note": "a passthrough entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [22, 14, 74, 214, 108, 72, 207, 100, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+        "accounts": [],
+        "data": [22, 14, 74, 214, 108, 72, 207, 100, 1, 2, 3]
+      },
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "migrate_trader_state",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
+    }
+  },
+  {
+    "name": "staging-name_successor-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [160, 203, 37, 229, 225, 119, 129, 236, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "name_successor",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-ping_conditional_orders-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [135, 170, 166, 34, 208, 230, 91, 64, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "ping_conditional_orders",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-place_attached_conditional_order-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [43, 117, 136, 128, 72, 150, 101, 122, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "place_attached_conditional_order",
       "reason": "refused_instruction",
       "message": "no GLAM handler proxies this instruction"
     }
@@ -1978,6 +2810,29 @@
     }
   },
   {
+    "name": "staging-place_limit_order_with_conditionals-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [95, 45, 68, 168, 232, 218, 210, 92, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "place_limit_order_with_conditionals",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-place_market_order-every-position-present",
     "note": "every source position carried, the expectations met, an absent optional as the program id",
     "environment": "staging",
@@ -2313,6 +3168,29 @@
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "place_market_order",
       "handler": "place_market_order"
+    }
+  },
+  {
+    "name": "staging-place_market_order_delegated-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [160, 35, 21, 235, 110, 182, 245, 65, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "place_market_order_delegated",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
     }
   },
   {
@@ -2654,6 +3532,52 @@
     }
   },
   {
+    "name": "staging-place_multi_limit_order_v2-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [64, 111, 40, 210, 2, 177, 38, 178, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "place_multi_limit_order_v2",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-place_position_conditional_order-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [65, 108, 83, 129, 76, 193, 92, 143, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "place_position_conditional_order",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-place_stop_loss-as-listed",
     "note": "a unsupported entry",
     "environment": "staging",
@@ -2672,6 +3596,75 @@
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "place_stop_loss",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-realloc_trader-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [174, 248, 63, 35, 225, 236, 19, 204, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "realloc_trader",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-rebirth-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [143, 241, 154, 79, 116, 226, 255, 144, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "rebirth",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-register_spline-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [30, 176, 160, 79, 252, 117, 241, 58, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "register_spline",
       "reason": "refused_instruction",
       "message": "no GLAM handler proxies this instruction"
     }
@@ -2696,7 +3689,76 @@
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "register_trader",
       "reason": "refused_instruction",
-      "message": "not derived: source account 'phoenix_program' (position 0) has no destination slot and no header/static replacement — the extension may predate it"
+      "message": "not derived: argument layout differs: source [u32,u32,u8,u8], handler [u64,u8,u8]; the mapper relays the payload verbatim"
+    }
+  },
+  {
+    "name": "staging-remove_all_oracles-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [164, 64, 91, 210, 137, 189, 135, 38, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "remove_all_oracles",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-remove_empty_arena-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [155, 65, 162, 79, 211, 221, 197, 168, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "remove_empty_arena",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-remove_oracle-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [60, 93, 51, 197, 182, 42, 170, 26, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "remove_oracle",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
     }
   },
   {
@@ -2723,6 +3785,52 @@
     }
   },
   {
+    "name": "staging-set_multi_arena_additional_nodes_watermark-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [236, 252, 222, 208, 31, 131, 157, 147, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "set_multi_arena_additional_nodes_watermark",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-set_multi_arena_num_nodes_per_arena-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [91, 180, 241, 192, 78, 132, 252, 131, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "set_multi_arena_num_nodes_per_arena",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-set_permission-as-listed",
     "note": "a unsupported entry",
     "environment": "staging",
@@ -2741,6 +3849,75 @@
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "set_permission",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-set_permission_delegated-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [35, 25, 57, 68, 255, 26, 161, 229, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "set_permission_delegated",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-set_spot_asset_price-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [246, 172, 230, 25, 190, 58, 58, 9, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "set_spot_asset_price",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-set_trader_cap_override-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [191, 147, 175, 185, 192, 100, 233, 94, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "set_trader_cap_override",
       "reason": "refused_instruction",
       "message": "no GLAM handler proxies this instruction"
     }
@@ -2789,6 +3966,79 @@
       "source": "set_trader_capability",
       "reason": "refused_instruction",
       "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-settle_closed_market_position-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [27, 222, 221, 233, 136, 15, 254, 210, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "settle_closed_market_position",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-swap_native-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [88, 147, 177, 186, 129, 234, 239, 231, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "swap_native",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-sync_native-as-listed",
+    "note": "a passthrough entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [155, 219, 36, 36, 239, 128, 21, 65, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
+      "instruction": {
+        "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+        "accounts": [],
+        "data": [155, 219, 36, 36, 239, 128, 21, 65, 1, 2, 3]
+      },
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "sync_native",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
     }
   },
   {
@@ -3070,13 +4320,13 @@
     }
   },
   {
-    "name": "staging-sync_trader_capabilities-as-listed",
-    "note": "a passthrough entry",
+    "name": "staging-tombstone_market-as-listed",
+    "note": "a unsupported entry",
     "environment": "staging",
     "instruction": {
       "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "accounts": [],
-      "data": [154, 64, 87, 130, 130, 34, 138, 0, 1, 2, 3]
+      "data": [90, 177, 17, 88, 85, 11, 177, 96, 1, 2, 3]
     },
     "context": {
       "glamState": "State11111111111111111111111111111111111111",
@@ -3085,15 +4335,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "passthrough",
-      "instruction": {
-        "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-        "accounts": [],
-        "data": [154, 64, 87, 130, 130, 34, 138, 0, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-      "source": "sync_trader_capabilities",
-      "reason": "no signer account: the instruction needs no authority the vault holds"
+      "source": "tombstone_market",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
     }
   },
   {
@@ -3415,58 +4661,12 @@
     }
   },
   {
-    "name": "staging-transfer_collateral_child_to_parent-every-position-present",
-    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "name": "staging-transfer_collateral_child_to_parent-as-listed",
+    "note": "a unsupported entry",
     "environment": "staging",
     "instruction": {
       "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-      "accounts": [
-        {
-          "address": "5QGpoVHYdeFpbqCfw3iAmVXThTUXCETBzziQyfojyFiP",
-          "writable": false,
-          "signer": false
-        },
-        {
-          "address": "4rUhTxUTD1y75RJh4H1CkHgc34jrRhSZTzRoCZ87BwwE",
-          "writable": false,
-          "signer": false
-        },
-        {
-          "address": "GXpjcLL6qGvdFaLN5PAGkaCJrKGBNsVodHJ6PTMFpptb",
-          "writable": false,
-          "signer": false
-        },
-        {
-          "address": "7NwRAsRJNvE6Wde3wSHy3vA5Tv6ERDXNFLG8DVVtLvtH",
-          "writable": false,
-          "signer": false
-        },
-        {
-          "address": "HHQa2iv5U44rwgHHJMzjcPqjz8XT4b4pvPXjmkTNA5kM",
-          "writable": true,
-          "signer": false
-        },
-        {
-          "address": "78EHfgqiwwzAr5x1uCiPUaCfdHxDB7FWQWuJxLPbdiY4",
-          "writable": true,
-          "signer": false
-        },
-        {
-          "address": "E2sSQpDFpB9WVav1cpWTf7jHPVhZtpnbDBLsqxqDKKC8",
-          "writable": false,
-          "signer": false
-        },
-        {
-          "address": "C9rDHSDMSsTMswLRv6ZVyd8vGRV8eWuXE3CHbt1uRsvT",
-          "writable": true,
-          "signer": false
-        },
-        {
-          "address": "AGUHuUPs5xwY74pDKbEZDbmKyi9AGqsn87MoEsW1kygs",
-          "writable": true,
-          "signer": false
-        }
-      ],
+      "accounts": [],
       "data": [51, 100, 177, 115, 139, 135, 247, 139, 1, 2, 3]
     },
     "context": {
@@ -3476,157 +4676,21 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "5QGpoVHYdeFpbqCfw3iAmVXThTUXCETBzziQyfojyFiP",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "4rUhTxUTD1y75RJh4H1CkHgc34jrRhSZTzRoCZ87BwwE",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "GXpjcLL6qGvdFaLN5PAGkaCJrKGBNsVodHJ6PTMFpptb",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "7NwRAsRJNvE6Wde3wSHy3vA5Tv6ERDXNFLG8DVVtLvtH",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "HHQa2iv5U44rwgHHJMzjcPqjz8XT4b4pvPXjmkTNA5kM",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "78EHfgqiwwzAr5x1uCiPUaCfdHxDB7FWQWuJxLPbdiY4",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "E2sSQpDFpB9WVav1cpWTf7jHPVhZtpnbDBLsqxqDKKC8",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "C9rDHSDMSsTMswLRv6ZVyd8vGRV8eWuXE3CHbt1uRsvT",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "AGUHuUPs5xwY74pDKbEZDbmKyi9AGqsn87MoEsW1kygs",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [51, 100, 177, 115, 139, 135, 247, 139, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "transfer_collateral_child_to_parent",
-      "handler": "transfer_collateral_child_to_parent"
+      "reason": "refused_instruction",
+      "message": "not derived: argument layout differs: source [], handler [u64]; the mapper relays the payload verbatim"
     }
   },
   {
-    "name": "staging-transfer_collateral_child_to_parent-one-account-beyond-the-list",
-    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "name": "staging-transfer_native_sol-as-listed",
+    "note": "a unsupported entry",
     "environment": "staging",
     "instruction": {
       "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-      "accounts": [
-        {
-          "address": "5QGpoVHYdeFpbqCfw3iAmVXThTUXCETBzziQyfojyFiP",
-          "writable": false,
-          "signer": false
-        },
-        {
-          "address": "4rUhTxUTD1y75RJh4H1CkHgc34jrRhSZTzRoCZ87BwwE",
-          "writable": false,
-          "signer": false
-        },
-        {
-          "address": "GXpjcLL6qGvdFaLN5PAGkaCJrKGBNsVodHJ6PTMFpptb",
-          "writable": false,
-          "signer": false
-        },
-        {
-          "address": "7NwRAsRJNvE6Wde3wSHy3vA5Tv6ERDXNFLG8DVVtLvtH",
-          "writable": false,
-          "signer": false
-        },
-        {
-          "address": "HHQa2iv5U44rwgHHJMzjcPqjz8XT4b4pvPXjmkTNA5kM",
-          "writable": true,
-          "signer": false
-        },
-        {
-          "address": "78EHfgqiwwzAr5x1uCiPUaCfdHxDB7FWQWuJxLPbdiY4",
-          "writable": true,
-          "signer": false
-        },
-        {
-          "address": "E2sSQpDFpB9WVav1cpWTf7jHPVhZtpnbDBLsqxqDKKC8",
-          "writable": false,
-          "signer": false
-        },
-        {
-          "address": "C9rDHSDMSsTMswLRv6ZVyd8vGRV8eWuXE3CHbt1uRsvT",
-          "writable": true,
-          "signer": false
-        },
-        {
-          "address": "AGUHuUPs5xwY74pDKbEZDbmKyi9AGqsn87MoEsW1kygs",
-          "writable": true,
-          "signer": false
-        },
-        {
-          "address": "DdTs8zcuyj1vhcfHoymgGTFL9LeiNtxsANyTCYg1NiMg",
-          "writable": true,
-          "signer": false
-        }
-      ],
-      "data": [51, 100, 177, 115, 139, 135, 247, 139, 1, 2, 3]
+      "accounts": [],
+      "data": [204, 65, 217, 206, 56, 180, 74, 252, 1, 2, 3]
     },
     "context": {
       "glamState": "State11111111111111111111111111111111111111",
@@ -3635,101 +4699,38 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "transfer_native_sol",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-transfer_native_sol_from_child_to_parent-as-listed",
+    "note": "a passthrough entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [90, 175, 49, 106, 54, 115, 8, 185, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "passthrough",
       "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "5QGpoVHYdeFpbqCfw3iAmVXThTUXCETBzziQyfojyFiP",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "4rUhTxUTD1y75RJh4H1CkHgc34jrRhSZTzRoCZ87BwwE",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "GXpjcLL6qGvdFaLN5PAGkaCJrKGBNsVodHJ6PTMFpptb",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "7NwRAsRJNvE6Wde3wSHy3vA5Tv6ERDXNFLG8DVVtLvtH",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "HHQa2iv5U44rwgHHJMzjcPqjz8XT4b4pvPXjmkTNA5kM",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "78EHfgqiwwzAr5x1uCiPUaCfdHxDB7FWQWuJxLPbdiY4",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "E2sSQpDFpB9WVav1cpWTf7jHPVhZtpnbDBLsqxqDKKC8",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "C9rDHSDMSsTMswLRv6ZVyd8vGRV8eWuXE3CHbt1uRsvT",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "AGUHuUPs5xwY74pDKbEZDbmKyi9AGqsn87MoEsW1kygs",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "DdTs8zcuyj1vhcfHoymgGTFL9LeiNtxsANyTCYg1NiMg",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [51, 100, 177, 115, 139, 135, 247, 139, 1, 2, 3]
+        "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+        "accounts": [],
+        "data": [90, 175, 49, 106, 54, 115, 8, 185, 1, 2, 3]
       },
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-      "source": "transfer_collateral_child_to_parent",
-      "handler": "transfer_collateral_child_to_parent"
+      "source": "transfer_native_sol_from_child_to_parent",
+      "reason": "no signer account: the instruction needs no authority the vault holds"
     }
   },
   {
@@ -3760,13 +4761,13 @@
     }
   },
   {
-    "name": "staging-update_oracle_prices-as-listed",
+    "name": "staging-update_authorities-as-listed",
     "note": "a unsupported entry",
     "environment": "staging",
     "instruction": {
       "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "accounts": [],
-      "data": [31, 180, 61, 161, 248, 128, 43, 94, 1, 2, 3]
+      "data": [175, 228, 137, 18, 175, 70, 220, 165, 1, 2, 3]
     },
     "context": {
       "glamState": "State11111111111111111111111111111111111111",
@@ -3777,7 +4778,76 @@
     "expected": {
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-      "source": "update_oracle_prices",
+      "source": "update_authorities",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_commodity_market_state-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [45, 245, 97, 184, 200, 147, 142, 73, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_commodity_market_state",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_funding_parameters-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [101, 195, 104, 104, 116, 20, 223, 188, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_funding_parameters",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_market_fees-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [187, 36, 121, 171, 131, 19, 243, 117, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_market_fees",
       "reason": "refused_instruction",
       "message": "no GLAM handler proxies this instruction"
     }
@@ -3806,6 +4876,259 @@
     }
   },
   {
+    "name": "staging-update_perp_cancel_risk_factor-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [88, 6, 185, 205, 118, 28, 129, 242, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_cancel_risk_factor",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_perp_isolated_only-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [101, 56, 163, 250, 73, 35, 115, 91, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_isolated_only",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_perp_leverage_tiers-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [110, 223, 244, 99, 34, 83, 97, 121, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_leverage_tiers",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_perp_mark_price_parameters-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [254, 86, 13, 94, 43, 224, 160, 226, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_mark_price_parameters",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_perp_max_liquidation_size-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [221, 63, 2, 199, 44, 241, 124, 222, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_max_liquidation_size",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_perp_open_interest_cap-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [75, 137, 116, 5, 80, 123, 107, 177, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_open_interest_cap",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_perp_parameters_delegated-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [245, 185, 52, 228, 181, 88, 142, 222, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_parameters_delegated",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_perp_risk_factors-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [8, 242, 209, 204, 79, 145, 24, 37, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_risk_factors",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_perp_transfer_fee_tiers-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [170, 246, 183, 193, 115, 189, 151, 94, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_transfer_fee_tiers",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_perp_u_pnl_risk_factor-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [113, 214, 226, 254, 147, 9, 94, 220, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_u_pnl_risk_factor",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_perp_u_pnl_risk_factor_for_withdrawals-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [252, 32, 10, 88, 238, 245, 104, 59, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_perp_u_pnl_risk_factor_for_withdrawals",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-update_spline_parameters-as-listed",
     "note": "a unsupported entry",
     "environment": "staging",
@@ -3829,6 +5152,29 @@
     }
   },
   {
+    "name": "staging-update_spline_position_limits_config-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [96, 60, 5, 112, 19, 144, 13, 107, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_spline_position_limits_config",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-update_spline_price-as-listed",
     "note": "a unsupported entry",
     "environment": "staging",
@@ -3847,6 +5193,29 @@
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "update_spline_price",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_trader_fees-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [182, 233, 57, 205, 174, 168, 73, 237, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_trader_fees",
       "reason": "refused_instruction",
       "message": "no GLAM handler proxies this instruction"
     }
@@ -4127,6 +5496,75 @@
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "update_trader_state",
       "handler": "update_trader_state"
+    }
+  },
+  {
+    "name": "staging-update_withdraw_parameters-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [87, 209, 225, 132, 91, 151, 249, 132, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_withdraw_parameters",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-update_withdraw_rate_limits-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [187, 246, 146, 182, 141, 216, 36, 1, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "update_withdraw_rate_limits",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-upsert_escrow_request-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [213, 56, 86, 93, 34, 103, 160, 99, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "upsert_escrow_request",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
     }
   },
   {
@@ -4505,6 +5943,52 @@
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "withdraw_funds",
       "handler": "withdraw_funds"
+    }
+  },
+  {
+    "name": "staging-withdraw_funds_with_fee-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [202, 94, 94, 42, 155, 227, 88, 97, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "withdraw_funds_with_fee",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-withdraw_native_sol-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [],
+      "data": [201, 104, 187, 105, 80, 204, 84, 138, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "withdraw_native_sol",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
     }
   },
   {
