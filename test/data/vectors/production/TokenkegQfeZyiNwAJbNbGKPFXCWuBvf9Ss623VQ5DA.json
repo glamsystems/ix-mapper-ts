@@ -161,6 +161,90 @@
         {
           "address": "Vau1t11111111111111111111111111111111111111",
           "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [9, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "6axxm96QSvxdXScmS8xhrC8NdmEohMqvHBaZ9tUzEMTk",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [240, 32, 179, 154, 96, 110, 43, 79, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "close_account",
+      "handler": "token_close_account"
+    }
+  },
+  {
+    "name": "production-close_account-dynamic-signers-signed",
+    "note": "every position that signs when the program asks carries the caller's signature, every optional present",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [
+        {
+          "address": "6axxm96QSvxdXScmS8xhrC8NdmEohMqvHBaZ9tUzEMTk",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
           "signer": true
         }
       ],
@@ -245,7 +329,7 @@
         {
           "address": "Vau1t11111111111111111111111111111111111111",
           "writable": false,
-          "signer": true
+          "signer": false
         },
         {
           "address": "D1xGAo8eq98JrKJSg6VKoegV7g7PqFe6wAEqYEh3oC7K",
@@ -775,6 +859,105 @@
         {
           "address": "Vau1t11111111111111111111111111111111111111",
           "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [12, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "G1NTsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthsQ36mjPe89HtPYqxKsjY5HmYsDR6CbD2gd2U2pta",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "GLAMpaME8wdTEzxtiYEAa5yD8fZbxZiz2hNtV58RZiEz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "5QyDDaaxs1XBqHHwTh5svLMs7NzQdiNUnBDbJsJWzbkU",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "D3SGfQo1qnZPuX8uxjikBjajvXpT1Eck5WuM13qWxRCX",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "B3kKyViJQ9eKZ2wXrqTe3BrBBLTEhyT7HWp8HMWzwuXm",
+            "writable": true,
+            "signer": false
+          }
+        ],
+        "data": [169, 178, 117, 156, 169, 191, 199, 116, 1, 2, 3]
+      },
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "source": "transfer_checked",
+      "handler": "token_transfer_checked"
+    }
+  },
+  {
+    "name": "production-transfer_checked-dynamic-signers-signed",
+    "note": "every position that signs when the program asks carries the caller's signature, every optional present",
+    "environment": "production",
+    "instruction": {
+      "programAddress": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "accounts": [
+        {
+          "address": "5QyDDaaxs1XBqHHwTh5svLMs7NzQdiNUnBDbJsJWzbkU",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "D3SGfQo1qnZPuX8uxjikBjajvXpT1Eck5WuM13qWxRCX",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "B3kKyViJQ9eKZ2wXrqTe3BrBBLTEhyT7HWp8HMWzwuXm",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
           "signer": true
         }
       ],
@@ -874,7 +1057,7 @@
         {
           "address": "Vau1t11111111111111111111111111111111111111",
           "writable": false,
-          "signer": true
+          "signer": false
         },
         {
           "address": "CxmWBuZVGNT1xtQoBCseyJPBZwNsMDKpZRR7zDcq5pnK",
