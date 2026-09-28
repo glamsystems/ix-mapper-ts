@@ -1,6 +1,6 @@
 {
-  "name": "a-caller-decided-signer-fits-either-way",
-  "note": "dynamic_signer skips the privilege check",
+  "name": "a-caller-decided-signer-unsigned-at-a-signing-seat-is-refused",
+  "note": "dynamic_signer at a signing seat: the account must sign, so an unsigned one is refused",
   "environment": null,
   "instruction": {
     "programAddress": "Src1111111111111111111111111111111111111111",
@@ -20,21 +20,11 @@
     "integrationAuthority": true
   },
   "expected": {
-    "kind": "mapped",
+    "kind": "unsupported",
     "program": "Src1111111111111111111111111111111111111111",
     "source": "caller_decides",
-    "handler": "proxy_caller_decides",
-    "instruction": {
-      "programAddress": "Proxy11111111111111111111111111111111111111",
-      "accounts": [
-        {
-          "address": "Maybe11111111111111111111111111111111111111",
-          "writable": false,
-          "signer": true
-        }
-      ],
-      "data": [8, 8]
-    }
+    "reason": "account_privilege",
+    "message": "caller_decides account 0 (maybe_signer) must sign"
   },
   "documents": [
     {

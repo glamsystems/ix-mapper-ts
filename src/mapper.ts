@@ -321,10 +321,13 @@ function mapEntry(
           });
           break;
         }
-        if (
-          position.dynamic_signer !== true &&
-          account.signer !== seat.signer
-        ) {
+        // a caller-chosen signer keeps the caller's flag at an unsigned seat; a signing seat
+        // needs it signed
+        const signer =
+          position.dynamic_signer === true && !seat.signer
+            ? account.signer
+            : seat.signer;
+        if (account.signer !== signer) {
           return refuse(
             "account_privilege",
             seat.signer
@@ -335,7 +338,7 @@ function mapEntry(
         accounts.push({
           address: account.address,
           writable: seat.writable,
-          signer: seat.signer,
+          signer,
         });
         break;
       }

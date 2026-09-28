@@ -1,0 +1,348 @@
+{
+  "name": "fixture-stake-pool-deposit-sol-with-slippage-with-the-sol-deposit-authority-seats-it-signed",
+  "note": "Fixture-only: the inline document is modelled on the SPL stake pool's depositSolWithSlippage and ext_stake_pool's deposit_sol handler, with placeholder addresses, handler discriminator and handler arguments, and a trailing signing seat, the fixture's addition, for the optional sol deposit authority; it is not a generated document: the stake pool program is not enrolled. The authority is present and signs, and the last seat carries it signed.",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "deposit_sol_with_slippage",
+          "discriminator": [25],
+          "disposition": "map",
+          "handler": {
+            "name": "deposit_sol",
+            "discriminator": [8, 8]
+          },
+          "source_accounts": [
+            {
+              "name": "stake_pool",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "name": "stake_pool_withdraw_authority",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "name": "reserve_stake",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "name": "funding_account",
+              "writable": true,
+              "signer": true,
+              "expect": "glam_vault"
+            },
+            {
+              "name": "destination_pool_account",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "name": "manager_fee_account",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "name": "referral_pool_account",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "name": "pool_mint",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "name": "system_program",
+              "writable": false,
+              "signer": false,
+              "expect": "11111111111111111111111111111111"
+            },
+            {
+              "name": "token_program",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "name": "sol_deposit_authority",
+              "writable": false,
+              "signer": true,
+              "optional": "omitted"
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "dynamic",
+              "name": "glam_state",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "dynamic",
+              "name": "glam_vault",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 2,
+              "kind": "dynamic",
+              "name": "glam_signer",
+              "writable": true,
+              "signer": true
+            },
+            {
+              "index": 3,
+              "kind": "dynamic",
+              "name": "integration_authority",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 4,
+              "kind": "static",
+              "address": "Src1111111111111111111111111111111111111111",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 5,
+              "kind": "static",
+              "address": "G1amProtoco111111111111111111111111111111111",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 6,
+              "kind": "static",
+              "address": "11111111111111111111111111111111",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 7,
+              "kind": "source",
+              "source": 0,
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 8,
+              "kind": "source",
+              "source": 1,
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 9,
+              "kind": "source",
+              "source": 2,
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 10,
+              "kind": "source",
+              "source": 4,
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 11,
+              "kind": "source",
+              "source": 5,
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 12,
+              "kind": "source",
+              "source": 7,
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 13,
+              "kind": "source",
+              "source": 9,
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 14,
+              "kind": "source",
+              "source": 10,
+              "writable": false,
+              "signer": true
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "any"
+          }
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "StakePoo11111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "WithdrawAuth1111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Reserve111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Vau1t11111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      },
+      {
+        "address": "Vau1tPoo1Tokens1111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "ManagerFee111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Referra111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Poo1Mint11111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "11111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "So1DepositAuth11111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      }
+    ],
+    "data": [25, 0, 202, 154, 59, 0, 0, 0, 0, 128, 51, 2, 59, 0, 0, 0, 0]
+  },
+  "context": {
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "deposit_sol_with_slippage",
+    "handler": "deposit_sol",
+    "instruction": {
+      "programAddress": "Proxy11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "State11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "Authy11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Src1111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "G1amProtoco111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "11111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "StakePoo11111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "WithdrawAuth1111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Reserve111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1tPoo1Tokens1111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "ManagerFee111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Poo1Mint11111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "So1DepositAuth11111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": [8, 8, 0, 202, 154, 59, 0, 0, 0, 0, 128, 51, 2, 59, 0, 0, 0, 0]
+    }
+  }
+}

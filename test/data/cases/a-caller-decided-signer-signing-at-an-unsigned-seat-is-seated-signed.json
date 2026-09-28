@@ -1,6 +1,6 @@
 {
-  "name": "a-caller-decided-signer-is-seated-unsigned",
-  "note": "dynamic_signer skips the privilege check in the other direction too: a signing account at an unsigned seat is seated unsigned",
+  "name": "a-caller-decided-signer-signing-at-an-unsigned-seat-is-seated-signed",
+  "note": "dynamic_signer at an unsigned seat: the mapped account carries the caller's signer flag, so a signing account is seated signed",
   "environment": null,
   "documents": [
     {
@@ -69,7 +69,7 @@
         {
           "address": "Maybe11111111111111111111111111111111111111",
           "writable": false,
-          "signer": false
+          "signer": true
         }
       ],
       "data": [8, 8, 1]

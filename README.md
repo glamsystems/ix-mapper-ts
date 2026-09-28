@@ -62,8 +62,9 @@ Every instruction of the program appears once, with its `discriminator` and a
   lists the source instruction's positions in order, each with the flags the source IDL
   declares, `optional` when the account may be absent (`omitted`: a client leaves a
   trailing one out of the list; `program_id`: a client passes the source program's id in
-  its place), `dynamic_signer` when the IDL leaves the signer privilege to the caller, and
-  `expect` when the mapper must find a particular account there: the account the handler
+  its place), `dynamic_signer` when the IDL leaves the signer privilege to the caller,
+  whose choice the mapper keeps at an unsigned seat, and `expect` when the mapper must find
+  a particular account there: the account the handler
   seats in its place, so an instruction built for anything else is refused rather than
   silently redirected. That is `glam_vault` at every dropped signer, owner or authority
   the vault stands in for; `glam_signer` or `glam_vault` at a dropped payer, whichever the
@@ -111,11 +112,14 @@ the data decides: `passthrough` returns the input, `unsupported` refuses with th
 document's reason, and no entry refuses too. A `map` entry refuses a source shorter than
 its list unless every missing position is a trailing omittable optional, an account that
 is not what an `expect` position names, a forwarded account whose signer privilege
-disagrees with its seat (unless the IDL leaves it to the caller), and accounts beyond the
-list when the rule is `none`. It sets the handler's flags on every seat rather than
-copying the source's, with one exception: the source program's id at a sentinel seat
-becomes the proxy program's id, read-only and unsigned, as an absent optional reaches an
-Anchor program, since the invoked program is never a writable account. For an entry with
+disagrees with its seat (at a `dynamic_signer` position, only an unsigned account at a
+signing seat), and accounts beyond the list when the rule is `none`. It sets the handler's
+flags on every seat rather than copying the source's, with two exceptions. The source
+program's id at a sentinel seat becomes the proxy program's id, read-only and unsigned, as
+an absent optional reaches an Anchor program, since the invoked program is never a
+writable account. An account at a `dynamic_signer` position keeps the caller's signer flag
+at an unsigned seat and must sign at a signing seat. The handler passes it on with the
+privilege it received. For an entry with
 supplied accounts it asks the context's supplier once, with the roles and the addresses at
 their `of` positions and the instruction itself, and inserts the answer after the seats,
 read-only and unsigned, in the answer's order: no supplier, a null answer or a supplier
