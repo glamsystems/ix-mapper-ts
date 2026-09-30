@@ -363,9 +363,11 @@ describe("createMapper", () => {
             address:
               position.expect === "glam_vault"
                 ? VAULT
-                : position.optional === "program_id"
-                  ? document.program_id
-                  : (position.expect ?? `Acct${String(i).padStart(38, "1")}`),
+                : position.expect !== undefined
+                  ? position.expect
+                  : position.optional === "program_id"
+                    ? document.program_id
+                    : `Acct${String(i).padStart(38, "1")}`,
             writable: position.writable,
             signer: position.signer,
           }));

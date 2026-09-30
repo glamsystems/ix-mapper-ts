@@ -589,6 +589,52 @@
     }
   },
   {
+    "name": "staging-liquidate_dex-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "accounts": [],
+      "data": [28, 129, 253, 125, 243, 52, 11, 162, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "source": "liquidate_dex",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-liquidate_perfect_dex-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "accounts": [],
+      "data": [26, 113, 116, 50, 247, 131, 208, 5, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "source": "liquidate_perfect_dex",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-operate-every-position-present",
     "note": "every source position carried, the expectations met, an absent optional as the program id",
     "environment": "staging",
@@ -601,12 +647,12 @@
           "signer": true
         },
         {
-          "address": "RY1MTmeAmpHvnPQbzZxYgbFQhu6yCFeDUVq8TurxqPR",
+          "address": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
           "writable": true,
           "signer": false
         },
         {
-          "address": "8B9QRRcbFTuQf2zvbqWmzZB4dcFBkcyr9o6WjR2PzK4E",
+          "address": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
           "writable": true,
           "signer": false
         },
@@ -820,12 +866,12 @@
             "signer": false
           },
           {
-            "address": "RY1MTmeAmpHvnPQbzZxYgbFQhu6yCFeDUVq8TurxqPR",
+            "address": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
             "writable": true,
             "signer": false
           },
           {
-            "address": "8B9QRRcbFTuQf2zvbqWmzZB4dcFBkcyr9o6WjR2PzK4E",
+            "address": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
             "writable": true,
             "signer": false
           },
@@ -1409,12 +1455,12 @@
           "signer": true
         },
         {
-          "address": "RY1MTmeAmpHvnPQbzZxYgbFQhu6yCFeDUVq8TurxqPR",
+          "address": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
           "writable": true,
           "signer": false
         },
         {
-          "address": "8B9QRRcbFTuQf2zvbqWmzZB4dcFBkcyr9o6WjR2PzK4E",
+          "address": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
           "writable": true,
           "signer": false
         },
@@ -1633,12 +1679,12 @@
             "signer": false
           },
           {
-            "address": "RY1MTmeAmpHvnPQbzZxYgbFQhu6yCFeDUVq8TurxqPR",
+            "address": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
             "writable": true,
             "signer": false
           },
           {
-            "address": "8B9QRRcbFTuQf2zvbqWmzZB4dcFBkcyr9o6WjR2PzK4E",
+            "address": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
             "writable": true,
             "signer": false
           },
@@ -1811,6 +1857,52 @@
     }
   },
   {
+    "name": "staging-operate_dex-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "accounts": [],
+      "data": [223, 122, 223, 181, 133, 132, 116, 33, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "source": "operate_dex",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-operate_perfect_dex-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "accounts": [],
+      "data": [88, 34, 180, 77, 152, 186, 166, 162, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "source": "operate_perfect_dex",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
     "name": "staging-rebalance-as-listed",
     "note": "a unsupported entry",
     "environment": "staging",
@@ -1829,6 +1921,75 @@
       "kind": "unsupported",
       "program": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
       "source": "rebalance",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-rebalance_dex-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "accounts": [],
+      "data": [71, 178, 19, 146, 254, 47, 109, 126, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "source": "rebalance_dex",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-rebalance_dex_with_amounts-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "accounts": [],
+      "data": [240, 127, 38, 166, 99, 125, 51, 124, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "source": "rebalance_dex_with_amounts",
+      "reason": "refused_instruction",
+      "message": "no GLAM handler proxies this instruction"
+    }
+  },
+  {
+    "name": "staging-rebalance_with_amounts-as-listed",
+    "note": "a unsupported entry",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "accounts": [],
+      "data": [190, 33, 144, 182, 86, 4, 141, 73, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "unsupported",
+      "program": "jupr81YtYssSyPt8jbnGuiWon5f6x9TcDEFxYe3Bdzi",
+      "source": "rebalance_with_amounts",
       "reason": "refused_instruction",
       "message": "no GLAM handler proxies this instruction"
     }

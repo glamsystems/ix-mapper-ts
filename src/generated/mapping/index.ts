@@ -11566,7 +11566,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       config_revision: 1,
       generator: "idl-src-gen@e29276e2d5750a60473913ea2e94d14d63d8d818",
       source_idl:
-        "glam managed anchor_v1/idls/external/exponent_core (revision a49dff5f6dd2, idl 2e84927ce940)",
+        "glam managed anchor_v1/idls/external/exponent_core (revision 91a1fc18c86c, idl 17619e333bfa)",
       proxy_idl:
         "glam managed anchor_v1/idls/glam/ext_exponent_staging (revision 04b387ad24f9, idl b7958bc6431e)",
     },
@@ -19709,7 +19709,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       config_revision: 1,
       generator: "idl-src-gen@e29276e2d5750a60473913ea2e94d14d63d8d818",
       source_idl:
-        "glam managed anchor_v1/idls/external/jupiter_lending (revision e591e60193fb, idl ef547c925d93)",
+        "glam managed anchor_v1/idls/external/jupiter_lending (revision 9d233f1bc302, idl fe9ba7063fcb)",
       proxy_idl:
         "glam managed anchor_v1/idls/glam/ext_jupiter_staging (revision a4255f99547c, idl f424fb73040c)",
     },
@@ -19775,7 +19775,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
           { name: "liquidity", writable: true, signer: false },
           {
             name: "liquidity_program",
-            writable: true,
+            writable: false,
             signer: false,
             expect: "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC",
           },
@@ -19785,6 +19785,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             name: "associated_token_program",
             writable: false,
             signer: false,
+            optional: "program_id",
             expect: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
           },
           {
@@ -19988,7 +19989,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
           { name: "liquidity", writable: true, signer: false },
           {
             name: "liquidity_program",
-            writable: true,
+            writable: false,
             signer: false,
             expect: "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC",
           },
@@ -19998,6 +19999,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             name: "associated_token_program",
             writable: false,
             signer: false,
+            optional: "program_id",
             expect: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
           },
           {
@@ -20172,6 +20174,12 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
         reason: "no GLAM handler proxies this instruction",
       },
       {
+        name: "rebalance_with_amounts",
+        discriminator: [190, 33, 144, 182, 86, 4, 141, 73],
+        disposition: "unsupported",
+        reason: "no GLAM handler proxies this instruction",
+      },
+      {
         name: "redeem",
         discriminator: [184, 12, 86, 149, 70, 196, 97, 225],
         disposition: "map",
@@ -20204,11 +20212,16 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
           },
           { name: "rate_model", writable: false, signer: false },
           { name: "vault", writable: true, signer: false },
-          { name: "claim_account", writable: true, signer: false },
+          {
+            name: "claim_account",
+            writable: true,
+            signer: false,
+            optional: "program_id",
+          },
           { name: "liquidity", writable: true, signer: false },
           {
             name: "liquidity_program",
-            writable: true,
+            writable: false,
             signer: false,
             expect: "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC",
           },
@@ -20218,6 +20231,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             name: "associated_token_program",
             writable: false,
             signer: false,
+            optional: "program_id",
             expect: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
           },
           {
@@ -20425,11 +20439,16 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
           },
           { name: "rate_model", writable: false, signer: false },
           { name: "vault", writable: true, signer: false },
-          { name: "claim_account", writable: true, signer: false },
+          {
+            name: "claim_account",
+            writable: true,
+            signer: false,
+            optional: "program_id",
+          },
           { name: "liquidity", writable: true, signer: false },
           {
             name: "liquidity_program",
-            writable: true,
+            writable: false,
             signer: false,
             expect: "jupeiUmn818Jg1ekPURTpr4mFo29p46vygyykFJ3wZC",
           },
@@ -20439,6 +20458,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             name: "associated_token_program",
             writable: false,
             signer: false,
+            optional: "program_id",
             expect: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
           },
           {
@@ -20668,7 +20688,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       config_revision: 1,
       generator: "idl-src-gen@e29276e2d5750a60473913ea2e94d14d63d8d818",
       source_idl:
-        "glam managed anchor_v1/idls/external/jupiter_vaults (revision f28724867e2a, idl d4670504ee8c)",
+        "glam managed anchor_v1/idls/external/jupiter_vaults (revision a349f3da803a, idl b2ba95b281e1)",
       proxy_idl:
         "glam managed anchor_v1/idls/glam/ext_jupiter_staging (revision a4255f99547c, idl f424fb73040c)",
     },
@@ -20912,6 +20932,18 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
         reason: "no GLAM handler proxies this instruction",
       },
       {
+        name: "liquidate_dex",
+        discriminator: [28, 129, 253, 125, 243, 52, 11, 162],
+        disposition: "unsupported",
+        reason: "no GLAM handler proxies this instruction",
+      },
+      {
+        name: "liquidate_perfect_dex",
+        discriminator: [26, 113, 116, 50, 247, 131, 208, 5],
+        disposition: "unsupported",
+        reason: "no GLAM handler proxies this instruction",
+      },
+      {
         name: "operate",
         discriminator: [217, 106, 208, 99, 116, 151, 42, 135],
         disposition: "map",
@@ -20930,11 +20962,13 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             name: "signer_supply_token_account",
             writable: true,
             signer: false,
+            optional: "program_id",
           },
           {
             name: "signer_borrow_token_account",
             writable: true,
             signer: false,
+            optional: "program_id",
           },
           {
             name: "recipient",
@@ -21021,6 +21055,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
             name: "associated_token_program",
             writable: false,
             signer: false,
+            optional: "program_id",
             expect: "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
           },
           {
@@ -21320,8 +21355,38 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
         remaining_accounts: { kind: "any" },
       },
       {
+        name: "operate_dex",
+        discriminator: [223, 122, 223, 181, 133, 132, 116, 33],
+        disposition: "unsupported",
+        reason: "no GLAM handler proxies this instruction",
+      },
+      {
+        name: "operate_perfect_dex",
+        discriminator: [88, 34, 180, 77, 152, 186, 166, 162],
+        disposition: "unsupported",
+        reason: "no GLAM handler proxies this instruction",
+      },
+      {
         name: "rebalance",
         discriminator: [108, 158, 77, 9, 210, 52, 88, 62],
+        disposition: "unsupported",
+        reason: "no GLAM handler proxies this instruction",
+      },
+      {
+        name: "rebalance_dex",
+        discriminator: [71, 178, 19, 146, 254, 47, 109, 126],
+        disposition: "unsupported",
+        reason: "no GLAM handler proxies this instruction",
+      },
+      {
+        name: "rebalance_dex_with_amounts",
+        discriminator: [240, 127, 38, 166, 99, 125, 51, 124],
+        disposition: "unsupported",
+        reason: "no GLAM handler proxies this instruction",
+      },
+      {
+        name: "rebalance_with_amounts",
+        discriminator: [190, 33, 144, 182, 86, 4, 141, 73],
         disposition: "unsupported",
         reason: "no GLAM handler proxies this instruction",
       },
