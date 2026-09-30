@@ -1,0 +1,55 @@
+{
+  "name": "staging-orca-close-position-with-token-extensions-refuses-another-receiver",
+  "note": "the handler pays the closed accounts' lamports to the GLAM signer, so a receiver other than the signer is refused rather than paid elsewhere",
+  "environment": "staging",
+  "instruction": {
+    "programAddress": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+    "accounts": [
+      {
+        "address": "Vau1t11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      },
+      {
+        "address": "Vau1t11111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Position11111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Positionmint1111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Positiontokenaccount11111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+        "writable": false,
+        "signer": false
+      }
+    ],
+    "data": [1, 182, 135, 59, 155, 25, 99, 223]
+  },
+  "context": {
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111",
+    "integrationAuthority": true,
+    "suppliedAccounts": {}
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc",
+    "source": "close_position_with_token_extensions",
+    "reason": "account_expectation",
+    "message": "close_position_with_token_extensions account 1 (receiver) must be glam_signer"
+  }
+}
