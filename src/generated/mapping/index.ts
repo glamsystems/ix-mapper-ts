@@ -9089,7 +9089,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       config_revision: 1,
       generator: "idl-src-gen@e29276e2d5750a60473913ea2e94d14d63d8d818",
       source_idl:
-        "glam managed anchor_v1/idls/external/ember (revision 0648cc38d76f, idl d78e0f3715b1)",
+        "glam managed anchor_v1/idls/external/ember (revision d81b79f21b82, idl 66de90bc15e5)",
       proxy_idl:
         "glam managed anchor_v1/idls/glam/ext_phoenix_staging (revision 999879b97137, idl 9687f84b921a)",
     },
