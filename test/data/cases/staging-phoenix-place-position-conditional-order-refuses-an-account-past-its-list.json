@@ -1,0 +1,94 @@
+{
+  "name": "staging-phoenix-place-position-conditional-order-refuses-an-account-past-its-list",
+  "note": "ext_phoenix holds the accounts it forwards to a window of exactly the native list (validate_window), so the staging document takes no account beyond the 13 it lists, and an ordinary read-only account appended after the system program is refused rather than forwarded to a handler that would refuse it on chain",
+  "environment": "staging",
+  "instruction": {
+    "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+    "accounts": [
+      {
+        "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "P311111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "P411111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Signer1111111111111111111111111111111111111",
+        "writable": true,
+        "signer": true
+      },
+      {
+        "address": "P611111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "P711111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "P811111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "P911111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "PA11111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "PB11111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "Vau1t11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      },
+      {
+        "address": "PD11111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      },
+      {
+        "address": "11111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "Extra11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      }
+    ],
+    "data": [65, 108, 83, 129, 76, 193, 92, 143, 1, 2, 3]
+  },
+  "context": {
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111",
+    "integrationAuthority": true
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+    "source": "place_position_conditional_order",
+    "reason": "remaining_accounts",
+    "message": "place_position_conditional_order takes no accounts beyond its 13; the instruction carries 14"
+  }
+}

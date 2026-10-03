@@ -400,106 +400,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "HW67kCjA2S1S912HiXGSmB5z3T7GkzAHG6W9aDgxUfyG",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "9gD8uAn4LYZmCJvvk1yHcQ7H2zx88RvsSoYKAz4pPyQF",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "9S48WB64zAkbhb9gSarinHcT9njKJc28Vj1GB543FbxQ",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "3KD1EhCbhhhWzNhhhW4kvEuerjYerjQ2NW7rhjsW8GPY",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "DumLP5sc1wVL7X7CUGtJPV2qyvN54ohEu96Qya8JseJ9",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "57bbzX6sDRYEJyeVwVyMTuQoFmH9evkt2EYwJD81xRgk",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "GBSeFM68Q66uEnw8N9xrmPNCnknab6zrPk8dVo7MriEz",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "3HGhJxX5gaA83zLE4FLcT8cNdkLNvktWeGNXU2jN2PPA",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "TUeub6TBFVyYX27rMnNM5WWxHXZkRDogJoL6aGmmcD1",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "9cDH1jmB5dNe8KEUXpuKvpTGAyvhWp227yF9ZnEYTN6f",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [98, 191, 75, 220, 115, 40, 71, 237, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "cancel_all",
-      "handler": "cancel_all"
+      "reason": "remaining_accounts",
+      "message": "cancel_all takes no accounts beyond its 10; the instruction carries 11"
     }
   },
   {
@@ -753,111 +658,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "G9LqrP5Edz7NgiDzyWeGhDqHL1gKdVmtafLDBQ9JWtV2",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "4NHGCabQwyDCrAaotvoHFbpcuWJxnEPUGygR9sHvi1je",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "4Lwd2eGX38exppR1KxMmTMqtvjzUeXTWfwb6TbvkNbJu",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "5g7LiFdpjErabjs9aSUfxRJw2fofEEGedkTA9h6MDyU6",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "6NY5TaLSEQ5CyJ9wxN66DtxshjSKsdXLf6TwPfkvy5bv",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "8TouZS5CtSWar9vzKrwoH3F6dna7g363FvQj8dfdRash",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "5Sy784NLpDG3niDmCJzQ3DXqjbLcWPBKHeftXZKq8NRr",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "BTjgGMprYBSbNBGYV2HeCw1Ea7mctLSrE28RBuqahV5e",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "EiogTcAVPCCbUVMX2BButxYGsTLvfmqF5hZ2PeqqsqDj",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "9oAv7E2RxwFCJqpN42otLtAekSbZeFSXFkJf2PdK374P",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Dm8mWCRiXXx7bLQVsFbo22RJmEDYci2HEuNRfpCZPevK",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [142, 173, 238, 126, 79, 19, 53, 103, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "cancel_all_plus_conditional",
-      "handler": "cancel_all_plus_conditional"
+      "reason": "remaining_accounts",
+      "message": "cancel_all_plus_conditional takes no accounts beyond its 11; the instruction carries 12"
     }
   },
   {
@@ -1051,91 +856,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "9yPd4kzcuK2EhMWFfd6MaLU37UJ3JhDB6xX8FrFGKTBX",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "FAafERkSCJQsvTE9k2Ea3JDgo8BGLrT2nXqNSJpbivbr",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "Hz3LS5dFVNxtKTxjpkZmJxMwHeBjpLmsMsDm3k5bGSMy",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "A4xocWjF7H3HBAjWnoFGFioHXhofzr5SjkrfGCbKRArm",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "3xDcHU9EjKX79SJYPBzKqzfiKtDqUr6UUeR91PYoEHD9",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "8CWSCJsi6qqQMnWJKnYGeFYiGFA7aipcXZj225LDW4TM",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "3qa8XPwq7gud5Az1Rd9ZuZz6xdZXCVZRj9SuuhdKwNSE",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [82, 104, 25, 51, 248, 54, 66, 184, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "cancel_conditional_order",
-      "handler": "cancel_conditional_order"
+      "reason": "remaining_accounts",
+      "message": "cancel_conditional_order takes no accounts beyond its 7; the instruction carries 8"
     }
   },
   {
@@ -1397,106 +1122,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EX9puJxfwZCjj6JWqGRWeMfSXyQBrTbtQwCMvcHPvaJ6",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "AQeKsdAnDEn1z6sUW44BLS6GRJxfhRdm2DfsEa9QQHNi",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "2kcTmcVBooM4LGWtEH2F4rS5pa4LX38cUAxfsD6BSWtf",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "9WYifT6c8pLn5MyyRh6nUVN1Wkuswted5eDPSwZeeF4y",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "9uXiUDszU7GNbn6BhxpFdLKSKxsMocHArXgTnwhgrBZv",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "FyfVTffJYs9459dmgmwcA1o59LuqmmmFLkQYGDzfyT5",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "8GUNVoGkBxStA31y5L3hCpLTZBcv7ee9RvFRb6hpKimi",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "C4yBtms11rq22mZg3udi9ubv2smJuDCq5j6G7Ad7z1Nb",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "3xyScLsL1UogoKRrKs7MzzTYfbH4D8SwKQSJnWnKNwK1",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "4JA8vx6yigxoCVPjxzwSVKckJWFNPvh76NpZUmxdJSfB",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [234, 204, 126, 94, 222, 22, 141, 24, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "cancel_orders_by_id",
-      "handler": "cancel_orders_by_id"
+      "reason": "remaining_accounts",
+      "message": "cancel_orders_by_id takes no accounts beyond its 10; the instruction carries 11"
     }
   },
   {
@@ -1758,106 +1388,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "6dGnd7bhN9iDR8LioGrrYHyLcPG8y72U8NdCSnzBrcgm",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "Fa8Fn2qTcyr24R3oewmn3oAMZzti9Lasm5UF95nwC4qA",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EvcRHihnfD1f9MxHMy3MV938w3UUeFCcvVQZqAtLCVtj",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "DBYQ643K63Jj9mjgFKfgUVGEVEWxJrh1nbWJhduASh8f",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "DLCvGADNzzihbSaEvrcQ72JzeXcYq2ERBXe9LydCqbdY",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "8jSmj6RQVc9HpVfChizXFJJaMh2q4Rzz9KnvDamy8HD5",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "DPEHbDdRZFLGGrkDCEPxBWo947WpQFp6fXyd43xtH3cT",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "FbnFfj6wQMJSvaXVS9xd68mXz6JJwZYUo6N86j4ZuyAV",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "nUt7TTqQitWHrdPmkyTuon8kAho1fZtv7zsZkvT8CEM",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "BWDZaiXf3wdqCHPp3ex26yKMmLrF79vUsHdgQdteo7yG",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [26, 209, 244, 253, 59, 175, 227, 54, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "cancel_up_to",
-      "handler": "cancel_up_to"
+      "reason": "remaining_accounts",
+      "message": "cancel_up_to takes no accounts beyond its 10; the instruction carries 11"
     }
   },
   {
@@ -2541,106 +2076,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "4fmGcNprZz6Mi7be6eiQeAqWCEHgVBozV8aMHE2hJ8yf",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "7HyYWTKdCTNYL4xahjtXEPX7GzKV2yA13p3LXRH5hNGs",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "ASWAvUq1JxacnyyT8v2fT938ciDYiTmcURk8HS9MH3rz",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "7hgEc1YV57GPjDip9W6eY7kb83SQAiLaxKXq6WdgBS6A",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "7aktUyQPJTWfZxyF1AkydgZ21C6uEcPqS37TXjt9SqDL",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "5PCgpSs1dit4iHW89UaNJMtes3tC6GDD14Rx98q19spN",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "J28gndML7f4moacDqzWcixHDSCC7FU6NgCas1qPRsFQX",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "FokUSbUyRDogqUmVuUvxznYK7zzyrVLhxQxRN8zbwfJq",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "GvQvmPN9piVj1DT9VVK2RdjyP66PuEeZ8VK4tuEdL3Fs",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Co2WXTCWUYtmNr3wL4oZ5fpBnasPnwZsQ6sTe8zasSjA",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [202, 39, 52, 211, 53, 20, 250, 88, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "deposit_funds",
-      "handler": "deposit_funds"
+      "reason": "remaining_accounts",
+      "message": "deposit_funds takes no accounts beyond its 10; the instruction carries 11"
     }
   },
   {
@@ -3039,12 +2479,247 @@
     }
   },
   {
-    "name": "staging-place_attached_conditional_order-as-listed",
-    "note": "a unsupported entry",
+    "name": "staging-place_attached_conditional_order-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
     "environment": "staging",
     "instruction": {
       "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-      "accounts": [],
+      "accounts": [
+        {
+          "address": "2WTQdVTHT48sAJKCDDDKWW1v7dzD6N4HVr9SFzABxxMx",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "FYAXKYTxmroG8dGKcxw7EUwfvWKHcgR3Rnp9t5TuiQ8T",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "HqL1cJseuzXwzNGLk1iPN63rG4rh6TrFpsfNBcNn24YQ",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "BQxEfyhkCArQkWtyCoEe9PFh5c6Epba4WXz45FSMJYQ7",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "6xYjA7rfvftoYGZ6xzAL5RenbikNtErcDd63G9iFHg9u",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4Qxa49XYYwGJ1GUwMAC5439TwMyWY1xwBa62LeAzD7h6",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "5wMMaHwFr9irwPzCfakvDsbGEM8XxYQR2yYZXmmzbPZU",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3kyRJ7hjBtKnyGsB55VmdadZPaHAWrmf5gFEqXC9inix",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "68DTsjWr4mKz6EPfQxXXwP56DTAqy8rBaChxDbgD5NQF",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [43, 117, 136, 128, 72, 150, 101, 122, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
+      "kind": "mapped",
+      "instruction": {
+        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
+        "accounts": [
+          {
+            "address": "State11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "11111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "2WTQdVTHT48sAJKCDDDKWW1v7dzD6N4HVr9SFzABxxMx",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "FYAXKYTxmroG8dGKcxw7EUwfvWKHcgR3Rnp9t5TuiQ8T",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "HqL1cJseuzXwzNGLk1iPN63rG4rh6TrFpsfNBcNn24YQ",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "BQxEfyhkCArQkWtyCoEe9PFh5c6Epba4WXz45FSMJYQ7",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Vau1t11111111111111111111111111111111111111",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "6xYjA7rfvftoYGZ6xzAL5RenbikNtErcDd63G9iFHg9u",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "4Qxa49XYYwGJ1GUwMAC5439TwMyWY1xwBa62LeAzD7h6",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "5wMMaHwFr9irwPzCfakvDsbGEM8XxYQR2yYZXmmzbPZU",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "3kyRJ7hjBtKnyGsB55VmdadZPaHAWrmf5gFEqXC9inix",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "68DTsjWr4mKz6EPfQxXXwP56DTAqy8rBaChxDbgD5NQF",
+            "writable": false,
+            "signer": false
+          }
+        ],
+        "data": [43, 117, 136, 128, 72, 150, 101, 122, 1, 2, 3]
+      },
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "place_attached_conditional_order",
+      "handler": "place_attached_conditional_order"
+    }
+  },
+  {
+    "name": "staging-place_attached_conditional_order-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [
+        {
+          "address": "2WTQdVTHT48sAJKCDDDKWW1v7dzD6N4HVr9SFzABxxMx",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "FYAXKYTxmroG8dGKcxw7EUwfvWKHcgR3Rnp9t5TuiQ8T",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "HqL1cJseuzXwzNGLk1iPN63rG4rh6TrFpsfNBcNn24YQ",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "BQxEfyhkCArQkWtyCoEe9PFh5c6Epba4WXz45FSMJYQ7",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "6xYjA7rfvftoYGZ6xzAL5RenbikNtErcDd63G9iFHg9u",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4Qxa49XYYwGJ1GUwMAC5439TwMyWY1xwBa62LeAzD7h6",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "5wMMaHwFr9irwPzCfakvDsbGEM8XxYQR2yYZXmmzbPZU",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "3kyRJ7hjBtKnyGsB55VmdadZPaHAWrmf5gFEqXC9inix",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "68DTsjWr4mKz6EPfQxXXwP56DTAqy8rBaChxDbgD5NQF",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "C3B7QT54jE3Th6qrhxG8kgP36Pzet1E2wQuAEz8uDJNJ",
+          "writable": true,
+          "signer": false
+        }
+      ],
       "data": [43, 117, 136, 128, 72, 150, 101, 122, 1, 2, 3]
     },
     "context": {
@@ -3057,8 +2732,8 @@
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "place_attached_conditional_order",
-      "reason": "refused_instruction",
-      "message": "not derived: forwards the native accounts as remaining accounts and can sign only as the vault, but the source declares two signers, 'trader_wallet' and 'payer'"
+      "reason": "remaining_accounts",
+      "message": "place_attached_conditional_order takes no accounts beyond its 11; the instruction carries 12"
     }
   },
   {
@@ -3297,6 +2972,95 @@
       "integrationAuthority": true
     },
     "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "place_limit_order",
+      "reason": "remaining_accounts",
+      "message": "place_limit_order takes no accounts beyond its 10; the instruction carries 11"
+    }
+  },
+  {
+    "name": "staging-place_limit_order_with_conditionals-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [
+        {
+          "address": "FSksNVSPYSZhPFEVpX5xwbwMQFfzdPbPFBCNTTqZXVgz",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "9bh5pkevFBYm8zchMdiwZBVEgcBM6eL2dZHhQpquaSxY",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "FsPmZjYgi71YrxwYfVRYXrP4op4jzGhNxiSE6TXwCfgs",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "H7SD5kK7tFivtbGYjaYRPj67zihCjQDkZjRBRUPzFQjC",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4HdyNf83xgzrqXDsQ9cQLCdSgw3VUyJwXcy5uUBuWHz3",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "7aECVGgwLdzhd1eBkT4iVF8djZGvtAXrs2hQKiUc6cGr",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "D7cR4GzjVwNTS1ZBB7Gi8zYffUyc4La8mHFpPLFYsPMQ",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "9YGUs714wBM8jBoVimeQGq2X15L3hEfoMt1SSGwEyZRY",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Ebt6H8TirtizrxgGXUCX4ksoHgdiG6MUewVWmS7g9Nb2",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "ASKT5MCUgBEK6ojeoovwe9aZZBZMFgi9JM4zNFhS9C71",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "HPs1m3g7438EuJdTDRz8vhabhA6aZuic4wLHrpNxjTuX",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [95, 45, 68, 168, 232, 218, 210, 92, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
       "kind": "mapped",
       "instruction": {
         "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
@@ -3337,17 +3101,17 @@
             "signer": false
           },
           {
-            "address": "A1vwjE2Jksr3up4hN7AEXk9SVMfkzsLMftUUMcbVK84w",
+            "address": "FSksNVSPYSZhPFEVpX5xwbwMQFfzdPbPFBCNTTqZXVgz",
             "writable": false,
             "signer": false
           },
           {
-            "address": "4kXKKXPiEzQ3cYadUze6kGCgfYDPKXDMW6jftVTT1Dp8",
+            "address": "9bh5pkevFBYm8zchMdiwZBVEgcBM6eL2dZHhQpquaSxY",
             "writable": false,
             "signer": false
           },
           {
-            "address": "2nExNzv7zkVWuDPuoRmGncqif6iBYhitYHQncuBvkSu9",
+            "address": "FsPmZjYgi71YrxwYfVRYXrP4op4jzGhNxiSE6TXwCfgs",
             "writable": true,
             "signer": false
           },
@@ -3357,55 +3121,136 @@
             "signer": false
           },
           {
-            "address": "8JJPiv67EyWkVEXMnB26G2HKWZzCtwkte5SCmzjJHtGi",
+            "address": "H7SD5kK7tFivtbGYjaYRPj67zihCjQDkZjRBRUPzFQjC",
             "writable": true,
             "signer": false
           },
           {
-            "address": "9Uyyk4zViWkW2PhLnG2Urvx6kV2HPzHEJmmjYt2Nj9jR",
+            "address": "4HdyNf83xgzrqXDsQ9cQLCdSgw3VUyJwXcy5uUBuWHz3",
             "writable": true,
             "signer": false
           },
           {
-            "address": "2vJscuXVj4CbCLGTDfdR6uka8xipFyphn1FRuJjqGYQ5",
+            "address": "7aECVGgwLdzhd1eBkT4iVF8djZGvtAXrs2hQKiUc6cGr",
             "writable": true,
             "signer": false
           },
           {
-            "address": "EtqvN6Kct49GEfA8p8kFYPxcXuXhVQuyjf69xJKzKu4i",
+            "address": "D7cR4GzjVwNTS1ZBB7Gi8zYffUyc4La8mHFpPLFYsPMQ",
             "writable": true,
             "signer": false
           },
           {
-            "address": "3GeqXEPbGyUKHKDhPcUnPQaGyfS8NwBKY33caqZniDtn",
+            "address": "9YGUs714wBM8jBoVimeQGq2X15L3hEfoMt1SSGwEyZRY",
             "writable": true,
             "signer": false
           },
           {
-            "address": "7WcVfeYFN5ofcV5s1VH8Uxa4YWcug3U6P4bWmuPmFB2Q",
+            "address": "Ebt6H8TirtizrxgGXUCX4ksoHgdiG6MUewVWmS7g9Nb2",
             "writable": true,
             "signer": false
           },
           {
-            "address": "82bhB5rv9ioCkLxmHWTGTTuxvEPZycaVm29exFp5K1by",
+            "address": "Signer1111111111111111111111111111111111111",
             "writable": true,
+            "signer": true
+          },
+          {
+            "address": "ASKT5MCUgBEK6ojeoovwe9aZZBZMFgi9JM4zNFhS9C71",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "HPs1m3g7438EuJdTDRz8vhabhA6aZuic4wLHrpNxjTuX",
+            "writable": false,
             "signer": false
           }
         ],
-        "data": [108, 176, 33, 186, 146, 229, 1, 197, 1, 2, 3]
+        "data": [95, 45, 68, 168, 232, 218, 210, 92, 1, 2, 3]
       },
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-      "source": "place_limit_order",
-      "handler": "place_limit_order"
+      "source": "place_limit_order_with_conditionals",
+      "handler": "place_limit_order_with_conditionals"
     }
   },
   {
-    "name": "staging-place_limit_order_with_conditionals-as-listed",
-    "note": "a unsupported entry",
+    "name": "staging-place_limit_order_with_conditionals-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
     "environment": "staging",
     "instruction": {
       "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-      "accounts": [],
+      "accounts": [
+        {
+          "address": "FSksNVSPYSZhPFEVpX5xwbwMQFfzdPbPFBCNTTqZXVgz",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "9bh5pkevFBYm8zchMdiwZBVEgcBM6eL2dZHhQpquaSxY",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "FsPmZjYgi71YrxwYfVRYXrP4op4jzGhNxiSE6TXwCfgs",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "H7SD5kK7tFivtbGYjaYRPj67zihCjQDkZjRBRUPzFQjC",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "4HdyNf83xgzrqXDsQ9cQLCdSgw3VUyJwXcy5uUBuWHz3",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "7aECVGgwLdzhd1eBkT4iVF8djZGvtAXrs2hQKiUc6cGr",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "D7cR4GzjVwNTS1ZBB7Gi8zYffUyc4La8mHFpPLFYsPMQ",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "9YGUs714wBM8jBoVimeQGq2X15L3hEfoMt1SSGwEyZRY",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Ebt6H8TirtizrxgGXUCX4ksoHgdiG6MUewVWmS7g9Nb2",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "ASKT5MCUgBEK6ojeoovwe9aZZBZMFgi9JM4zNFhS9C71",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "HPs1m3g7438EuJdTDRz8vhabhA6aZuic4wLHrpNxjTuX",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "24f5yYdV9YxCjkhmznVPJoMovb9Ug1DctHTXKPkYcpBz",
+          "writable": true,
+          "signer": false
+        }
+      ],
       "data": [95, 45, 68, 168, 232, 218, 210, 92, 1, 2, 3]
     },
     "context": {
@@ -3418,8 +3263,8 @@
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "place_limit_order_with_conditionals",
-      "reason": "refused_instruction",
-      "message": "not derived: forwards the native accounts as remaining accounts and can sign only as the vault, but the source declares two signers, 'trader_wallet' and 'payer'"
+      "reason": "remaining_accounts",
+      "message": "place_limit_order_with_conditionals takes no accounts beyond its 13; the instruction carries 14"
     }
   },
   {
@@ -3658,106 +3503,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "FZciF9BW9qGAQ5yszn4JxHvdDGLkxpgeXTRrRco12Egy",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "HSBv8BY3EuRpVa4szqsXUTRG6qrBgyxd6o3Kpb7YjvRQ",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "7zbtJBMdp7eSLGTbbMtdpHAeHEfLNmCgo8mu99rxdyLT",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "BJQiyEULjeNkuQjBnNf9Cpwb4AeNN4Pmv1zSmPKoyWCd",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "3mrG86k95D59wFHaRpSXJKStjWzvUicHcMKYqf1kSepE",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "9Ht6vB4Rb4z5JRobD3TQbFQzQhfgY2pWn24G22mZtxsw",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "72ZCyMmRXknXDX5vP6uYcaxtw9aSCdEBUA9yiwQHugNL",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "EJyWVRitxZY8SAHQkuAvHT5CdccUrCsWxTN3RySjiHY1",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "A9DrRCieu1cTM1vkLXATDdtkbQWwNRCWzVGpypinDqPP",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "6AwLtDH8W6yYJJbRLebLbkVYHHcjEQd1tSWJrYCAohBw",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [90, 118, 192, 252, 192, 99, 39, 145, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "place_market_order",
-      "handler": "place_market_order"
+      "reason": "remaining_accounts",
+      "message": "place_market_order takes no accounts beyond its 10; the instruction carries 11"
     }
   },
   {
@@ -4019,106 +3769,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EJT5GemYqXFYzWg4PJhRFVQzpuSerkmUhdWr9CPPoS6k",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "8LgS2AS65zmCU6kpEDN97QgPgBbBJNw8yMacE9MJyHMq",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "Atyt3x3FRnjQWLYKjs7PBEj67cPNQfEr5yemoY2qCccU",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "ESicocHZEigw8ffuDdWjb22brnzhv6VLJCjd2xsW67ac",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "61iBPmR99L5Xducf7je3Ndn1YMCYNmJywMUs4HkwNkn5",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "DhX5tyxVkoNMbKAN6QjXx1g6LHBT6FfoYVX5UfREv79v",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "76xZuyFPt8Hxmhmc1Cxyvaho8dFVcXLGg6tMnFQHmygB",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "BN8deNKtNKJ88e77vjyTSrczXxuU5T1ZJZSzbf7pvmGw",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "DgzpsW94Hw9dqwPgRNtgwWNiS64Uta1JoiocbgiS47b7",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "HMeMJP2s2b5hehgKhE2Afm55KvEpWPnvni9XZRXu7c9Y",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [236, 208, 221, 172, 141, 226, 129, 84, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "place_multi_limit_order",
-      "handler": "place_multi_limit_order"
+      "reason": "remaining_accounts",
+      "message": "place_multi_limit_order takes no accounts beyond its 10; the instruction carries 11"
     }
   },
   {
@@ -4357,6 +4012,95 @@
       "integrationAuthority": true
     },
     "expected": {
+      "kind": "unsupported",
+      "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "source": "place_multi_limit_order_v2",
+      "reason": "remaining_accounts",
+      "message": "place_multi_limit_order_v2 takes no accounts beyond its 10; the instruction carries 11"
+    }
+  },
+  {
+    "name": "staging-place_position_conditional_order-every-position-present",
+    "note": "every source position carried, the expectations met, an absent optional as the program id",
+    "environment": "staging",
+    "instruction": {
+      "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+      "accounts": [
+        {
+          "address": "5w3NYheF9PYdUhxX6SDYHz68rFaiQNmuWCMb3wYbQbnt",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "9t2K1cr2eeQb5kNn5y5x2QYGAKmfu9PHop4j2QmFqstF",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "SgNPgT4SMnGDwEjq4WdcFVB7xKPGjaLZJdr2EY5Pvon",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "6HK4pC6PH9CBfh8AEAEasupGM8tGc2afSZCiNQM9caKD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "DQpUzLpyhEWNG7fJCCm3qJXeBVBWYGTsbst8NmAFMeE1",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8jCruymny4QqNtCF6kcy9eQ1vbPrKwp6wRVoeP597SNX",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "9xkKTAgbcYd2myLx6f24ZyKqcsqPkzz1KLLeRPZWEtCi",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "ELq7riBzsB1HYr3h7FWBUxzdBQ5e3pHACsHkwuJJmN2p",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "CL1JXmwsHGPefPxFzuoSEHPF2ze4r6sAhZk7xPpjkCGY",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "5t3TEvXxyg4BwUkTmUi1fnYpJnwhMm7ERkzfCL6GxDsK",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "BgZnGHkosKqkKdpg854jDiwne4m6Ztr4fGsdC8uJxbzS",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [65, 108, 83, 129, 76, 193, 92, 143, 1, 2, 3]
+    },
+    "context": {
+      "glamState": "State11111111111111111111111111111111111111",
+      "glamVault": "Vau1t11111111111111111111111111111111111111",
+      "glamSigner": "Signer1111111111111111111111111111111111111",
+      "integrationAuthority": true
+    },
+    "expected": {
       "kind": "mapped",
       "instruction": {
         "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
@@ -4397,17 +4141,52 @@
             "signer": false
           },
           {
-            "address": "9ovq8BVdNyo2LmwjcXLQRd4ntmR8C4gQfD2Cu7A9pvg7",
+            "address": "5w3NYheF9PYdUhxX6SDYHz68rFaiQNmuWCMb3wYbQbnt",
             "writable": false,
             "signer": false
           },
           {
-            "address": "CSknQzxfnS2EF7TL8yNnqCFb1ocpDnj8ELFbBpo9GJx3",
+            "address": "9t2K1cr2eeQb5kNn5y5x2QYGAKmfu9PHop4j2QmFqstF",
             "writable": false,
             "signer": false
           },
           {
-            "address": "41tXomZKt7Ee9mFha6v1QJqqjkDQvaQNNaXpYUU2dDrY",
+            "address": "SgNPgT4SMnGDwEjq4WdcFVB7xKPGjaLZJdr2EY5Pvon",
+            "writable": false,
+            "signer": false
+          },
+          {
+            "address": "Signer1111111111111111111111111111111111111",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "address": "6HK4pC6PH9CBfh8AEAEasupGM8tGc2afSZCiNQM9caKD",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "DQpUzLpyhEWNG7fJCCm3qJXeBVBWYGTsbst8NmAFMeE1",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "8jCruymny4QqNtCF6kcy9eQ1vbPrKwp6wRVoeP597SNX",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "9xkKTAgbcYd2myLx6f24ZyKqcsqPkzz1KLLeRPZWEtCi",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "ELq7riBzsB1HYr3h7FWBUxzdBQ5e3pHACsHkwuJJmN2p",
+            "writable": true,
+            "signer": false
+          },
+          {
+            "address": "CL1JXmwsHGPefPxFzuoSEHPF2ze4r6sAhZk7xPpjkCGY",
             "writable": true,
             "signer": false
           },
@@ -4417,55 +4196,101 @@
             "signer": false
           },
           {
-            "address": "9wKdcsu9tHjQqf7P4b8cjpC7orbv9Cx6WHr1rhDH3tm6",
+            "address": "5t3TEvXxyg4BwUkTmUi1fnYpJnwhMm7ERkzfCL6GxDsK",
             "writable": true,
             "signer": false
           },
           {
-            "address": "HqNTWev8BUb9WEcXJJhqyBDgDhV4t8MyhAaMWBYtusVd",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "EpmAAtN5rroD7RrMv8qmV6h51WFyd9YnDSpVLnmfy2tz",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "A9VGDDGkNsFSSWe9xmu7xsfdB2VmWtXiQxkPZf4w1Eei",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "4Kj64heG4tA44M6raTHx3D1ipNzfSRXUxnkv5rCJaxtP",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "3f33VkCinY7tBEyCGuxoQUfyV1uXBkZVo7aAD4NTHA46",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "GuGwduTSgjXvCmDYzwUjSr28SjLSJCQb6LpAUobVPDPW",
-            "writable": true,
+            "address": "BgZnGHkosKqkKdpg854jDiwne4m6Ztr4fGsdC8uJxbzS",
+            "writable": false,
             "signer": false
           }
         ],
-        "data": [64, 111, 40, 210, 2, 177, 38, 178, 1, 2, 3]
+        "data": [65, 108, 83, 129, 76, 193, 92, 143, 1, 2, 3]
       },
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-      "source": "place_multi_limit_order_v2",
-      "handler": "place_multi_limit_order_v2"
+      "source": "place_position_conditional_order",
+      "handler": "place_position_conditional_order"
     }
   },
   {
-    "name": "staging-place_position_conditional_order-as-listed",
-    "note": "a unsupported entry",
+    "name": "staging-place_position_conditional_order-one-account-beyond-the-list",
+    "note": "one account beyond the listed positions, forwarded or refused by the entry's rule",
     "environment": "staging",
     "instruction": {
       "programAddress": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-      "accounts": [],
+      "accounts": [
+        {
+          "address": "5w3NYheF9PYdUhxX6SDYHz68rFaiQNmuWCMb3wYbQbnt",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "9t2K1cr2eeQb5kNn5y5x2QYGAKmfu9PHop4j2QmFqstF",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "SgNPgT4SMnGDwEjq4WdcFVB7xKPGjaLZJdr2EY5Pvon",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Signer1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "address": "6HK4pC6PH9CBfh8AEAEasupGM8tGc2afSZCiNQM9caKD",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "DQpUzLpyhEWNG7fJCCm3qJXeBVBWYGTsbst8NmAFMeE1",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "8jCruymny4QqNtCF6kcy9eQ1vbPrKwp6wRVoeP597SNX",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "9xkKTAgbcYd2myLx6f24ZyKqcsqPkzz1KLLeRPZWEtCi",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "ELq7riBzsB1HYr3h7FWBUxzdBQ5e3pHACsHkwuJJmN2p",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "CL1JXmwsHGPefPxFzuoSEHPF2ze4r6sAhZk7xPpjkCGY",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "address": "5t3TEvXxyg4BwUkTmUi1fnYpJnwhMm7ERkzfCL6GxDsK",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "BgZnGHkosKqkKdpg854jDiwne4m6Ztr4fGsdC8uJxbzS",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "5ZGS6kmj5iztwASA9qx5qubKsEQmzWVLRLoudQkuHwUT",
+          "writable": true,
+          "signer": false
+        }
+      ],
       "data": [65, 108, 83, 129, 76, 193, 92, 143, 1, 2, 3]
     },
     "context": {
@@ -4478,8 +4303,8 @@
       "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "place_position_conditional_order",
-      "reason": "refused_instruction",
-      "message": "not derived: forwards the native accounts as remaining accounts and can sign only as the vault, but the source declares two signers, 'payer' and 'trader_wallet'"
+      "reason": "remaining_accounts",
+      "message": "place_position_conditional_order takes no accounts beyond its 13; the instruction carries 14"
     }
   },
   {
@@ -5137,91 +4962,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "3XXzWhAQcCgLkLtsoZaimNC7UaPp3kADtw6X1VLPxRxm",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "2xVGbMzQ8atpRFvPSwFqJwLANiJvRYRJdqTWYyzCLxho",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "E6nzUL5muHHFUikbkpJR1dxLUc56meEooiFGFqpT1kZn",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "D3psBTa9Tnu8n45owTqNqRzeB3Nyr4wpX5dZJ3zTUy6r",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "3M44S4UvK13iANhW52pp2jZY5pWy7ckvnbRqxpZkpWTK",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "3DZRf5EvsbRqhxGqrutyzkS4tmTeeUjjWEBSiKTPk4rJ",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "FpFgQyRe7rsttcZtm8M8uEHzETwiVZFWoJ4TJ8Jv5Pg3",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "4oTB3ZLLFt7KejAdPBE2zdYvjBQvc5zX3v7G1p3kCrE1",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [175, 137, 217, 11, 235, 39, 150, 19, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "sync_parent_to_child",
-      "handler": "sync_parent_to_child"
+      "reason": "remaining_accounts",
+      "message": "sync_parent_to_child takes no accounts beyond its 7; the instruction carries 8"
     }
   },
   {
@@ -5468,101 +5213,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "9mLo57Rh95XfQ7ZoUUtCQHqARLFUsGF3EF6TQPNgnNKy",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "9omYD244BzRVYimaT4ceMNmnkAbMtCaWM3ggN6MZPbG3",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "7NM4CRu652wToFCGhdKq7Qgi6sqdYonRkxntMjUTXoTA",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "6hiUWrrcjUVvaHqSB2QM6M1eKsBN4DqBz2MAdNz6Uu4L",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "5RC6n9oJX56hyfMUBCuZ3YBZb21RMAyqbnBioqZFTjh9",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "2RL33gSyp6MajVJDiRjxQVrgKLWdViA4yY6sJnVaEgve",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "BMewMM5vSPcpPiBtJ2yPdEP4BSviKVdxaNa4FbLU2AtZ",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "8BCb6GbQSwVRrvmr57GBVjAV8P5VzSQ9Eyhgb26NTdy6",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "DJ7QgSp9DVdJwgNvhn3r8YidvQ3DXrrGpedKUiSJ5aHM",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [157, 163, 63, 27, 242, 72, 251, 97, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "transfer_collateral",
-      "handler": "transfer_collateral"
+      "reason": "remaining_accounts",
+      "message": "transfer_collateral takes no accounts beyond its 9; the instruction carries 10"
     }
   },
   {
@@ -5786,101 +5441,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "5QGpoVHYdeFpbqCfw3iAmVXThTUXCETBzziQyfojyFiP",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "4rUhTxUTD1y75RJh4H1CkHgc34jrRhSZTzRoCZ87BwwE",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "GXpjcLL6qGvdFaLN5PAGkaCJrKGBNsVodHJ6PTMFpptb",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "7NwRAsRJNvE6Wde3wSHy3vA5Tv6ERDXNFLG8DVVtLvtH",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "HHQa2iv5U44rwgHHJMzjcPqjz8XT4b4pvPXjmkTNA5kM",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "78EHfgqiwwzAr5x1uCiPUaCfdHxDB7FWQWuJxLPbdiY4",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "E2sSQpDFpB9WVav1cpWTf7jHPVhZtpnbDBLsqxqDKKC8",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "C9rDHSDMSsTMswLRv6ZVyd8vGRV8eWuXE3CHbt1uRsvT",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "AGUHuUPs5xwY74pDKbEZDbmKyi9AGqsn87MoEsW1kygs",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "DdTs8zcuyj1vhcfHoymgGTFL9LeiNtxsANyTCYg1NiMg",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [51, 100, 177, 115, 139, 135, 247, 139, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "transfer_collateral_child_to_parent",
-      "handler": "transfer_collateral_child_to_parent"
+      "reason": "remaining_accounts",
+      "message": "transfer_collateral_child_to_parent takes no accounts beyond its 9; the instruction carries 10"
     }
   },
   {
@@ -6104,101 +5669,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "ZbyzY16umdMUCB2jxSycbsoJ2uYmvQVP6sBSgEyDCJG",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "9wVm1w1wDnbpENxV5GLkAGnNCRN5f6W7mReMYrjjBiy8",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "ArMmNs7EPkL8kh17TgDU4Qt3uEj5HFhPMcWx6Khbn6sZ",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "5wjcsbD43VwgNZmnA6aGAUHRCnrZ2SarEKZRJ5jvNAYS",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "GPkRbFrXVHHr6jN6YbhuGLA8BQ1Cw7oP6qBQef5uTNd8",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "H3sDCToTwTiE2HsDUgG7DGLEFniYF6wpx2TaBPBih3Wo",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "9QfyeX8uQQbZkkLHEnj4r1ZbRmZo9ehdD6ASN9ckokCY",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Cqqx25eybCbcPaypuK18f6Kh7NRmpCNCLz1faV41aSi4",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "4Am4hUMR6fby4Gp69t6Mu46fKGCbyLUiVfMG5cYfGwvV",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [204, 65, 217, 206, 56, 180, 74, 252, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "transfer_native_sol",
-      "handler": "transfer_native_sol"
+      "reason": "remaining_accounts",
+      "message": "transfer_native_sol takes no accounts beyond its 9; the instruction carries 10"
     }
   },
   {
@@ -6422,101 +5897,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "5q98BLgUnD99GxELQCrCFMzb6mHqWFuwrZuu7QrC8EYE",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "Fo3Ex2VAaBk4fJXBnqmafWqmjUjKT3CTyjJ7zxRtu9t6",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "GRXcMX7jyFQwj3tr1o213SEjYWkBjwyauYSJLE5A1kKP",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "6h3xNxVXFxpQPtfAe5NpaiofacZgj7BHTycimsrq9RNy",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "8gQkBgDRukEhVUw36vJTchDVGfSTrn9THD2uKt17J1U1",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "G2nkDRpqf2CbUSXNDgwSd7eNpoGnNjLRePCi6RYk3ZD4",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "7W7EfcaCJ7xGxnseh8HC5MoE6mvn4JwQ4Ri6UeSRCufc",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "6mc4rvoojv3QBoJ23c9t6xZYmShznqXTvGh284RqE6q3",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "CD5UoXx5opcnZHLso1nheVJWhmNkYgTZs8N9Dk1UufJp",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "9kf8o2U8Z2Zei75QKkLtJEDCNhmu86RazEcP7swX2kYu",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [90, 175, 49, 106, 54, 115, 8, 185, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "transfer_native_sol_from_child_to_parent",
-      "handler": "transfer_native_sol_from_child_to_parent"
+      "reason": "remaining_accounts",
+      "message": "transfer_native_sol_from_child_to_parent takes no accounts beyond its 9; the instruction carries 10"
     }
   },
   {
@@ -7197,91 +6582,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "CZi19pMGrru8HY8JVGSKi1tk5bYvDeVuQbUS1RWdx64H",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "J282TjUwiePizH4gBQx9wU3WHmKf8fMdJuou8QUfyKKx",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "5sqBnYmF63f7PqPAFc2tPCpMtBGimaSz9ndvqY9ynHbL",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "4KVfNFzC3ALhaoMU5Dprsaaei1j2PEoFFFsCYhtTW7dX",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "7Y4GTZYErwxNtgK6o4WB89eFFNVibbXy7KZVMnYPFd1E",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "CXmfxQzxYtFdAYVMMrc6uyco6rHNPcvq2tnHLsxQ7kWA",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "26dQ3nedUoGrAEM7bBpz4CE7desBrHSEoPqZZgarWF47",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "7PLeTaA5LmRrhgXkNuKvPpqbPDJmVp96aMDhyBVkFFZX",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [249, 139, 82, 44, 126, 66, 133, 220, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "update_trader_state",
-      "handler": "update_trader_state"
+      "reason": "remaining_accounts",
+      "message": "update_trader_state takes no accounts beyond its 7; the instruction carries 8"
     }
   },
   {
@@ -7619,116 +6924,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "HWYvSwqnJoqKJK1zyQbgx9VnYM7jZoaEe9RamEDEDLU1",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "8nY4YyVc1HEtc6ELLG2r4sQK7zN67p6tyAiBeNeTLJ1X",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "B5DV2v7R4oXiVYxtwAoB7mSKKCP5r45QtsXz2iD2qwE",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "4pkbi4LoawsaJaiY72f1dPMF92gXjtizdUmpnc6bKV6U",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "AKjiiZj7sk3NQ2WGicWAQy176z4PrwGGDdC76CesPvwK",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "7kY71eEeA25xV8PW3nDeFbcSYK4cibB16iFiWHcSyMCG",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "4kfrzDzNPzLHiZJgqKtUtUntAetRbwKHizeTa3yQkFgq",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "4ZqETbNEkujxFPT5ZtSrAYLkmtBvgAjumaEryfCQ8DTj",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "AxSZUQt3Z3AEuPYvZCVWvXiRnieE3FMKPfPhdhEhGbsF",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "nKt9LLeMNL9BLVhSP5o2nVbiBFXSCinMWYC2GkHredw",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "6QJPRpXugHR74wMizDDQwKtKfGei96wr5y7xJbVCGkv1",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "DxQiFgfiaea6KqeA1vxseWvqwzCCdw8BPBxrK4Tm6EdP",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [241, 36, 29, 111, 208, 31, 104, 217, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "withdraw_funds",
-      "handler": "withdraw_funds"
+      "reason": "remaining_accounts",
+      "message": "withdraw_funds takes no accounts beyond its 12; the instruction carries 13"
     }
   },
   {
@@ -7990,106 +7190,11 @@
       "integrationAuthority": true
     },
     "expected": {
-      "kind": "mapped",
-      "instruction": {
-        "programAddress": "gstgPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-        "accounts": [
-          {
-            "address": "State11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Signer1111111111111111111111111111111111111",
-            "writable": true,
-            "signer": true
-          },
-          {
-            "address": "AuthPL7r9aYedDDsXNtLpr4atYtNvY7zubAWWstqS3L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "gstgptmbgJVi5f8ZmSRVZjZkDQwqKa3xWuUtD5WmJHz",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "11111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "4kxjKo4rRwdKL6Kh362h7FrRRAHDGdRbMoUDbMGN3x7L",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "Eo4mvJToUpb4qzaG1bYMcJ6epgwWib5myXifeh7pe2Y1",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "6v1qiYp5oxK4k11VZxetF999LPBvycyTzTVK5fHpKB7A",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "Vau1t11111111111111111111111111111111111111",
-            "writable": false,
-            "signer": false
-          },
-          {
-            "address": "EGoHSMCGuLEqyVp7i3ifuM5MrpNeesqPRVyLevi4M8qt",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "BnYg8sRfZ7TsEbRXSA56MtLRo3fcw2RR1VDMHyXumdEv",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "CYnSrFD7YsCNAFz8D8ob9FS1qGD7ZmygJ9Sm8kcUrK9S",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "HwXUroxPKfo9R9FFpDP4wZFpYrwW5uoczo3dezhNNJDF",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "FKBqy6dwekzXJVybfAXen2rdp5SvVpae8YLoZyEkfkHo",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "7XjZST5E1gz5xGJAVdNty2CL1fAjeEcDMQp7R4BU9uEp",
-            "writable": true,
-            "signer": false
-          },
-          {
-            "address": "DqDB93Bka4vGVuvLEJZSW5HxfzQV1YThH2D2qfxQkWUV",
-            "writable": true,
-            "signer": false
-          }
-        ],
-        "data": [201, 104, 187, 105, 80, 204, 84, 138, 1, 2, 3]
-      },
+      "kind": "unsupported",
       "program": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
       "source": "withdraw_native_sol",
-      "handler": "withdraw_native_sol"
+      "reason": "remaining_accounts",
+      "message": "withdraw_native_sol takes no accounts beyond its 10; the instruction carries 11"
     }
   },
   {
