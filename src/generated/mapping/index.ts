@@ -19517,7 +19517,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       source_idl:
         "glam managed anchor_v1/idls/external/spl_stake_pool (revision 27cdfab71694, idl 0645221b78ca)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/ext_stake_pool_staging (revision 3d2aa3ea4846, idl f9b65ec7fd28)",
+        "glam managed anchor_v1/idls/glam/ext_stake_pool_staging (revision 0893a314dcc9, idl f9b65ec7fd28)",
     },
     instructions: [
       {
