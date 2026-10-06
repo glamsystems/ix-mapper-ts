@@ -68,8 +68,60 @@ export interface SourceSeat extends SeatBase {
   readonly sentinel?: true;
 }
 
+/**
+ * A declared account of the handler that a native instruction never carries, supplied by
+ * the context at its account index (a routing table of the extension's own, keyed by the
+ * vault's state). The mapper interprets no role; it hands the role and the resolved
+ * derivation to the context's supplier and places what comes back at the account index.
+ */
+export interface SuppliedDestinationAccount {
+  readonly index: number;
+  readonly kind: "supplied";
+  /** What the account is, in the caller's vocabulary; never blank. */
+  readonly role: string;
+  /** The handler's declared flag. */
+  readonly writable: boolean;
+  /** Always false: a supplied account never signs. */
+  readonly signer: boolean;
+  /** How the account derives, when the handler's IDL states it. */
+  readonly derivation?: Derivation;
+}
+
+/**
+ * How a supplied account derives, as the handler's IDL states it: the program the address
+ * is derived under and the seeds, in order.
+ */
+export interface Derivation {
+  readonly program: string;
+  readonly seeds: readonly Seed[];
+}
+
+/** Constant bytes, at most 32. */
+export interface ConstSeed {
+  readonly kind: "const";
+  readonly value: readonly number[];
+}
+
+/** The address the mapper places at an account index of the mapped instruction. */
+export interface AccountSeed {
+  readonly kind: "account";
+  readonly index: number;
+}
+
+/** An argument of the instruction data by its path, which only a supplier that reads the data resolves. */
+export interface ArgSeed {
+  readonly kind: "arg";
+  readonly path: string;
+}
+
+export type Seed = ConstSeed | AccountSeed | ArgSeed;
+
 /** One seat of the mapped instruction, with the flags the handler declares for it. */
-export type DestinationAccount = DynamicSeat | StaticSeat | SourceSeat;
+export type DestinationAccount =
+  | DynamicSeat
+  | StaticSeat
+  | SourceSeat
+  | SuppliedDestinationAccount;
 
 export interface RemainingAccounts {
   /** `any` forwards accounts beyond the listed positions after the seats; `none` refuses them. */

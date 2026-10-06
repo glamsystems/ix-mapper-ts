@@ -1,0 +1,104 @@
+{
+  "name": "a-supplied-account-at-an-account-index-without-a-supplier-is-refused",
+  "note": "an entry with an account the context supplies at an account index needs a supplier, though it appends none",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "deposit",
+          "discriminator": [7],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_deposit",
+            "discriminator": [9, 9]
+          },
+          "source_accounts": [
+            {
+              "name": "mint",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "name": "from",
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "dynamic",
+              "name": "glam_state",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "dynamic",
+              "name": "glam_vault",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 2,
+              "kind": "supplied",
+              "role": "bridge_routes",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 3,
+              "kind": "source",
+              "source": 0,
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 4,
+              "kind": "source",
+              "source": 1,
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "any"
+          }
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Mint111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "From111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [7, 5, 6]
+  },
+  "context": {
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111"
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "deposit",
+    "reason": "context",
+    "message": "the context supplies no accounts for deposit"
+  }
+}

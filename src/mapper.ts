@@ -1,10 +1,12 @@
 import { isDynamicName, isPrefix } from "./document.js";
 import { MappingDocumentError } from "./errors.js";
 import type {
+  Derivation,
   DynamicAccountName,
   MappedInstruction,
   MappingDocument,
   SuppliedAccount,
+  SuppliedDestinationAccount,
 } from "./schema.js";
 
 /** An account of an instruction, in the terms every instruction shape shares. */
@@ -23,10 +25,13 @@ export interface NeutralInstruction {
 
 /**
  * What the mapper asks the context's supplier for, once per mapped instruction whose entry
- * lists supplied accounts: the roles, in the order the accounts are inserted, each with the
- * addresses found at its `of` positions, and the instruction itself for a supplier that reads
- * its data. The supplier answers with the accounts in the same order, the required ones
- * first; it may leave out a trailing run of optional ones.
+ * has supplied accounts, listed after the declared accounts or at an account index: the
+ * roles, in the order the accounts are inserted, each with the addresses found at its `of`
+ * positions, and the instruction itself for a supplier that reads its data. The supplier
+ * answers with the accounts in the same order, the required ones first; it may leave out a
+ * trailing run of optional ones. The accounts an entry supplies at an account index come
+ * first, in account-index order, each required and with its derivation resolved; the mapper
+ * places them at their account indexes.
  */
 export interface SuppliedAccountsRequest {
   /** The GLAM program the mapped instruction targets. */
@@ -37,15 +42,32 @@ export interface SuppliedAccountsRequest {
   readonly source: string;
   /** The GLAM instruction that carries it. */
   readonly handler: string;
-  /** The supplied accounts the entry lists, with their `of` addresses. */
+  /** The entry's supplied accounts, those at an account index first, with their `of` addresses. */
   readonly roles: readonly {
     readonly role: string;
     readonly of: readonly string[];
     readonly optional: boolean;
+    /** For an account supplied at an account index, how it derives; absent when the IDL states nothing. */
+    readonly derivation?: SuppliedAccountsRequestDerivation;
   }[];
   /** The source instruction as the caller passed it. */
   readonly instruction: NeutralInstruction;
 }
+
+/**
+ * A derivation as the supplier receives it: the program, then the seeds in order, an account
+ * seed resolved to the address the mapper placed at its account index and an argument seed
+ * left as its path, which a supplier that reads the instruction data may resolve.
+ */
+export interface SuppliedAccountsRequestDerivation {
+  readonly program: string;
+  readonly seeds: readonly SuppliedAccountsRequestSeed[];
+}
+
+export type SuppliedAccountsRequestSeed =
+  | { readonly kind: "const"; readonly value: readonly number[] }
+  | { readonly kind: "account"; readonly address: string }
+  | { readonly kind: "arg"; readonly path: string };
 
 /** What a mapping needs from the caller: the GLAM accounts a document seats dynamically. */
 export interface MappingContext {
@@ -55,11 +77,12 @@ export interface MappingContext {
   /** The integration authority of a proxy program, for a document that seats one. */
   readonly integrationAuthority?: (proxyProgram: string) => string | undefined;
   /**
-   * The accounts a document lists as supplied, for an entry that lists any: called once
-   * per such instruction, answering in the request's order, the required ones first, a
-   * trailing run of optional ones left out at will. No supplier or a nullish answer refuses
-   * the instruction with reason `context`; a wrong count or a nullish account with
-   * `supplied_accounts`; a throw with `context`, never as an escape.
+   * The accounts a document lists as supplied, after the declared accounts or at an account
+   * index, for an entry that has any: called once per such instruction, answering in the
+   * request's order, the required ones first, a trailing run of optional ones left out at
+   * will. No supplier or a nullish answer refuses the instruction with reason `context`; a
+   * wrong count or a nullish account with `supplied_accounts`; a throw with `context`, never
+   * as an escape.
    */
   readonly suppliedAccounts?: (
     request: SuppliedAccountsRequest,
@@ -79,9 +102,9 @@ export type UnsupportedReason =
   | "account_privilege"
   /** The instruction carries accounts beyond the list and the document forbids them. */
   | "remaining_accounts"
-  /** The context supplies no address for a GLAM account the document seats, or no accounts for an entry that lists supplied ones. */
+  /** The context supplies no address for a GLAM account the document seats, or no accounts for an entry that has supplied ones. */
   | "context"
-  /** The context supplied the wrong number of accounts for an entry that lists supplied ones, or a null one. */
+  /** The context supplied the wrong number of accounts for an entry that has supplied ones, or a null one. */
   | "supplied_accounts"
   /** The caller's address library refused an address of the mapped instruction. */
   | "address";
@@ -260,6 +283,12 @@ function mapEntry(
     }
   }
   const accounts: NeutralAccount[] = [];
+  // the accounts supplied at an account index, in account-index order, with where each
+  // lands in `accounts` once the supplier answers
+  const placed: {
+    readonly account: SuppliedDestinationAccount;
+    readonly at: number;
+  }[] = [];
   let absentSeatSeen = false;
   for (const seat of [...entry.destination_accounts].sort(
     (a, b) => a.index - b.index,
@@ -342,10 +371,15 @@ function mapEntry(
         });
         break;
       }
+      case "supplied":
+        // held until the supplier answers, which it does once every account index is placed
+        placed.push({ account: seat, at: accounts.length });
+        accounts.push({ address: "", writable: seat.writable, signer: false });
+        break;
     }
   }
   const supplied = entry.supplied_accounts ?? [];
-  if (supplied.length > 0) {
+  if (placed.length > 0 || supplied.length > 0) {
     const supplier = context.suppliedAccounts;
     if (supplier === undefined || supplier === null) {
       return refuse(
@@ -353,17 +387,28 @@ function mapEntry(
         `the context supplies no accounts for ${source}`,
       );
     }
-    // every `of` position is inside the list and none is omittable, so the instruction
-    // carries it: a shorter instruction was refused above; and no seat above was left out,
-    // since an entry with a seat a client may leave out lists no supplied accounts
-    const roles = supplied.map((account) => ({
-      role: account.role,
-      of: (account.of ?? []).map(
-        (position) => instruction.accounts[position]!.address,
-      ),
-      optional: account.optional === true,
-    }));
-    const required = supplied.filter((account) => !account.optional).length;
+    const roles = [
+      ...placed.map(({ account }) => ({
+        role: account.role,
+        of: [],
+        optional: false,
+        ...(account.derivation === undefined
+          ? {}
+          : { derivation: resolveDerivation(account.derivation, accounts) }),
+      })),
+      // every `of` position is inside the list and none is omittable, so the instruction
+      // carries it: a shorter instruction was refused above; and no seat above was left out,
+      // since an entry with a seat a client may leave out lists no supplied accounts
+      ...supplied.map((account) => ({
+        role: account.role,
+        of: (account.of ?? []).map(
+          (position) => instruction.accounts[position]!.address,
+        ),
+        optional: account.optional === true,
+      })),
+    ];
+    const required =
+      placed.length + supplied.filter((account) => !account.optional).length;
     let answer: readonly (string | null | undefined)[] | null | undefined;
     try {
       const raw = supplier({
@@ -394,11 +439,11 @@ function mapEntry(
         `the context supplies no accounts for ${source}`,
       );
     }
-    const max = supplied.length;
+    const max = placed.length + supplied.length;
     if (answer.length < required || answer.length > max) {
       return refuse(
         "supplied_accounts",
-        `${source} takes ${required === max ? String(max) : `${required} to ${max}`}${max === 1 ? " supplied account (" : " supplied accounts ("}${roleNames(supplied)}); the context supplied ${answer.length}`,
+        `${source} takes ${required === max ? String(max) : `${required} to ${max}`}${max === 1 ? " supplied account (" : " supplied accounts ("}${roleNames(placed, supplied)}); the context supplied ${answer.length}`,
       );
     }
     for (let i = 0; i < answer.length; i++) {
@@ -409,7 +454,17 @@ function mapEntry(
           `the context supplied a null account at ${i} for ${source}`,
         );
       }
-      accounts.push({ address, writable: false, signer: false });
+      // the first answers go to their account indexes with the handler's writable flag
+      const held = placed[i];
+      if (held === undefined) {
+        accounts.push({ address, writable: false, signer: false });
+      } else {
+        accounts[held.at] = {
+          address,
+          writable: held.account.writable,
+          signer: false,
+        };
+      }
     }
   }
   if (provided > positions.length) {
@@ -464,11 +519,46 @@ function dynamicAddress(
   }
 }
 
-/** The roles of an entry's supplied accounts, comma-separated, an optional one marked `?`. */
-function roleNames(supplied: readonly SuppliedAccount[]): string {
-  return supplied
-    .map((account) => (account.optional ? `${account.role}?` : account.role))
-    .join(", ");
+/**
+ * The roles of an entry's supplied accounts, comma-separated, those at an account index first
+ * in account-index order, an optional one marked `?`: read from the document, never from the
+ * request a supplier may have written over.
+ */
+function roleNames(
+  placed: readonly { readonly account: SuppliedDestinationAccount }[],
+  supplied: readonly SuppliedAccount[],
+): string {
+  return [
+    ...placed.map(({ account }) => account.role),
+    ...supplied.map((account) =>
+      account.optional ? `${account.role}?` : account.role,
+    ),
+  ].join(", ");
+}
+
+/**
+ * A derivation as the supplier receives it. An account seed names neither an account the
+ * context supplies nor one a client may leave out, and only a trailing run of account
+ * indexes is ever absent, so the account at that account index is the one in `accounts` at
+ * the same index, as the mapper placed it.
+ */
+function resolveDerivation(
+  derivation: Derivation,
+  accounts: readonly NeutralAccount[],
+): SuppliedAccountsRequestDerivation {
+  return {
+    program: derivation.program,
+    seeds: derivation.seeds.map((seed): SuppliedAccountsRequestSeed => {
+      switch (seed.kind) {
+        case "const":
+          return { kind: "const", value: [...seed.value] };
+        case "account":
+          return { kind: "account", address: accounts[seed.index]!.address };
+        case "arg":
+          return { kind: "arg", path: seed.path };
+      }
+    }),
+  };
 }
 
 /** A thrown value as text, for a value that refuses conversion. */

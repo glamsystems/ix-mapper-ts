@@ -7,6 +7,10 @@ import { createMapperOver, type Mapper } from "./mapper.js";
 import type { MappingDocument } from "./schema.js";
 
 export type {
+  AccountSeed,
+  ArgSeed,
+  ConstSeed,
+  Derivation,
   DestinationAccount,
   DynamicAccountName,
   DynamicSeat,
@@ -18,8 +22,10 @@ export type {
   PassthroughInstruction,
   Provenance,
   RemainingAccounts,
+  Seed,
   SourceAccount,
   SuppliedAccount,
+  SuppliedDestinationAccount,
   SourceSeat,
   StaticSeat,
   UnsupportedInstruction,
@@ -31,6 +37,8 @@ export type {
   Mapper,
   MappingContext,
   SuppliedAccountsRequest,
+  SuppliedAccountsRequestDerivation,
+  SuppliedAccountsRequestSeed,
   MapResult,
   NeutralAccount,
   NeutralInstruction,

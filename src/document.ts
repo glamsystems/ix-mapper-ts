@@ -2,6 +2,7 @@ import { MappingDocumentError } from "./errors.js";
 import {
   DYNAMIC_ACCOUNT_NAMES,
   SCHEMA_VERSION,
+  type Derivation,
   type DestinationAccount,
   type DynamicAccountName,
   type Handler,
@@ -10,6 +11,7 @@ import {
   type OptionalKind,
   type Provenance,
   type RemainingAccounts,
+  type Seed,
   type SourceAccount,
   type SuppliedAccount,
 } from "./schema.js";
@@ -24,7 +26,10 @@ import {
  * unknown dynamic account, a discriminator that is a prefix of another's, since matching is
  * by prefix, and supplied accounts on a `passthrough` or `unsupported` entry or on an entry
  * with a seat a client may leave out, naming a position outside the list or an optional
- * one, or a required one after an optional one.
+ * one, or a required one after an optional one. It also refuses a supplied account at an
+ * account index that signs, or whose derivation names an account index outside the list,
+ * one the context supplies or one a client may leave out, or carries a constant seed longer
+ * than 32 bytes.
  */
 export function parseMappingDocument(
   value: unknown,
@@ -287,6 +292,8 @@ function parseSeat(value: unknown, at: string): DestinationAccount {
     "writable",
     "signer",
     "sentinel",
+    "role",
+    "derivation",
   ]);
   const index = nonNegativeInteger(object.index, at, "index");
   const writable = bool(object.writable, at, "writable");
@@ -296,7 +303,7 @@ function parseSeat(value: unknown, at: string): DestinationAccount {
       refuseKeys(
         object,
         at,
-        ["address", "source", "sentinel"],
+        ["address", "source", "sentinel", "role", "derivation"],
         "a dynamic seat",
       );
       const name = nonBlankString(object.name, at, "name");
@@ -305,7 +312,12 @@ function parseSeat(value: unknown, at: string): DestinationAccount {
       return { index, kind: "dynamic", name, writable, signer };
     }
     case "static": {
-      refuseKeys(object, at, ["name", "source", "sentinel"], "a static seat");
+      refuseKeys(
+        object,
+        at,
+        ["name", "source", "sentinel", "role", "derivation"],
+        "a static seat",
+      );
       return {
         index,
         kind: "static",
@@ -315,7 +327,12 @@ function parseSeat(value: unknown, at: string): DestinationAccount {
       };
     }
     case "source": {
-      refuseKeys(object, at, ["name", "address"], "a source seat");
+      refuseKeys(
+        object,
+        at,
+        ["name", "address", "role", "derivation"],
+        "a source seat",
+      );
       const source = nonNegativeInteger(object.source, at, "source");
       if (object.sentinel === undefined)
         return { index, kind: "source", source, writable, signer };
@@ -333,12 +350,70 @@ function parseSeat(value: unknown, at: string): DestinationAccount {
         sentinel: true,
       };
     }
+    case "supplied": {
+      refuseKeys(
+        object,
+        at,
+        ["name", "address", "source", "sentinel"],
+        "a supplied account",
+      );
+      const role = nonBlankString(object.role, at, "role");
+      if (object.derivation === undefined)
+        return { index, kind: "supplied", role, writable, signer };
+      return {
+        index,
+        kind: "supplied",
+        role,
+        writable,
+        signer,
+        derivation: parseDerivation(object.derivation, at),
+      };
+    }
     case undefined:
       throw new MappingDocumentError(at, "the seat has no kind");
     default:
       throw new MappingDocumentError(
         at,
         `unknown seat kind ${String(object.kind)}`,
+      );
+  }
+}
+
+/** A supplied account's derivation: the program, then the seeds in order. */
+function parseDerivation(value: unknown, at: string): Derivation {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+    throw new MappingDocumentError(at, "derivation must be an object");
+  }
+  const object = asObject(value, `${at} derivation`, ["program", "seeds"]);
+  const program = address(object.program, `${at} derivation`, "program");
+  const seeds = asArray(object.seeds, `${at} derivation`, "seeds").map(
+    (seed, i) => parseSeed(seed, `${at} derivation seeds[${i}]`),
+  );
+  return { program, seeds };
+}
+
+/** One seed, by its kind: `const` carries `value`, `account` an account `index`, `arg` a `path`. */
+function parseSeed(value: unknown, at: string): Seed {
+  const object = asObject(value, at, ["kind", "value", "index", "path"]);
+  switch (object.kind) {
+    case "const":
+      refuseKeys(object, at, ["index", "path"], "a const seed");
+      return { kind: "const", value: byteArray(object.value, at, "value") };
+    case "account":
+      refuseKeys(object, at, ["value", "path"], "an account seed");
+      return {
+        kind: "account",
+        index: nonNegativeInteger(object.index, at, "index"),
+      };
+    case "arg":
+      refuseKeys(object, at, ["value", "index"], "an arg seed");
+      return { kind: "arg", path: nonBlankString(object.path, at, "path") };
+    case undefined:
+      throw new MappingDocumentError(at, "the seed has no kind");
+    default:
+      throw new MappingDocumentError(
+        at,
+        `unknown seed kind ${String(object.kind)}`,
       );
   }
 }
@@ -507,6 +582,73 @@ function validateShape(
         at,
         `seat ${seat.index} follows a seat a client may leave out; an absent one would shift it`,
       );
+    }
+  }
+  validateSuppliedAtAccountIndexes(sources, seats, at);
+}
+
+/** The longest seed a program-derived address takes. */
+const MAX_SEED_LENGTH = 32;
+
+/**
+ * A supplied account at an account index never signs, and its derivation is one a mapper
+ * hands a supplier whole: an account seed names an account index inside the list whose
+ * account the mapper places itself, so neither one the context supplies, whose address is
+ * the supplier's own answer, nor one a client may leave out; and a constant seed is no longer
+ * than a seed may be. Runs after the checks above, so the account indexes are dense and
+ * unique and every forwarded position is inside the list.
+ */
+function validateSuppliedAtAccountIndexes(
+  sources: readonly SourceAccount[],
+  destinations: readonly DestinationAccount[],
+  at: string,
+): void {
+  const byIndex = new Array<DestinationAccount>(destinations.length);
+  for (const destination of destinations) {
+    byIndex[destination.index] = destination;
+  }
+  for (const destination of destinations) {
+    if (destination.kind === "supplied" && destination.signer) {
+      throw new MappingDocumentError(
+        at,
+        `the supplied account at account index ${destination.index} signs; a supplied account never signs`,
+      );
+    }
+  }
+  for (const destination of destinations) {
+    if (destination.kind !== "supplied" || destination.derivation === undefined)
+      continue;
+    const which = `the supplied account at account index ${destination.index}`;
+    for (const seed of destination.derivation.seeds) {
+      if (seed.kind === "const" && seed.value.length > MAX_SEED_LENGTH) {
+        throw new MappingDocumentError(
+          at,
+          `${which} has a constant seed longer than ${MAX_SEED_LENGTH} bytes`,
+        );
+      }
+      if (seed.kind !== "account") continue;
+      if (seed.index >= destinations.length) {
+        throw new MappingDocumentError(
+          at,
+          `${which} derives from account index ${seed.index}, which is out of range of ${destinations.length}`,
+        );
+      }
+      const named = byIndex[seed.index]!;
+      if (named.kind === "supplied") {
+        throw new MappingDocumentError(
+          at,
+          `${which} derives from account index ${seed.index}, which the context supplies; a mapper resolves no supplied account for another`,
+        );
+      }
+      if (
+        named.kind === "source" &&
+        sources[named.source]!.optional === "omitted"
+      ) {
+        throw new MappingDocumentError(
+          at,
+          `${which} derives from account index ${seed.index}, which a client may leave out`,
+        );
+      }
     }
   }
 }

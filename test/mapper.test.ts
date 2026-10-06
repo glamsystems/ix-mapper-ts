@@ -11,6 +11,7 @@ import {
   type MapResult,
   type NeutralInstruction,
   type SuppliedAccountsRequest,
+  type SuppliedAccountsRequestDerivation,
 } from "../src/index.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -48,6 +49,8 @@ interface SuppliedSpec {
       readonly role: string;
       readonly of: string[];
       readonly optional: boolean;
+      /** Resolved, for an account supplied at an account index whose derivation the document states; absent otherwise. */
+      readonly derivation?: SuppliedAccountsRequestDerivation;
     }[];
   };
   readonly answer?: (string | null)[] | null;
@@ -143,6 +146,7 @@ describe("the mapping cases", () => {
       assert.deepEqual(toComparable(result), testCase.expected);
       // the mapper asked once per served entry, for the roles the case spells out, with the
       // addresses at their `of` positions, and handed the supplier the instruction itself
+      // (strict: a role carries a derivation exactly where the case spells one out)
       for (const [entry, spec] of Object.entries(specs ?? {})) {
         const requests = asked.filter((request) => request.source === entry);
         assert.equal(requests.length, 1, `${entry} is asked once`);
@@ -436,6 +440,73 @@ describe("createMapper", () => {
     if (result.kind !== "unsupported") return;
     assert.equal(result.reason, "context");
     assert.match(result.message, /failed for place: .*other than an array/);
+  });
+
+  it("hands the supplier a derivation of its own, so a supplier that writes over it changes no document", () => {
+    const resolving = readCase(
+      path.join(
+        casesDir,
+        "a-derivation-resolves-the-accounts-the-mapper-placed-and-carries-an-argument-path.json",
+      ),
+    );
+    const mapper = createMapper({ documents: resolving.documents ?? [] });
+    const spec = resolving.context.suppliedAccounts!.deposit!;
+    const seen: unknown[] = [];
+    const supplier = (request: SuppliedAccountsRequest) => {
+      seen.push(JSON.parse(JSON.stringify(request.roles)));
+      const seed = request.roles[0]!.derivation!.seeds[0]!;
+      assert.equal(seed.kind, "const");
+      if (seed.kind === "const") (seed.value as number[]).fill(0);
+      return spec.answer ?? null;
+    };
+    for (let i = 0; i < 2; i++) {
+      const result = mapper.map(toInstruction(resolving.instruction), {
+        ...context,
+        suppliedAccounts: supplier,
+      });
+      assert.equal(result.kind, "mapped");
+    }
+    assert.deepEqual(seen, [spec.request.roles, spec.request.roles]);
+    assert.deepEqual(
+      mapper.documents,
+      createMapper({ documents: resolving.documents ?? [] }).documents,
+    );
+  });
+
+  it("a supplier that writes into the request's roles changes no refusal and no mapping", () => {
+    const asking = readCase(
+      path.join(
+        casesDir,
+        "a-supplied-account-at-an-account-index-is-asked-before-the-appended-roles.json",
+      ),
+    );
+    const mapper = createMapper({ documents: asking.documents ?? [] });
+    const overwriting =
+      (answer: readonly (string | null)[]) =>
+      (request: SuppliedAccountsRequest) => {
+        // an untyped supplier may write over the request it receives
+        (request.roles as unknown as unknown[])[0] = null;
+        return answer;
+      };
+    const refused = mapper.map(toInstruction(asking.instruction), {
+      ...context,
+      suppliedAccounts: overwriting([]),
+    });
+    assert.deepEqual(toComparable(refused), {
+      kind: "unsupported",
+      program: PROGRAM,
+      source: "place",
+      reason: "supplied_accounts",
+      message:
+        "place takes 2 to 3 supplied accounts (bridge_routes, asset_oracle, sol_usd_oracle?); the context supplied 0",
+    });
+    const mapped = mapper.map(toInstruction(asking.instruction), {
+      ...context,
+      suppliedAccounts: overwriting(
+        asking.context.suppliedAccounts!.place!.answer!,
+      ),
+    });
+    assert.deepEqual(toComparable(mapped), asking.expected);
   });
 
   it("treats a null supplier as none, like an absent one", () => {

@@ -76,7 +76,15 @@ Every instruction of the program appears once, with its `discriminator` and a
   GLAM account by name, a `static` address, or a `source` position forwarded; a `sentinel`
   seat is an optional account of
   the handler's own, where the source program's id (an absent optional, as Anchor clients
-  pass it) becomes the proxy program's id. `supplied_accounts` lists, in order, accounts the
+  pass it) becomes the proxy program's id. A `supplied` account, such as a routing table of
+  the extension's own, is a declared account of the handler that no native instruction
+  carries. The context supplies it at its account index. It names a `role` the mapper does
+  not interpret, keeps the handler's `writable` flag and never signs. Its `derivation` is
+  present when the handler's IDL has one. It names the `program` the address derives under
+  and the `seeds` in order. A `const` seed carries its `value` bytes, at most 32. An
+  `account` seed names an account index of the mapped instruction in its `index`. An `arg`
+  seed names an instruction argument in its `path`. `supplied_accounts` lists, in order,
+  accounts the
   context supplies after the seats: a handler reads them from its remaining accounts and a
   native instruction never carries them (a pool's price oracles, a strategy's market). Each
   names a `role` the mapper does not interpret, the source positions (`of`) whose addresses
@@ -104,7 +112,12 @@ program id, an unknown dynamic account, a discriminator that is a prefix of anot
 since matching is by prefix, and supplied accounts on a `passthrough` or `unsupported`
 entry or on an entry with a seat a client may leave out (an absent seat would shift them),
 naming a position outside the list or an optional one (a client may leave it out or pass
-the program id in its place), or a required one after an optional one.
+the program id in its place), or a required one after an optional one. It also refuses a
+supplied account at an account index that signs. It refuses a derivation whose account seed
+names an account index outside the list, or an account a client may leave out. It refuses
+one whose account seed names the account index of any supplied account, its own included,
+as that address is the supplier's own answer. It refuses a constant seed longer than 32
+bytes.
 
 At mapping time, an instruction of a program with no document passes through: GLAM does
 not proxy that program. For a documented program, the entry whose discriminator prefixes
@@ -124,7 +137,13 @@ supplied accounts it asks the context's supplier once, with the roles and the ad
 their `of` positions and the instruction itself, and inserts the answer after the seats,
 read-only and unsigned, in the answer's order: no supplier, a null answer or a supplier
 that throws refuses with `context`, a count outside the required and optional bounds or a
-null account with `supplied_accounts`. It forwards remaining accounts after that with the flags the caller
+null account with `supplied_accounts`. Supplied accounts at an account index join the same
+request ahead of the appended roles. Their roles run in account-index order, and each
+counts as required and carries no `of` addresses. A role carries a `derivation` key only
+when the document derives its account. The mapper resolves that derivation: an `account`
+seed becomes the address the mapper placed at that account index. A `const` seed keeps its
+bytes and an `arg` seed keeps its path, and the mapper derives no address itself. The first answers go to those account indexes, unsigned and with the handler's
+`writable` flag. The rest follow the declared accounts as before. It forwards remaining accounts after that with the flags the caller
 gave them, and relays the data verbatim behind the swapped discriminator. The Java mapper,
 `ix-mapper-java`, reads the same documents and implements the same rules; the conformance
 cases under `test/data/cases` are the contract both run.

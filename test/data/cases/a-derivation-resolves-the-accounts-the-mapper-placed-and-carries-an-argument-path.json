@@ -1,0 +1,238 @@
+{
+  "name": "a-derivation-resolves-the-accounts-the-mapper-placed-and-carries-an-argument-path",
+  "note": "the supplier receives the derivation with each account seed resolved to the address the mapper placed at that account index (a GLAM account the context names, a fixed address, and a forwarded account placed after the supplied one), each constant seed with its bytes and the argument seed as its path, unresolved; the accounts are listed out of account-index order, so a seed resolves by the account index it names, not by the position in the list",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "deposit",
+          "discriminator": [7],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_deposit",
+            "discriminator": [9, 9]
+          },
+          "source_accounts": [
+            {
+              "name": "owner",
+              "writable": false,
+              "signer": true,
+              "expect": "glam_vault"
+            },
+            {
+              "name": "mint",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "name": "from",
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 5,
+              "kind": "source",
+              "source": 2,
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 4,
+              "kind": "source",
+              "source": 1,
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 3,
+              "kind": "supplied",
+              "role": "bridge_routes",
+              "writable": false,
+              "signer": false,
+              "derivation": {
+                "program": "Proxy11111111111111111111111111111111111111",
+                "seeds": [
+                  {
+                    "kind": "const",
+                    "value": [
+                      98, 114, 105, 100, 103, 101, 45, 114, 111, 117, 116, 101,
+                      115
+                    ]
+                  },
+                  {
+                    "kind": "account",
+                    "index": 0
+                  },
+                  {
+                    "kind": "account",
+                    "index": 2
+                  },
+                  {
+                    "kind": "account",
+                    "index": 5
+                  },
+                  {
+                    "kind": "arg",
+                    "path": "params.protocol"
+                  },
+                  {
+                    "kind": "const",
+                    "value": [1, 0]
+                  }
+                ]
+              }
+            },
+            {
+              "index": 2,
+              "kind": "static",
+              "address": "Fixed11111111111111111111111111111111111111",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "dynamic",
+              "name": "glam_vault",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 0,
+              "kind": "dynamic",
+              "name": "glam_state",
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "any"
+          }
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Vau1t11111111111111111111111111111111111111",
+        "writable": false,
+        "signer": true
+      },
+      {
+        "address": "Mint111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "From111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [7, 1, 0]
+  },
+  "context": {
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111",
+    "suppliedAccounts": {
+      "deposit": {
+        "request": {
+          "proxyProgram": "Proxy11111111111111111111111111111111111111",
+          "program": "Src1111111111111111111111111111111111111111",
+          "handler": "proxy_deposit",
+          "roles": [
+            {
+              "role": "bridge_routes",
+              "of": [],
+              "optional": false,
+              "derivation": {
+                "program": "Proxy11111111111111111111111111111111111111",
+                "seeds": [
+                  {
+                    "kind": "const",
+                    "value": [
+                      98, 114, 105, 100, 103, 101, 45, 114, 111, 117, 116, 101,
+                      115
+                    ]
+                  },
+                  {
+                    "kind": "account",
+                    "address": "State11111111111111111111111111111111111111"
+                  },
+                  {
+                    "kind": "account",
+                    "address": "Fixed11111111111111111111111111111111111111"
+                  },
+                  {
+                    "kind": "account",
+                    "address": "From111111111111111111111111111111111111111"
+                  },
+                  {
+                    "kind": "arg",
+                    "path": "params.protocol"
+                  },
+                  {
+                    "kind": "const",
+                    "value": [1, 0]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "answer": ["Routes1111111111111111111111111111111111111"]
+      }
+    }
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "deposit",
+    "handler": "proxy_deposit",
+    "instruction": {
+      "programAddress": "Proxy11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "State11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Vau1t11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Fixed11111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Routes1111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "Mint111111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "address": "From111111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": [9, 9, 1, 0]
+    }
+  }
+}

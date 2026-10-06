@@ -1,0 +1,136 @@
+{
+  "name": "a-supplied-account-at-an-account-index-keeps-the-handlers-writable-flag",
+  "note": "the account at an account index keeps the writable flag the handler declares and never signs, where an appended one is read-only",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "update",
+          "discriminator": [7],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_update",
+            "discriminator": [9, 9]
+          },
+          "source_accounts": [
+            {
+              "name": "strategy",
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "dynamic",
+              "name": "glam_state",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "supplied",
+              "role": "bridge_routes",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 2,
+              "kind": "source",
+              "source": 0,
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "any"
+          },
+          "supplied_accounts": [
+            {
+              "role": "asset_oracle",
+              "of": [0]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Strategy11111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [7]
+  },
+  "context": {
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111",
+    "suppliedAccounts": {
+      "update": {
+        "request": {
+          "proxyProgram": "Proxy11111111111111111111111111111111111111",
+          "program": "Src1111111111111111111111111111111111111111",
+          "handler": "proxy_update",
+          "roles": [
+            {
+              "role": "bridge_routes",
+              "of": [],
+              "optional": false
+            },
+            {
+              "role": "asset_oracle",
+              "of": ["Strategy11111111111111111111111111111111111"],
+              "optional": false
+            }
+          ]
+        },
+        "answer": [
+          "Routes1111111111111111111111111111111111111",
+          "Price1A111111111111111111111111111111111111"
+        ]
+      }
+    }
+  },
+  "expected": {
+    "kind": "mapped",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "update",
+    "handler": "proxy_update",
+    "instruction": {
+      "programAddress": "Proxy11111111111111111111111111111111111111",
+      "accounts": [
+        {
+          "address": "State11111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Routes1111111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Strategy11111111111111111111111111111111111",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "address": "Price1A111111111111111111111111111111111111",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": [9, 9]
+    }
+  }
+}

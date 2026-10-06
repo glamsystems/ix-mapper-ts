@@ -1,0 +1,121 @@
+{
+  "name": "a-supplied-account-at-an-account-index-is-required",
+  "note": "the account at an account index is never optional: a supplier that answers with nothing is refused by count, in the singular",
+  "environment": null,
+  "documents": [
+    {
+      "schema_version": 1,
+      "environment": "test",
+      "program_id": "Src1111111111111111111111111111111111111111",
+      "proxy_program_id": "Proxy11111111111111111111111111111111111111",
+      "instructions": [
+        {
+          "name": "deposit",
+          "discriminator": [7],
+          "disposition": "map",
+          "handler": {
+            "name": "proxy_deposit",
+            "discriminator": [9, 9]
+          },
+          "source_accounts": [
+            {
+              "name": "mint",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "name": "from",
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "destination_accounts": [
+            {
+              "index": 0,
+              "kind": "dynamic",
+              "name": "glam_state",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 1,
+              "kind": "dynamic",
+              "name": "glam_vault",
+              "writable": true,
+              "signer": false
+            },
+            {
+              "index": 2,
+              "kind": "supplied",
+              "role": "bridge_routes",
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 3,
+              "kind": "source",
+              "source": 0,
+              "writable": false,
+              "signer": false
+            },
+            {
+              "index": 4,
+              "kind": "source",
+              "source": 1,
+              "writable": true,
+              "signer": false
+            }
+          ],
+          "remaining_accounts": {
+            "kind": "any"
+          }
+        }
+      ]
+    }
+  ],
+  "instruction": {
+    "programAddress": "Src1111111111111111111111111111111111111111",
+    "accounts": [
+      {
+        "address": "Mint111111111111111111111111111111111111111",
+        "writable": false,
+        "signer": false
+      },
+      {
+        "address": "From111111111111111111111111111111111111111",
+        "writable": true,
+        "signer": false
+      }
+    ],
+    "data": [7, 5, 6]
+  },
+  "context": {
+    "glamState": "State11111111111111111111111111111111111111",
+    "glamVault": "Vau1t11111111111111111111111111111111111111",
+    "glamSigner": "Signer1111111111111111111111111111111111111",
+    "suppliedAccounts": {
+      "deposit": {
+        "request": {
+          "proxyProgram": "Proxy11111111111111111111111111111111111111",
+          "program": "Src1111111111111111111111111111111111111111",
+          "handler": "proxy_deposit",
+          "roles": [
+            {
+              "role": "bridge_routes",
+              "of": [],
+              "optional": false
+            }
+          ]
+        },
+        "answer": []
+      }
+    }
+  },
+  "expected": {
+    "kind": "unsupported",
+    "program": "Src1111111111111111111111111111111111111111",
+    "source": "deposit",
+    "reason": "supplied_accounts",
+    "message": "deposit takes 1 supplied account (bridge_routes); the context supplied 0"
+  }
+}
