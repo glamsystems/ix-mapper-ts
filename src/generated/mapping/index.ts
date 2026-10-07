@@ -5054,7 +5054,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       source_idl:
         "glam managed anchor_v1/idls/external/system (revision 7c70ebdc8bcf, idl bb1a83194457)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/glam_protocol_staging (revision ab88e0796ef2, idl 4b154b17ee04)",
+        "glam managed anchor_v1/idls/glam/glam_protocol_staging (revision 038ad0874125, idl 874250cef4d0)",
     },
     instructions: [
       {
@@ -20397,7 +20397,7 @@ export const STAGING_DOCUMENTS: readonly MappingDocument[] = [
       source_idl:
         "glam managed anchor_v1/idls/external/stake (revision 63da07e49f05, idl de27febd3fdb)",
       proxy_idl:
-        "glam managed anchor_v1/idls/glam/glam_protocol_staging (revision ab88e0796ef2, idl 4b154b17ee04)",
+        "glam managed anchor_v1/idls/glam/glam_protocol_staging (revision 038ad0874125, idl 874250cef4d0)",
     },
     instructions: [
       {
