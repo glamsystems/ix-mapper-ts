@@ -14,7 +14,7 @@
   ],
   "license": "Apache-2.0",
   "engines": {
-    "node": ">=20.18.0"
+    "node": ">=22.13.0"
   },
   "type": "module",
   "sideEffects": false,
@@ -23,10 +23,18 @@
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
+      },
+      "default": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       }
     },
     "./web3": {
       "import": {
+        "types": "./dist/web3.d.ts",
+        "default": "./dist/web3.js"
+      },
+      "default": {
         "types": "./dist/web3.d.ts",
         "default": "./dist/web3.js"
       }
